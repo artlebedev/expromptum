@@ -1,0 +1,4 @@
+expromptum
+==========
+
+Expromptum js library
