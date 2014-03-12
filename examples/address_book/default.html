@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>expromptum &mdash; address book</title>
+
+		<script src="http://yandex.st/jquery/2.1.0/jquery.js"></script>
+
+		<link  href="http://yandex.st/jquery-ui/1.10.4/themes/base/jquery-ui.min.css" rel="stylesheet"/>
+		<script src="http://yandex.st/jquery-ui/1.10.4/jquery-ui.js"></script>
+
+		<link  href="../../expromptum.css" rel="stylesheet"/>
+		<script src="../../expromptum.js"></script>
+
+		<style>
+			.horizontal .field,
+			.horizontal .field_label,
+			.horizontal .field_control {
+				display: inline-block;
+				width: auto;
+			}
+
+			.card {
+				position: relative;
+			}
+			.card_compact_view {
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
+
+			.compact_view .horizontal {
+				display: inline-block;
+			}
+			.compact_view .repeated button,
+			.compact_view .field_label,
+			.compact_view .hide_in_compact_view,
+			.compact_view .hide_nonfirst_in_compact_view {
+				display: none;
+			}
+			.compact_view .hide_nonfirst_in_compact_view.repeated_0 {
+				display: inline-block;
+			}
+
+			.hide_on_unselected,
+			.option.selected .hide_on_selected {
+				display: none;
+			}
+			.option.selected .hide_on_unselected {
+				display: inline;
+			}
+		</style>
+	</head>
+	<body>
+
+<form>
+	<span class="option">
+		<input name="all_compact_view" id="all_compact_view" value="true" type="checkbox"/>
+		<label for="all_compact_view"><span class="hide_on_unselected">Open</span><span class="hide_on_selected">Close</span> All</label>
+	</span>
+
+	<div class="fields card" data-xp='{
+		"name": "person",
+		"repeat": true,
+		"classed": {"on": "[id=compact_view] && [id=first_name]", "do": "compact_view"},
+		"required": true
+	}'>
+		<div class="horizontal">
+			<dl class="field">
+				<dt class="field_label"><label>Last name</label></dt>
+				<dd class="field_control">
+					<input name="last_name"/>
+				</dd>
+			</dl>
+
+			<dl class="field">
+				<dt class="field_label"><label>First name</label></dt>
+				<dd class="field_control">
+					<input name="first_name" id="first_name"/>
+				</dd>
+			</dl>
+
+			<dl class="field hide_in_compact_view">
+				<dt class="field_label"><label>Middle name</label></dt>
+				<dd class="field_control">
+					<input name="middle_name"/>
+				</dd>
+			</dl>
+		</div>
+
+		<dl class="field hide_in_compact_view">
+			<dt class="field_label"><label>Gender</label></dt>
+			<dd class="field_control">
+				<span class="option">
+					<input name="gender" id="gender_male" value="male" type="radio"/>
+					<label for="gender_male">male</label>
+				</span>
+				<span class="option">
+					<input name="gender" id="gender_female" value="female" type="radio"/>
+					<label for="gender_female">female</label>
+				</span>
+			</dd>
+		</dl>
+
+		<dl class="field date hide_in_compact_view">
+			<dt class="field_label"><label>Birthday</label></dt>
+			<dd class="field_control">
+				<input name="birthday"/>
+			</dd>
+		</dl>
+
+		<span class="hide_in_compact_view">Contacts</span>
+		<div class="fields horizontal hide_nonfirst_in_compact_view" data-xp='{
+			"name": "contact",
+			"repeat": true
+		}'>
+			<dl class="field">
+				<dd class="field_control">
+					<input name="value" data-xp='{
+						"valid":
+							"([id=type].val().match(/phone/i) && [this].val().match(/^(?=[^()]*\\(([^()]*\\)[^()]*)?$|[^()]*$)(?=[\\s(]*\\+[^+]*$|[^+]*$)([-+.\\s()]*\\d){11,18}$/)) || ([id=type].val().match(/email/i) && [this].val().match(/^\\S+@\\S+\\.\\S{2,4}$/))"
+					}'/>
+				</dd>
+			</dl>
+
+			<dl class="field combobox hide_in_compact_view">
+				<dt class="field_label"><label>Type</label></dt>
+				<dd class="field_control">
+					<input name="type" list="type_list" id="type"/>
+					<select name="type_list" id="type_list">
+						<option>Home phone</option>
+						<option>Mobile phone</option>
+						<option>Personal email</option>
+						<option>Work phone</option>
+						<option>Work email</option>
+					</select>
+				</dd>
+			</dl>
+
+			<button class="repeat_append_button">+</button>
+			<button class="repeat_remove_button">&minus;</button>
+		</div>
+
+		<span class="option card_compact_view">
+			<input name="compact_view" id="compact_view" value="true" type="checkbox" data-xp='{
+				"enabled": "[id=first_name]",
+				"computed": "!!([id=all_compact_view]) + \"\""
+			}'/>
+			<label for="compact_view"><span class="hide_on_unselected">Open</span><span class="hide_on_selected">Close</span></label>
+		</span>
+
+		<button class="repeat_append_button">Append person</button>
+		<button class="repeat_remove_button">Remove person</button>
+	</div>
+</form>
+
+<script>
+	expromptum();
+	
+	expromptum('form').first().val({
+		"person": [
+			{
+				"last_name": "Ivanov",
+				"first_name": "Ivan",
+				"gender": "male",
+				"birthday": "1980-02-03",
+				"contact": [
+					{
+						"value": '+1 234 567-89-00',
+						"type": 'Mobile phone'
+					},{
+						"value": "ivanov@mail.ru",
+						"type": "Personal email"
+					}
+				]
+			},{
+				"last_name": "Petrova",
+				"first_name": "Petra",
+				"gender": "female",
+				"birthday": "1980-11-30",
+				"contact": [
+					{
+						"value": "+1 234 567-89-01",
+						"type": "Mobile phone"
+					},{
+						"value": "petrova@mail.ru",
+						"type": "Personal email"
+					}
+				]
+			}
+		]
+	});
+</script>
+
+	</body>
+</html>

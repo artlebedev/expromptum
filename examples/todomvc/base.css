@@ -1,0 +1,168 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #eaeaea;
+	color: #444;
+	font: 14px/1.4em 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	margin: 0 auto;
+	width: 550px;
+}
+
+h1 {
+	color: rgba(255, 255, 255, 0.3);
+	font-size: 70px;
+	font-weight: bold;
+	margin: 0;
+	padding: 70px 0 0;
+	text-align: center;
+	text-rendering: optimizelegibility;
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
+	text-transform: lowercase;
+}
+
+h1:after {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(132, 110, 100, 0.8)),to(rgba(101, 84, 76, 0.8)));
+	background: -webkit-linear-gradient(top, rgba(132, 110, 100, 0.8), rgba(101, 84, 76, 0.8));
+	background: -moz-linear-gradient(center top , rgba(132, 110, 100, 0.8), rgba(101, 84, 76, 0.8));
+	background: linear-gradient(top, rgba(132, 110, 100, 0.8), rgba(101, 84, 76, 0.8));
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#9d8b83', EndColorStr='#847670');
+	border-bottom: 1px solid #665;
+	border-top-left-radius: 1px;
+	border-top-right-radius: 1px;
+	content: '';
+	display: block;
+	height: 15px;
+	margin: 40px 0 0 0;
+	z-index: 2;
+}
+
+#todos {
+	background: #fff;
+	position: relative;
+}
+
+#todos:before {
+	border-left: 1px solid #fdd;
+	border-right: 1px solid #fdd;
+	content: "";
+	height: 100%;
+	left: 40px;
+	position: absolute;
+	top: 0;
+	width: 2px;
+}
+
+#todos > :first-child {
+	position: relative;
+	left: 0;
+}
+#todos > :first-child .option {
+	left: -10000px;
+}
+
+.todo {
+	padding: 0 0 0 44px;
+	position: relative;
+}
+
+.option, .option input {
+	position: absolute;
+	left: 0;
+	width: 40px;
+	height: 61px;
+	margin: 0;
+	padding: 0;
+	border: 0 none;
+}
+.option input {
+	opacity: 0;
+	z-index: 2;
+}
+.option:before {
+	color: #ccc;
+	content: "✔";
+	font-size: 20px;
+	line-height: 1;
+	text-shadow: 0 -1px 0 #bbb;
+	position: absolute;
+	z-index: 1;
+	left: 50%;
+	top: 50%;
+	margin: -0.5em 0 0 -0.25em;
+}
+.option.selected:before {
+	color: #8aa;
+	text-shadow: 0 1px 0 #699;
+}
+
+
+.text {
+	border: none;
+	border-bottom: 1px dotted #999;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	font-size: 24px;
+	line-height: 1.4em;
+	margin: 0;
+	outline: medium none;
+	padding: 16px;
+	width: 100%;
+	transition: color 0.2s ease 0s;
+}
+.text:focus {
+	border: 1px solid #999;
+	box-shadow: 0 -1px 5px 0 rgba(0, 0, 0, 0.2) inset;
+}
+.unrequired .text {
+	color: #ccc;
+	text-decoration: line-through;
+}
+
+.completed:checked + .text {
+	color: #999;
+	text-decoration: line-through;
+}
+
+
+.repeat_remove_button {
+	background: none;
+	border: none;
+	bottom: 0;
+	color: #A88A8A;
+	display: none;
+	font-size: 35px;
+	height: 40px;
+	margin: auto 0;
+	padding: 0;
+	position: absolute;
+	right: 10px;
+	top: 0;
+	transition: all 0.2s ease 0s;
+	width: 40px;
+}
+.todo:hover .repeat_remove_button {
+	display: block;
+}
+.repeat_remove_button:hover {
+	text-shadow: 0 0 1px #000, 0 0 10px rgba(199, 107, 107, 0.8);
+	transform: scale(1.3);
+}
+
+.repeat_insert_button,
+.repeated_0 .repeat_remove_button,
+.repeated_0 .completed,
+.hidden {
+	position: absolute;
+	left: -10000px;
+}
+
+#info {
+	color: #999;
+	font-size: 12px;
+	margin: 65px auto 0;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}

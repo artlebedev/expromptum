@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>expromptum.js • TodoMVC</title>
+		<link  href="base.css" rel="stylesheet"/>
+	</head>
+	<body>
+		<h1>Todos</h1>
+
+		<form id="todos_form" data-xp="locked: true">
+
+			<div class="fields" id="todos" data-xp="name: 'todos'">
+				<div id="fields[0]" class="fields todo" data-xp="
+					name: 'todo',
+					repeat: true,
+					classed: {
+						on:
+							'([name=filter][value=active] && [name=completed\\[0\\]]) || ([name=filter][value=completed] && ![name=completed\\[0\\]])',
+						do: 'hidden'
+					},
+					required: '[this] < 4'
+				">
+					<span class="option">
+						<input id="completed[0]" name="completed" class="completed" type="checkbox" value="true"/>
+					</span>
+					<input id="text[0]" name="text" class="text" placeholder="What needs to be done?"/>
+					<button class="repeat_insert_button">+</button>
+					<button class="repeat_remove_button">&times;</button>
+				</div>
+			</div>
+
+			<div class="fields hidden" data-xp="
+				classed: {
+					on: '[id=todos].children().length < 3',
+					do: 'hidden'
+				}
+			">
+
+				<span class="options">
+					<input name="filter" id="filter[0]" type="radio" value="all" checked="true"/>
+					<label for="filter[0]">
+						All
+						(<span data-xp="
+							type: 'html',
+							computed: '[id=todos].children().length - 2'
+						"></span>)
+					</label>
+
+					<input name="filter" id="filter[1]" type="radio" value="active"/>
+					<label for="filter[1]">
+						Active
+						(<span id="completed" data-xp="
+							type: 'html',
+							computed: '[id=todos_form]._param(\'required\').length - 1'
+						"></span>)
+					</label>
+
+					<input name="filter" id="filter[2]" type="radio" value="completed"/>
+					<label for="filter[2]">
+						Completed
+						(<span id="completed" data-xp="
+							type: 'html',
+							computed: '[id=todos].children().length - 1 - [id=todos_form]._param(\'required\').length'
+						"></span>)
+					</label>
+				</span>
+
+			</div>
+		</form>
+
+		<footer id="info">
+			<p>Written by vlalek</p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+
+		<script src="http://yandex.st/jquery/2.1.0/jquery.js"></script>
+
+		<script src="../../expromptum.js"></script>
+
+		<script>
+			(function(){
+				var f = expromptum().first();
+				$('input:not([type])').first().focus();
+
+				if(window.JSON && window.localStorage){
+					f.val(
+						localStorage.todos
+							? JSON.parse(localStorage.todos)
+							: {}
+					);
+
+					$(window).unload(function() {
+						localStorage.todos = JSON.stringify(f.val());
+					});
+				}
+			})();
+		</script>
+
+	</body>
+</html>
