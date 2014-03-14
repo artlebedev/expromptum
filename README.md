@@ -475,6 +475,57 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 - Проверяет готовность формы. Если готова, возвращает `null`. Иначе — строку в которой указана причина (`required`, `invalid_required`, `invalid`, `unchanged`).
 Получить [список](#Список-объектов) конфликтных контролов, можно через метод `._param('зависимость')`.
 
+###### Пример
+
+```html
+<script src="jquery.js"></script>
+<script src="expromptum.js"></script>
+
+<form method="post">
+	<div class="field">
+		<label for="field_name">Name</label>
+		<input name="name" id="field_name" data-xp="required: true"/>
+	</div>
+
+	<div class="field">
+		<label for="field_email">Email</label>
+		<input name="email" id="field_email" data-xp="type: 'email', required: true"/>
+	</div>
+
+	<div class="field">
+		<label for="field_message">Message</label>
+		<textarea name="message" id="field_message" data-xp="required: true"></textarea>
+	</div>
+
+	<div class="field">
+		<input type="submit" value="Send" data-xp="enabled_on_completed: true"/>
+	</div>
+
+	<div id="uncompleted"></div>
+</form>
+
+<script>
+	(function(){
+		expromptum();
+
+		var uncompleted = $('#uncompleted');
+
+		expromptum('form').first().change(function(){
+			var html = '';
+
+			this._param('required')
+				.append(this._param('invalid'))
+				.each(function(){
+					html += (html ? ', ': '') + this.$label.text();
+				});
+
+			uncompleted.html((html ? 'Fill fields: ' : '') + html);
+		});
+	})();
+</script>
+```
+
+
 * * *
 
 ### Группа полей, листы
