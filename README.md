@@ -1,4 +1,4 @@
-# Expromptum
+# Expromptum <img src="expromptum.png"/>
 
 - [Коротко](#Коротко)
 - [Инициализация](#Инициализация)
