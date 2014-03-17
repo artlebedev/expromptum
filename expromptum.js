@@ -1,6 +1,6 @@
 // Expromptum JavaScript Library
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
-// Updated 2014-03-12 Vladimir Tokmakov <vlalek>
+// Updated 2014-03-17 Vladimir Tokmakov <vlalek>
 
 
 (function(window){
@@ -1197,11 +1197,15 @@ window.expromptum = (function(undefined){
 					start = el.selectionStart,
 					end = el.selectionEnd;
 
-				el.value = value;
-				el.selectionStart = start;
-				el.selectionEnd = end;
+				if(el.value != value){
+					el.value = value;
 
-				this.change();
+					el.selectionStart = start;
+
+					el.selectionEnd = end;
+
+					this.change();
+				}
 
 				return this;
 			}
@@ -1664,8 +1668,12 @@ window.expromptum = (function(undefined){
 				.keydown(function(ev){
 					if(ev.which === 38){ // up.
 						that.inc();
+
+						return false;
 					}else if(ev.which === 40){ // down.
 						that.dec();
+
+						return false;
 					}
 				});
 
@@ -1709,7 +1717,7 @@ window.expromptum = (function(undefined){
 				return false;
 			}
 
-			this.val(value);
+			return this.val(value);
 		},
 
 		dec: function(){
@@ -1725,10 +1733,11 @@ window.expromptum = (function(undefined){
 				return false;
 			}
 
-			this.val(value);
+			return this.val(value);
 		},
 
 		val: function(value){
+			// TODO: Надо посмотреть нет ли тут лишних преобразований.
 			if(!arguments.length){
 				return this.disabled
 					? undefined
@@ -1736,7 +1745,6 @@ window.expromptum = (function(undefined){
 			}else{
 				this.$secret.val(this._unformat(value));
 
-				// TODO: Проверить нужно это еще или нет.
 				return xp.controls.number.base.val.apply(
 					this,
 					[this._format(value)]
