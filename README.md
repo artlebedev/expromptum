@@ -421,6 +421,25 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 Используется для вывода в HTML значений других контролов через зависимость [`computed`](#Вычисляемое-значение).
 
+###### Пример
+
+```html
+<input name="number_1" data-xp="type: 'number'"/>
+
+<select name="operator">
+	<option>+</option>
+	<option>-</option>
+	<option>*</option>
+	<option>/</option>
+</select>
+
+<input name="number_2" data-xp="type: 'number'"/>
+
+=
+
+<span data-xp="type: 'html', computed: 'eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1)'"></span>
+```
+
 * * *
 
 ### Абстрактный родитель
@@ -478,9 +497,6 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ###### Пример
 
 ```html
-<script src="jquery.js"></script>
-<script src="expromptum.js"></script>
-
 <form method="post">
 	<div class="field">
 		<label for="field_name">Name</label>
@@ -942,7 +958,20 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ###### Пример 1
 
 ```html
-<input name="a"/> * <input name="b"/> = <span data-xp="computed: '[name=a] * [name=b]'"></span>
+<input name="number_1" data-xp="type: 'number'"/>
+
+<select name="operator">
+	<option>+</option>
+	<option>-</option>
+	<option>*</option>
+	<option>/</option>
+</select>
+
+<input name="number_2" data-xp="type: 'number'"/>
+
+=
+
+<span data-xp="type: 'html', computed: 'eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1)'"></span>
 ```
 
 ###### Пример 2
