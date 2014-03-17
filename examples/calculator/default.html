@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>expromptum &mdash; calculator</title>
+
+		<script src="http://yandex.st/jquery/2.1.0/jquery.js"></script>
+
+		<script src="../../expromptum.js"></script>
+	</head>
+
+	<body>
+		<input name="number_1" data-xp="type: 'number'"/>
+
+		<select name="operator">
+			<option>+</option>
+			<option>-</option>
+			<option>*</option>
+			<option>/</option>
+		</select>
+
+		<input name="number_2" data-xp="type: 'number'"/>
+
+		=
+
+		<span data-xp="type: 'html', computed: '[name=number_1]._format(eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1))'"></span>
+
+		<script>
+			expromptum();
+		</script>
+	</body>
+</html>
