@@ -971,7 +971,7 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 =
 
-<span data-xp="type: 'html', computed: 'eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1)'"></span>
+<input name="number_3" data-xp="type: 'number', computed: 'eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1)'" readonly="true"/>
 ```
 
 ###### Пример 2
