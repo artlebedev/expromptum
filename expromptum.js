@@ -1,6 +1,6 @@
 // Expromptum JavaScript Library
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
-// Updated 2014-03-17 Vladimir Tokmakov <vlalek>
+// Updated 2014-03-18 Vladimir Tokmakov <vlalek>
 
 
 (function(window){
@@ -1200,9 +1200,11 @@ window.expromptum = (function(undefined){
 				if(el.value != value){
 					el.value = value;
 
-					el.selectionStart = start;
+					if(this.$element.is(':focus')){
+						el.selectionStart = start;
 
-					el.selectionEnd = end;
+						el.selectionEnd = end;
+					}
 
 					this.change();
 				}
