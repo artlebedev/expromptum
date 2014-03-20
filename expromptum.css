@@ -1,28 +1,109 @@
 /* Common */
 	form {
-		max-width: 60em;
+		max-width: 40em;
 	}
+
 	input[type=radio], input[type=checkbox] {
-		vertical-align: text-top;
+		vertical-align: middle;
 	}
+
+	textarea,
+	input,
+	select,
+	button,
+	.button,
+	.control_button,
+	html.with_reformator .reformator_wysiwyg,
+	html.with_reformator .reformator_current .reformator_wysiwyg {
+		border: 2px solid #ccc ! important;
+		padding: 3px;
+		margin: 0 4px 0 0;
+	}
+
+	textarea:focus,
+	input:focus,
+	select:focus,
+	button:focus,
+	.button:focus,
+	.control_button:focus,
+	html.with_reformator .reformator_current .reformator_wysiwyg,
+	html.with_reformator .reformator_current .reformator_source {
+		border-color: #f96 ! important;
+		box-shadow: none;
+		outline: 0;
+	}
+
+	input[type=file] {
+		border: none ! important;
+	}
+
+	input[type=submit],
+	input[type=button],
+	button,
+	.button,
+	.control_button {
+		background: #ccc;
+		font-weight: bold;
+		cursor: pointer;
+		line-height: 1;
+	}
+
+	input[type=submit]:hover,
+	input[type=button]:hover,
+	button:hover,
+	.button:hover,
+	.control_button:hover {
+		background: #fc9;
+		border-color: #fc9 ! important;
+	}
+
 	textarea, input[type=text] {
 		width: 100%;
 	}
 
-	.selected {
-		background: yellow;
+	[readonly],
+	[readonly]:focus {
+		background: inherit;
 	}
-	.initial_selected {
+
+	.initial_selected { /* dev rules */
 		border: 1px dashed pink;
 	}
 
-	[readonly] {
-		border: none;
+/* Layout */
+	.fields.unselected,
+	.sheet.unselected {
+		display: none;
+	}
+	.fields_em {
+		padding: 0;
+		margin: 0 0 2em;
+	}
+	.fields_label {
+		margin: 0 0 1em;
+		padding: 5px 10px;
+		background: #eee;
+	}
+
+	.field {
+		padding: 5px 10px;
+		margin: 1em 0;
+	}
+	.field_label {
+		margin: 0 0 5px;
+	}
+	.field_control {
+		margin: 0;
+		padding: 0;
+	}
+
+	.option label {
+		margin-right: 1em;
 	}
 
 /* Dependencies */
 	.changed > .fields_label, .fields_label.changed,
-	.field.changed .field_label label, .option.changed label, label.changed {
+	.field.changed .field_label label, .option.changed label, label.changed { /* dev rules */
 		text-decoration: underline;
 	}
 	.invalid > .fields_label, .fields_label.invalid,
@@ -47,16 +128,12 @@
 /* Control button */
 	.control_button {
 		display: inline-block;
-		margin: 0 2px;
-		border: 1px solid #999;
-		border-radius: 3px;
 		padding: 1px 3px;
 		cursor: pointer;
-		font-size: 85%;
 		line-height: 1;
 		min-width: 8px;
 		min-height: 12px;
-		vertical-align: baseline;
+		vertical-align: text-middle;
 	}
 
 	.control_button_dropdown:before {
@@ -69,56 +146,20 @@
 		content: '\2212';
 	}
 
-/* Layout */
-	fieldset,
-	.fields,
-	.sheet {
-		border: 1px dashed #ccc;
-	}
-	fieldset,
-	.sheet {
-		padding: 5px 10px;
-	}
-	.fields.unselected,
-	.sheet.unselected {
-		display: none;
-	}
-	.fields_em {
-		padding: 0;
-		margin: 0 0 2em;
-	}
-	.fields_label_em {
-		margin: 0 0 1em;
-		padding: 0.2em 0.5em;
-		background: #eee;
-		border-radius: 5px 5px 0 0;
-	}
-
-	.field {
-		border: 1px dotted #ccc;
-		padding: 5px 10px;
-		margin: 1em 0.5em 2em;
-	}
-	.field_label, .field_control {
+/* Tabs sheets*/
+	.tab {
 		display: inline-block;
-		vertical-align: top;
-		padding: 0;
-		margin: 0;
+		padding: 2px 10px;
+		margin: 0 0 10px;
 	}
-	.field_label {
-		width: 6em;
-		padding-right: 1em;
-	}
-	.field_control {
-		width: 20em;
+	.selected.tab {
+		background: #eec;
 	}
 
-/* Repeated */
-	.repeated {
-		border: 1px dashed #ccc;
-	}
-	.repeated_template {
-		border: 1px dashed #c00;
+	.sheet {
+		margin: 0 0 30px;
+		padding: 1px 8px;
+		border: 2px solid #ddb;
 	}
 
 /* Password */
@@ -130,13 +171,9 @@
 	}
 
 /* Datetime */
-	.datetime input {
-		margin-right: 1em;
-	}
 	.datetime .hours, .datetime .minutes {
 		width: 1.5em;
-		margin-left: 0.2em;
-		margin-right: 0.2em;
+		margin: 0 2px;
 	}
 	.datetime .hours {
 		text-align: right;
@@ -148,4 +185,12 @@
 /* Number */
 	.number .field_control input {
 		width: 10em;
+	}
+
+/* Repeated -- dev rules */
+	.repeated {
+		border: 1px dashed #ccc;
+	}
+	.repeated_template {
+		border: 1px dashed #c00;
 	}
