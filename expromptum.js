@@ -520,21 +520,21 @@ window.expromptum = (function(undefined){
 				this.$element.focus();
 			}
 
-			/*if(!this.valid){
-				v = this.$element.attr('pattern');
-
-				if(v){
-					this.valid = new RegExp(v);
-				}else{
-					v = xp.dependencies.valid_match[
-						this.$element.attr('type')
-					];
-
-					if(v){
-						this.valid = v;
-					}
-				}
-			}*/
+//			if(!this.valid){
+//				v = this.$element.attr('pattern');
+//
+//				if(v){
+//					this.valid = new RegExp(v);
+//				}else{
+//					v = xp.dependencies.valid_match[
+//						this.$element.attr('type')
+//					];
+//
+//					if(v){
+//						this.valid = v;
+//					}
+//				}
+//			}
 
 			var that = this;
 
@@ -742,6 +742,8 @@ window.expromptum = (function(undefined){
 		},
 
 		disable: function(disabled){
+			disabled = !arguments.length || disabled;
+
 			if(this.disabled !== disabled){
 				xp.controls._parent.base.disable.apply(this, arguments);
 
@@ -1395,7 +1397,7 @@ window.expromptum = (function(undefined){
 		},
 
 		_init_val: function(){
-			/*this.select(this.$element.is(':checked'));*/
+//			this.select(this.$element.is(':checked'));
 
 			if(this.selected){
 				this.$container.addClass(this.container_initial_selected_class);
@@ -1460,6 +1462,8 @@ window.expromptum = (function(undefined){
 		element_selector: 'input[type=radio]',
 
 		disable: function(disabled){
+			disabled = !arguments.length || disabled;
+
 			if(this.disabled !== disabled){
 				xp.controls.radio.base.disable.apply(this, arguments);
 
@@ -1553,6 +1557,8 @@ window.expromptum = (function(undefined){
 		},
 
 		disable: function(disabled){
+			disabled = !arguments.length || disabled;
+
 			if(this.disabled !== disabled){
 				if(disabled){
 					this.$secret.attr('disabled', true);
@@ -1642,8 +1648,8 @@ window.expromptum = (function(undefined){
 			this.$element.wrap(this.element_wrap_html);
 
 			$(this.control_button_dec_html)
-			. insertBefore(this.$element)
-			. mousedown(function(){
+			.insertBefore(this.$element)
+			.mousedown(function(){
 				if(that.disabled){
 					return false;
 				}
@@ -1922,6 +1928,8 @@ window.expromptum = (function(undefined){
 		},
 
 		disable: function(disabled){
+			disabled = !arguments.length || disabled;
+
 			if(this.disabled !== disabled){
 				xp.controls.datetime.base.disable.apply(this, arguments);
 
