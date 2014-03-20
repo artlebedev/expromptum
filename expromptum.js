@@ -1703,7 +1703,7 @@ window.expromptum = (function(undefined){
 			return xp.controls.number.base.destroy.apply(this, arguments);
 		},
 
-		element_wrap_html: '<span class="number_control"/>',
+		element_wrap_html: '<ins class="number_control"/>',
 
 		control_button_dec_html:
 			'<span class="control_button control_button_dec"/>',
@@ -1744,6 +1744,19 @@ window.expromptum = (function(undefined){
 			return this.val(value);
 		},
 
+		param: function(name, value){
+			if(
+				(name == 'min' && this.val() < value)
+				|| (name == 'max' && this.val() > value)
+			){
+				this.val(value);
+			}
+
+			return expromptum.controls.number.base.param.apply(
+					this, arguments
+				);
+		},
+
 		val: function(value){
 			// TODO: Надо посмотреть нет ли тут лишних преобразований.
 			if(!arguments.length){
@@ -1777,7 +1790,7 @@ window.expromptum = (function(undefined){
 
 			return value
 				.replace(num.unformat.grouping, '')
-				.replace(num.unformat.decimal, '.');
+				.replace(num.unformat.decimal, '.') * 1;
 		}
 	}});
 
