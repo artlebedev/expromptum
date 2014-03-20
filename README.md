@@ -347,6 +347,148 @@ expromptum.controls.register({name: 'zip', base: '_field', prototype: {
 ###### Пример 2
 
 ```js
+expromptum.controls.register({name: 'slider_number', base: 'number', prototype: {
+	element_selector: '.slider input',
+
+	init: function(params){
+		expromptum.controls.slider_number.base.init.apply(this, arguments);
+
+		var that = this;
+
+		var slider = this._param(
+			'slider',
+			$('<div class="slider_control"/>')
+				.appendTo(this.$element.parent())
+				.slider({
+					min: params.min,
+					max: params.max,
+					value: this.val(),
+					slide: function(event, ui){
+						that.val(ui.value);
+					}
+				})
+			);
+
+		this.change(function(){
+			slider.slider('value', this.val());
+		});
+	},
+
+	destroy: function(handler, remove){
+		if(!arguments.length){
+			this._param('slider').destroy();
+		}
+
+		return expromptum.controls.slider_number.base.destroy.apply(
+				this, arguments
+			);
+	},
+
+	param: function(name, value){
+		switch(name){
+			case 'min':
+			case 'min':
+			case 'step':
+				this._param('slider').slider('option', name, value);
+
+				break;
+		};
+
+		return expromptum.controls.slider_number.base.param.apply(
+				this, arguments
+			);
+	},
+
+	disable: function(disabled){
+		disabled = !arguments.length || disabled;
+
+		if(this.disabled !== disabled){
+			this._param('slider').slider(
+				disabled ? 'disable' : 'enable'
+			);
+		}
+
+		return expromptum.controls.slider_number.base.disable.apply(
+				this, arguments
+			);
+	}
+}});
+```
+
+###### Пример 3
+
+```js
+expromptum.controls.register({name: 'slider_select', base: 'select', prototype: {
+	element_selector: '.slider select',
+
+	init: function(params){
+		expromptum.controls.slider_select.base.init.apply(this, arguments);
+
+		var that = this;
+
+		var slider = this._param(
+			'slider',
+			$('<div class="slider_control"/>')
+				.insertAfter(this.$element)
+				.slider({
+					min: 0,
+					max: this.$element[0].options.length - 1,
+					value: this.$element[0].selectedIndex,
+					slide: function(event, ui){
+						that.$element[0].selectedIndex = ui.value;
+					}
+				})
+			);
+
+		this.change(function(){
+			slider.slider('value', this.$element[0].selectedIndex);
+		});
+	},
+
+	destroy: function(handler, remove){
+		if(!arguments.length){
+			this._param('slider').destroy();
+		}
+
+		return expromptum.controls.slider_select.base.destroy.apply(
+				this, arguments
+			);
+	},
+
+	param: function(name, value){
+		switch(name){
+			case 'min':
+			case 'min':
+			case 'step':
+				this._param('slider').slider('option', name, value);
+
+				break;
+		};
+
+		return expromptum.controls.slider_select.base.param.apply(
+				this, arguments
+			);
+	},
+
+	disable: function(disabled){
+		disabled = !arguments.length || disabled;
+
+		if(this.disabled !== disabled){
+			this._param('slider').slider(
+				disabled ? 'disable' : 'enable'
+			);
+		}
+
+		return expromptum.controls.slider_select.base.disable.apply(
+				this, arguments
+			);
+	}
+}});
+```
+
+###### Пример 4
+
+```js
 expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 	element_selector: '.wysiwyg textarea',
 
@@ -360,7 +502,7 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 			this._param('reformator').destroy();
 		}
 
-		return expromptum.controls._secret.base.destroy.apply(this, arguments);
+		return expromptum.controls.wysiwyg.base.destroy.apply(this, arguments);
 	}
 }});
 ```
