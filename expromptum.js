@@ -1,6 +1,8 @@
 // Expromptum JavaScript Library
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
-// Updated 2014-03-18 Vladimir Tokmakov <vlalek>
+// License: BSD | http://opensource.org/licenses/BSD-3-Clause
+// Author: Vladimir Tokmakov | vlalek
+// Updated: 2014-03-24
 
 
 (function(window){
