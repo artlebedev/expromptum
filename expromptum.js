@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-03-25
+// Updated: 2014-03-26
 
 
 (function(window){
@@ -244,6 +244,7 @@ window.expromptum = (function(undefined){
 						decimal: /\./,
 						grouping: /(\d)(?=(\d{3})+([^\d]|$))/g
 					},
+
 					unformat: {
 						decimal: new RegExp('[\\.\\' + t.decimal + ']'),
 						grouping: new RegExp('\\' + t.grouping, 'g')
@@ -1157,7 +1158,7 @@ window.expromptum = (function(undefined){
 			xp.controls._field.base.change.apply(this);
 		},
 
-		change_events: 'keyup change',
+		change_events: 'keyup input change',
 		container_blured_class: 'blured',
 
 		destroy: function(handler, remove){
@@ -1533,11 +1534,10 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: '_secret', base: 'string', prototype: {
+	xp.controls.register({name: '_secret', base: '_field', prototype: {
 		init: function(params){
 			xp.controls._secret.base.init.apply(this, arguments);
 
-			// Это тот элемент, который будет отправлен формой.
 			this.$secret = $(
 				$('<div>')
 					.append(this.$element.clone().hide())
@@ -1548,6 +1548,14 @@ window.expromptum = (function(undefined){
 			this.$element.removeAttr('name');
 
 			xp.controls.link(this.$secret, this);
+		},
+
+		change: function(handler, remove){
+			if(!arguments.length){
+				this.$secret.val(this.val());
+			}
+
+			return xp.controls._secret.base.change.apply(this, arguments);
 		},
 
 		destroy: function(handler, remove){
@@ -1583,11 +1591,7 @@ window.expromptum = (function(undefined){
 
 			var that = this;
 
-			this.$element.bind('keyup change', function(){
-				that.$secret.val(that.$element.val());
-			});
-
-			this.$secret.bind('keyup', function(){
+			this.$secret.bind(this.change_events, function(){
 				that.$element.val(that.$secret.val());
 			});
 
@@ -1637,7 +1641,7 @@ window.expromptum = (function(undefined){
 
 		init: function(params){
 			this.allow_chars_pattern = new RegExp(
-				'^[-0-9\\s'
+				'^[-0-9'
 				+ this.locale.number.decimal
 				+ this.locale.number.grouping
 				+ ']$'
@@ -1645,30 +1649,26 @@ window.expromptum = (function(undefined){
 
 			xp.controls.number.base.init.apply(this, arguments);
 
-			var that = this;
-
 			this.$element.wrap(this.element_wrap_html);
 
+			var that = this;
+
 			$(this.control_button_dec_html)
-			.insertBefore(this.$element)
-			.mousedown(function(){
-				if(that.disabled){
+				.insertBefore(this.$element)
+				.mousedown(function(){
+					if(!that.disabled){
+						that.dec();
+					}
+
 					return false;
-				}
-
-				that.dec();
-
-				return false;
-			});
+				});
 
 			$(this.control_button_inc_html)
 				.insertAfter(this.$element)
 				.mousedown(function(){
-					if(that.disabled){
-						return false;
+					if(!that.disabled){
+						that.inc();
 					}
-
-					that.inc();
 
 					return false;
 				});
@@ -1687,22 +1687,9 @@ window.expromptum = (function(undefined){
 					}
 				});
 
-			this.change(function(){
-				this.$secret.val(that.val());
-			});
-
 			this.$element.blur(function(){
 				that.val(that.val());
 			});
-		},
-
-		destroy: function(handler, remove){
-			if(!arguments.length){
-				// TODO: Подумать об этом.
-				//this.locale.destroy();
-			}
-
-			return xp.controls.number.base.destroy.apply(this, arguments);
 		},
 
 		element_wrap_html: '<ins class="number_control"/>',
@@ -1712,13 +1699,12 @@ window.expromptum = (function(undefined){
 
 		control_button_inc_html:
 			'<span class="control_button control_button_inc"/>',
-		//TODO: Добавить кнопку reset.
 
 		inc: function(){
 			var value = this.val();
 
 			if(!value && value !== 0){
-				value = this.def;
+				this.val(value = this.def);
 			}
 
 			value = value - 0 + this.step * 1;
@@ -1734,7 +1720,7 @@ window.expromptum = (function(undefined){
 			var value = this.val();
 
 			if(!value && value !== 0){
-				value = this.def;
+				this.val(value = this.def);
 			}
 
 			value = value - this.step * 1;
@@ -1760,7 +1746,6 @@ window.expromptum = (function(undefined){
 		},
 
 		val: function(value){
-			// TODO: Надо посмотреть нет ли тут лишних преобразований.
 			if(!arguments.length){
 				return this.disabled
 					? undefined
@@ -1778,9 +1763,7 @@ window.expromptum = (function(undefined){
 		_format: function(value){
 			var num = this.locale.number;
 
-			value += '';
-
-			return value
+			return (value + '')
 				.replace(num.format.decimal, num.decimal)
 				.replace(num.format.grouping, '$1' + num.grouping);
 		},
@@ -1788,9 +1771,7 @@ window.expromptum = (function(undefined){
 		_unformat: function(value){
 			var num = this.locale.number;
 
-			value += '';
-
-			return value
+			return (value + '')
 				.replace(num.unformat.grouping, '')
 				.replace(num.unformat.decimal, '.') * 1;
 		}
