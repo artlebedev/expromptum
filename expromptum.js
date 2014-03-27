@@ -1200,9 +1200,12 @@ window.expromptum = (function(undefined){
 			if(!arguments.length){
 				return this.disabled ? undefined : this.$element.val();
 			}else{
-				var el = this.$element[0],
-					start = el.selectionStart,
-					end = el.selectionEnd;
+				var el = this.$element[0];
+				
+				if(this.$element.is(':focus')){
+					var start = el.selectionStart,
+						end = el.selectionEnd;
+				}
 
 				if(el.value != value){
 					el.value = value;
