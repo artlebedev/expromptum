@@ -178,7 +178,9 @@
 	.datetime .hours {
 		text-align: right;
 	}
-	.datetime .control_button {
+	.date .control_button_dec, .date .control_button_inc,
+	.datemonth .control_button_dec, .datemonth .control_button_inc,
+	.datetime .control_button_dec, .datetime .control_button_inc {
 		display: none;
 	}
 

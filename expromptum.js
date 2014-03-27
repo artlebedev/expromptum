@@ -949,6 +949,8 @@ window.expromptum = (function(undefined){
 
 					return false;
 				}
+
+				return true;
 			});
 		},
 
