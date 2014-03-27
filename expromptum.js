@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-03-26
+// Updated: 2014-03-27
 
 
 (function(window){
@@ -51,9 +51,7 @@ window.expromptum = (function(undefined){
 			return xp.controls.create(params, parent);
 			// Create by params.
 		}else{
-			if(xp.debug()){
-				console.log('Error', 'Unknown params', params);
-			}
+			xp.debug('', 'error', 'unknown params', params);
 
 			return new xp.list();
 		}
@@ -204,8 +202,14 @@ window.expromptum = (function(undefined){
 		return result;
 	};
 
-	xp.debug = function(type){
-		return location.href.indexOf('xp=' + (type ? type : '')) > 0;
+	xp.debug = function(){
+		if(location.href.indexOf('xp=' + arguments[0]) > 0){
+			console.log.apply(this, Array.prototype.slice.call(arguments, 1));
+
+			return true;
+		}else{
+			return false;
+		}
 	};
 
 	xp.after = function(handler, i){
@@ -494,9 +498,7 @@ window.expromptum = (function(undefined){
 				this.create();
 			}
 
-			if(xp.debug('controls')){
-				console.log('init', this.$element, this);
-			}
+			xp.debug('controls', 'control', this.type, this.$element, this);
 
 			if(!this.$container && this.container_selector){
 				this.$container
@@ -929,28 +931,18 @@ window.expromptum = (function(undefined){
 				var uncompleted = this.uncompleted();
 
 				if(uncompleted){
-					if(xp.debug('submit')){
-						console.log(uncompleted);
-					}
+					xp.debug('submit', uncompleted);
 
 					return false;
 				}else if(this.locked){
-					if(xp.debug('submit')){
-						console.log('locked');
-					}
+					xp.debug('submit', 'locked');
 
 					return false;
 				}else{
 					this.locked = true;
 				}
 
-				if(xp.debug('submit')){
-					console.log('submit');
-
-					return false;
-				}
-
-				return true;
+				return !xp.debug('submit', 'submit');
 			});
 		},
 
@@ -2172,6 +2164,17 @@ window.expromptum = (function(undefined){
 
 						id = that.from.index(control[0]);
 
+						if(id < 0){
+							// TODO: Может стоит отменить зависимость?
+							xp.debug(
+								'', 'error',
+								arguments[1] + ' in dependence not found',
+								that
+							);
+
+							return arguments[1];
+						}
+
 						return 'arguments["' + id + '"].'
 							+ (arguments[2] == '.'
 								? ''
@@ -2218,9 +2221,10 @@ window.expromptum = (function(undefined){
 
 			this.init_process();
 
-			if(xp.debug('dependencies')){
-				console.log('init', this.to.first().$element, this);
-			}
+			xp.debug(
+				'dependencies', 'dependence',
+				this.type, this.to.first().$element, this
+			);
 		},
 
 		init_process: function(){
@@ -2260,9 +2264,7 @@ window.expromptum = (function(undefined){
 
 	xp.dependencies.register({name: 'classed', base: '_item', prototype: {
 		process: function(){
-			if(xp.debug('dependencies') || xp.debug('classed')){
-				console.log('classed', this.to.first().$element, this.to);
-			}
+			xp.debug('classed', 'classed', this.to.first().$element, this.to);
 
 			xp.dependencies.classed.base.process.apply(this);
 
@@ -2283,9 +2285,7 @@ window.expromptum = (function(undefined){
 
 	xp.dependencies.register({name: 'computed', base: '_item', prototype: {
 		process: function(){
-			if(xp.debug('dependencies') || xp.debug('computed')){
-				console.log('computed', this.to.first().$element, this.to);
-			}
+			xp.debug('computed', 'computed', this.to.first().$element, this.to);
 
 			xp.dependencies.classed.base.process.apply(this);
 
@@ -2350,11 +2350,10 @@ window.expromptum = (function(undefined){
 				}
 			});
 
-			if(xp.debug('dependencies') || xp.debug('enabled')){
-				console.log(
-					'enabled', this.to.first().$element, this.to, this.result
-				);
-			}
+			xp.debug(
+				'enabled', 'enabled',
+				this.to.first().$element, this.to, this.result
+			);
 		}
 	}});
 
@@ -2369,13 +2368,10 @@ window.expromptum = (function(undefined){
 		},
 
 		process: function(){
-			if(xp.debug('dependencies') || xp.debug('enabled_on_completed')){
-				console.log(
-					'enabled_on_completed',
-					this.to.first().$element,
-					this.to
-				);
-			}
+			xp.debug(
+				'enabled_on_completed', 'enabled_on_completed',
+				this.to.first().$element, this.to
+			);
 
 			this.result = this.to.first().root().uncompleted();
 
@@ -2446,9 +2442,7 @@ window.expromptum = (function(undefined){
 		},
 
 		process: function(){
-			if(xp.debug('dependencies') || xp.debug('required')){
-				console.log('required', this.to.first().$element, this.to);
-			}
+			xp.debug('required', 'required', this.to.first().$element, this.to);
 
 			xp.dependencies.required.base.process.apply(this);
 
@@ -2482,11 +2476,9 @@ window.expromptum = (function(undefined){
 		},
 
 		process: function(){
-			if(xp.debug('dependencies') || xp.debug('valid')){
-				console.log(
-					'valid', this.result, this.to.first().$element, this.to
-				);
-			}
+			xp.debug(
+				'valid', 'valid', this.result, this.to.first().$element, this.to
+			);
 
 			var that = this;
 			
@@ -2533,9 +2525,7 @@ window.expromptum = (function(undefined){
 		},
 
 		process: function(){
-			if(xp.debug('dependencies') || xp.debug('changed')){
-				console.log('changed', this.to.first().$element, this.to);
-			}
+			xp.debug('changed', 'changed', this.to.first().$element, this.to);
 
 			var that = this;
 
@@ -2805,9 +2795,10 @@ window.expromptum = (function(undefined){
 		container_template_class: 'repeated_template',
 
 		init: function(control){
-			if(xp.debug('repeats')){
-				console.log('init', control.$element, control.repeat.id, this);
-			}
+			xp.debug(
+				'repeats', 'repeat',
+				control.$element, control.repeat.id, this
+			);
 
 			xp.repeats.item.base.init.apply(this);
 
