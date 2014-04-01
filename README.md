@@ -240,6 +240,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 		id: 'идентификатор',
 		min: 1,
 		max: 10,
+		reset: true,
 		template: true
 	}
 ">
@@ -783,7 +784,7 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ### Кнопка
 
 - Тип `button`
-- Базовый тип [`_item`](#Абстрактный-контрол)
+- Базовый тип [`_parent`](#Абстрактный-родитель)
 - Селектор элемента `input[type=button], button, .button`
 
 * * *
@@ -889,7 +890,7 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ### Абстрактное поле со скрытым полем
 
 - Тип `_secret`
-- Базовый тип [`string`](#Строковое-поле)
+- Базовый тип [`_field`](#Абстрактное-поле
 
 Используется в качестве базового класса для всех контролов, внешний вид которых требует создания альтернативных элементов для ввода данных.
 
@@ -978,15 +979,15 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ###### Пример
 
 ```html
-<input id="date_from" name="date_from" value="2010-02-20"/>
+<span class="date field">
+	<input id="date_from" name="date_from" value="2010-02-20"/>
+</span>
 
-<input id="date_to" name="date_to" data-xp="
-	valid: '[name=date_from] < [name=date_to]',
-	computed: {
-		on: 'new Date([name=date_from].date() * 1 + 86400 * 1000)',
-		do: 'min'
-	}
-"/>
+<span class="date field">
+	<input id="date_to" name="date_to" data-xp="
+		valid: '[name=date_from] < [name=date_to]'
+	"/>
+</span>
 ```
 
 * * *
@@ -1116,20 +1117,6 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 <input name="number_3" data-xp="type: 'number', computed: 'eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1)'" readonly="true"/>
 ```
 
-###### Пример 2
-
-```html
-<input id="date_from" name="date_from" value="2013-12-28"/>
-
-<input id="date_to" name="date_to" data-xp="
-	valid: '[name=date_from] < [name=date_to]',
-	computed: {
-		on: 'new Date([name=date_from].date() * 1 + 86400 * 1000)',
-		do: 'min'
-	}
-"/>
-```
-
 * * *
 
 ### Доступность
@@ -1244,6 +1231,9 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 Данная зависимость назначается всем контролам при инициализации.
 
 #### Свойства
+
+`.reset = false`
+- Логическое значение true или false, по которому определяется сбрасывать значения новых контролов или нет.
 
 `.container_changed_class = 'changed'`
 - Имя CSS-класса, назначаемое элементу контейнеру контрола, в случае, если его значение было изменено.
