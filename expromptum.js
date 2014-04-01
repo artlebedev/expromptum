@@ -1708,6 +1708,8 @@ window.expromptum = (function(undefined){
 
 			if(value > this.max * 1){
 				return false;
+			}else if(value < this.min * 1){
+				value = this.min;
 			}
 
 			return this.val(value);
@@ -1724,6 +1726,8 @@ window.expromptum = (function(undefined){
 
 			if(value < this.min * 1){
 				return false;
+			}else if(value > this.max * 1){
+				value = this.max;
 			}
 
 			return this.val(value);
@@ -2306,9 +2310,9 @@ window.expromptum = (function(undefined){
 		init_process: function(){
 			this.suprocess();
 
-			this.to.each(function(){
+			//this.to.each(function(){
 				//this._init_val();
-			});
+			//});
 
 		},
 
@@ -3057,9 +3061,25 @@ window.expromptum = (function(undefined){
 					)
 				);
 
-			$container.find('[data-xp]').each(function(){
-				$(this).removeAttr('data-xp');
-			});
+			$container.find('[data-xp]').removeAttr('data-xp');
+
+			$container.find('[disabled]')
+				.add($container.filter('[disabled]'))
+				.removeAttr('disabled'); // For FF 28
+
+			if(this.reset){
+				$container.find('input, textarea')
+					.add($container.filter('input, textarea'))
+					.not(
+						'[type=button], [type=img], [type=hidden],'
+						+ '[type=checkbox], [type=radio]'
+					)
+					.val('');
+
+				$container.find('input[type=checkbox]')
+					.add($container.filter('input[type=checkbox]'))
+					.removeAttr('checked');
+			}
 
 			if(before){
 				$container.insertBefore(control.$container);
