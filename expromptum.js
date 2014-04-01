@@ -3061,6 +3061,7 @@ window.expromptum = (function(undefined){
 					)
 				);
 
+			$container.find('[data-expromptum]').removeAttr('data-expromptum');
 			$container.find('[data-xp]').removeAttr('data-xp');
 
 			$container.find('[disabled]')
