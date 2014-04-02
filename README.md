@@ -342,6 +342,8 @@ Expromptum — библиотека JavaScript, предназначенная �
 
 ###### Пример 1
 
+Поле с проверкой на соответствие выражению.
+
 ```js
 expromptum.controls.register({name: 'zip', base: '_field', prototype: {
 	element_selector: '.zip input, input.zip',
@@ -351,6 +353,8 @@ expromptum.controls.register({name: 'zip', base: '_field', prototype: {
 ```
 
 ###### Пример 2
+
+Слайдер для числового значения.
 
 ```js
 expromptum.controls.register({name: 'slider_number', base: 'number', prototype: {
@@ -423,6 +427,8 @@ expromptum.controls.register({name: 'slider_number', base: 'number', prototype: 
 
 ###### Пример 3
 
+Слайдер для набора значений.
+
 ```js
 expromptum.controls.register({name: 'slider_select', base: 'select', prototype: {
 	element_selector: '.slider select',
@@ -494,6 +500,8 @@ expromptum.controls.register({name: 'slider_select', base: 'select', prototype: 
 
 ###### Пример 4
 
+Поле с редактированием через [Реформатор](http://www.artlebedev.ru/tools/reformator/).
+
 ```js
 expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 	element_selector: '.wysiwyg textarea',
@@ -514,6 +522,8 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ```
 
 ###### Пример 5
+
+Поля для ввода даты с использованием виджета [Datepicker](http://jqueryui.com/datepicker/).
 
 ```js
 expromptum.controls.register({name: 'datepicker', base: '_secret', prototype: {
@@ -602,12 +612,9 @@ expromptum.controls.register({name: 'datepicker', base: '_secret', prototype: {
 		}
 	}
 }});
-```
 
-###### Пример 6
 
-```js
-expromptum.controls.register({name: 'datetimepicker', base: 'date', prototype: {
+expromptum.controls.register({name: 'datetimepicker', base: 'datepicker', prototype: {
 	element_selector: 'input.datetimepicker, .datetimepicker input',
 
 	init: function(params){
