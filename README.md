@@ -1163,7 +1163,7 @@ expromptum.controls.register({name: 'datetimepicker', base: 'date', prototype: {
 
 <span class="date field">
 	<input id="date_to" name="date_to" data-xp="
-		valid: '[name=date_from] < [name=date_to]'
+		valid: '[name=date_from] < [this]'
 	"/>
 </span>
 ```
