@@ -526,13 +526,13 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 Поля для ввода даты с использованием виджета [Datepicker](http://jqueryui.com/datepicker/).
 
 ```js
-expromptum.controls.register({name: 'datepicker', base: '_secret', prototype: {
-	element_selector: 'input.datepicker, .datepicker input',
+expromptum.controls.register({name: 'date_picker', base: '_secret', prototype: {
+	element_selector: 'input.date.picker, .date.picker input',
 
 	init: function(params){
 		this.locale = expromptum.locale;
 
-		expromptum.controls.datepicker.base.init.apply(this, arguments);
+		expromptum.controls.date_picker.base.init.apply(this, arguments);
 
 		var month_names = [],
 			day_names = [this.locale.weekday[6].name],
@@ -577,7 +577,7 @@ expromptum.controls.register({name: 'datepicker', base: '_secret', prototype: {
 
 			this.$element.datepicker('destroy');
 		}
-		return expromptum.controls.datepicker.base.destroy.apply(this, arguments);
+		return expromptum.controls.date_picker.base.destroy.apply(this, arguments);
 	},
 
 	param: function(name, value){
@@ -614,13 +614,13 @@ expromptum.controls.register({name: 'datepicker', base: '_secret', prototype: {
 }});
 
 
-expromptum.controls.register({name: 'datetimepicker', base: 'datepicker', prototype: {
-	element_selector: 'input.datetimepicker, .datetimepicker input',
+expromptum.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
+	element_selector: 'input.datetime.picker, .datetime.picker input',
 
 	init: function(params){
 		var value = params.$element.val();
 
-		expromptum.controls.datetimepicker.base.init.apply(this, arguments);
+		expromptum.controls.datetime_picker.base.init.apply(this, arguments);
 
 		this._.$time = $('<input value="' + value.substr(11,2)
 			+ '" class="hours"/>:<input value="' + value.substr(14,2)
@@ -668,14 +668,14 @@ expromptum.controls.register({name: 'datetimepicker', base: 'datepicker', protot
 			this._.$time.remove();
 		}
 
-		return expromptum.controls.datetimepicker.base.destroy.apply(this, arguments);
+		return expromptum.controls.datetime_picker.base.destroy.apply(this, arguments);
 	},
 
 	disable: function(disabled){
 		disabled = !arguments.length || disabled;
 
 		if(this.disabled !== disabled){
-			expromptum.controls.datetimepicker.base.disable.apply(this, arguments);
+			expromptum.controls.datetime_picker.base.disable.apply(this, arguments);
 
 			this._.time_control.each(function(){this.disable(disabled);});
 		}
