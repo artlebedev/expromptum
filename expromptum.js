@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-03-27
+// Updated: 2014-04-02
 
 
 (function(window){
@@ -1779,162 +1779,158 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'date', base: '_secret', prototype: {
-		element_selector: 'input.date, .date input',
+	xp.controls.register({name: 'datemonth', base: '_field', prototype: {
+		element_selector: 'input.datemonth, .datemonth input',
+
+		locale: xp.locale,
+
+		_month_name: 'name',
+
+		_split_pattern: /[-\s:.\/\\]/,
+		
+		_spliters: ['-', ''],
+		
+		number_begin_html: '<input data-xp="type: \'number\','
+			+ 'allow_chars_pattern: /\\d/,'
+			+ '_format: function(v){return v},'
+			+ '_unformat: function(v){return v}',
 
 		init: function(params){
-			this.locale = xp.locale;
 
-			xp.controls.date.base.init.apply(this, arguments);
+			xp.controls.datemonth.base.init.apply(this, arguments);
 
-			var month_names = [],
-				day_names = [this.locale.weekday[6].name],
-				day_names_min = [this.locale.weekday[6].abbr];
+			this.$element.hide();
 
-			for(var i = 0, ii = this.locale.month.length; i < ii; i++){
-				month_names.push(this.locale.month[i].name);
+			this._.values = params.$element.val().split(this._split_pattern);
+
+			if(this._.values.length < 2){
+				this._.values = ['','','','',''];
 			}
 
-			for(var i = 0, ii = this.locale.weekday.length - 1; i < ii; i++){
-				day_names.push(this.locale.weekday[i].name);
-
-				day_names_min.push(this.locale.weekday[i].abbr);
+			var html = '',
+				format = this.locale.date.split(this._split_pattern);
+			
+			for(var i = 0, ii = format.length; i < ii; i++){
+				if(format[i] == 'yy'){
+					html += this.number_begin_html + ', min: 1000" value="' + this._.values[0]
+						+ '" size="4" maxlength="4" class="year"/>';
+				}else if(format[i] == 'mm'){
+					html += '<select class="month">';
+					for(var j = 1; j < 13; j++){
+						html += '<option value="' + (j < 10 ? '0' + j : j) + '"'
+							+ (j == this._.values[1] ? ' selected="true"' : '')
+							+ '>'
+							+ this.locale.month[j - 1][this._month_name]
+							+ '</option>';
+					}
+					html += '</select>';
+				}else if(format[i] == 'dd'){
+					if(this._month_name === 'name'){
+						html += '<input type="hidden" value="1" data-xp="type: \'hidden\'" class="day"/>';
+					}else{
+						html += this.number_begin_html + ', min: 1, max: 31" value="'
+							+ (this._.values[2] !== undefined ? this._.values[2] : '')
+							+ '" size="2" maxlength="2" class="day"/>';
+					}
+				}
 			}
 
-			this.$element.datepicker($.extend({
-				autoSize: true,
-				changeMonth: true,
-				changeYear: true,
-				dateFormat: this.locale.date,
-				firstDay: this.locale.first_day,
-				prevText: this.locale.prev_month,
-				nextText: this.locale.next_month,
-				dayNames: day_names,
-				dayNamesMin: day_names_min,
-				monthNamesShort: month_names,
-				altField: this.$secret,
-				altFormat: 'yy-mm-dd'
-			}, this.datepicker));
+			var $pseudo = $(html).insertAfter(this.$element);
 
-			if(this._.initial_value){
-				this.$element.datepicker(
-					'setDate',
-					new Date(this._.initial_value.replace(/\s*\d+:\S+\s*/, ''))
-				);
+			this._.$pseudo_last = $pseudo.last();
+
+			this._.$pseudo = $(
+				[$pseudo.filter('.year'),
+				$pseudo.filter('.month'),
+				$pseudo.filter('.day')]
+			);
+
+			var that = this;
+
+			this._.pseudo = xp(this._.$pseudo).each(function(){
+				this.change(function(){
+					that._change_pseudo();
+				});
+			});
+
+			this.change(function(){
+				that._change_val();
+			});
+		},
+
+		_change_pseudo: function(){
+			if(!this.disabled){
+				var i = 0, ii = this._spliters.length, val, value = '';
+
+				for(; i < ii; i ++){
+					val = this._.pseudo[i].val();
+
+					if(!val){
+						value = '';
+
+						break;
+					}else{
+						value += (val + '').replace(/^(\d)$/, '0$1') + this._spliters[i];
+					}
+				}
+
+				this.val(value);
 			}
 		},
 
-		destroy: function(handler, remove){
-			if(!arguments.length){
-				this.locale.destroy();
+		_change_val: function(){
+			var a;
 
-				this.$element.datepicker('destroy');
-			}
-			return xp.controls.date.base.destroy.apply(this, arguments);
-		},
+			if(
+				!this.disabled
+				&& (a = this.val())
+				&& (a = a.split(this._split_pattern)).length
+			){
+				var i = 0, ii = this._.pseudo.length < a.length ? this._.pseudo.length : a.length;
 
-		param: function(name, value){
-			switch(name){
-				case 'min':
-					this.$element.datepicker('option', 'minDate', value);
-					return value;
-					break;
-
-				default:
-					return xp.controls.date.base.param.apply(this, arguments);
-			};
-		},
-
-		date: function(){
-			return this.$element.datepicker('getDate');
-		},
-
-		val: function(value){
-			if(!arguments.length){
-				return this.disabled
-					? undefined
-					: (
-						this.$secret
-							? this.$secret.val()
-							: this.$element.val()
-					);
-			}else{
-				this.$element.datepicker('setDate', new Date(value));
-
-				return this;
+				for(; i < ii; i++){
+					if(a[i]){
+						this._.pseudo[i].val(a[i] * 1);
+					}
+				}
 			}
 		}
+	}});
+
+
+	xp.controls.register({name: 'date', base: 'datemonth', prototype: {
+		element_selector: 'input.date, .date input',
+
+		_month_name: 'name_genitive',
+
+		_spliters: ['-', '-', '']
 	}});
 
 
 	xp.controls.register({name: 'datetime', base: 'date', prototype: {
 		element_selector: 'input.datetime, .datetime input',
 
-		init: function(params){
-			var value = params.$element.val();
+		_spliters: ['-', '-', ' ', ':', ''],
 
+		init: function(params){
 			xp.controls.datetime.base.init.apply(this, arguments);
 
-			this._.$time = $('<input value="' + value.substr(11,2)
-				+ '" class="hours"/>:<input value="' + value.substr(14,2)
-				+ '" class="minutes"/>').insertAfter(this.$element);
+			var html = this.number_begin_html + ', max: 23" value="' + this._.values[3]
+					+ '" size="2" class="hours"/><span class="time_spliter"></span>'
+					+ this.number_begin_html + ', max: 59" value="' + this._.values[4]
+					+ '" size="2" class="minutes"/>';
 
-			var that = this,
-				add_time = function(){
-					that.$secret.val(
-						that.$secret.val().replace(/\s+\d+:\d+/, '')
-							+ ' ' + that._.$time.first().val() + ':'
-							+ that._.$time.last().val()
-					);
-				};
+			var $time = $(html).insertAfter(this._.$pseudo_last), that = this;
 
-			this._.time_control = new xp.list();
+			this._.pseudo.append(xp($time).each(function(){
+				this.change(function(){
+					that._change_pseudo();
+				});
+			}));
 
-			this._.$time.filter('input').each(function(){
-				that._.time_control.append(
-					(new xp.controls.number({
-						$element: $(this),
-						min: 0,
-						max: 23,
-						changed: null
-					}))
-						.change(add_time)
-						.change(function(){
-							that.change();
-						})
-				);
-			});
-
-			this._.time_control.last().max = 59;
-
-			this.change(add_time);
-
-			if(this._.initial_value){
-				this.$secret.val(this._.initial_value);
-			}
-		},
-
-		destroy: function(handler, remove){
-			if(!arguments.length){
-				this._.time_control.each(function(){this.destroy();});
-
-				this._.$time.remove();
-			}
-
-			return xp.controls.datetime.base.destroy.apply(this, arguments);
-		},
-
-		disable: function(disabled){
-			disabled = !arguments.length || disabled;
-
-			if(this.disabled !== disabled){
-				xp.controls.datetime.base.disable.apply(this, arguments);
-
-				this._.time_control.each(function(){this.disable(disabled);});
-			}
-
-			return this;
+			this._.$pseudo.add($time);
 		}
+
 	}});
 
 
