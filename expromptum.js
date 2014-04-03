@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-04-02
+// Updated: 2014-04-03
 
 
 (function(window){
@@ -246,7 +246,7 @@ window.expromptum = (function(undefined){
 				{
 					format: {
 						decimal: /\./,
-						grouping: /(\d)(?=(\d{3})+([^\d]|$))/g
+						grouping: /(\d\d|\d(?=\d{4}))(?=(\d{3})+([^\d]|$))/g
 					},
 
 					unformat: {
@@ -1981,7 +1981,7 @@ window.expromptum = (function(undefined){
 				});
 
 				this.$element
-					.bind('focus click', function(){
+					.bind('focus click keyup', function(){
 						list.show();
 					})
 					.keydown(function(ev){
