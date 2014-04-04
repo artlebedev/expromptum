@@ -345,7 +345,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 Поле с проверкой на соответствие выражению.
 
 ```js
-expromptum.controls.register({name: 'zip', base: '_field', prototype: {
+xP.controls.register({name: 'zip', base: '_field', prototype: {
 	element_selector: '.zip input, input.zip',
 	valid: '[this].val().match(/^\\d{6}$/)',
 	allow_chars_pattern: /^\d+$/
@@ -357,11 +357,11 @@ expromptum.controls.register({name: 'zip', base: '_field', prototype: {
 Слайдер для числового значения.
 
 ```js
-expromptum.controls.register({name: 'slider_number', base: 'number', prototype: {
+xP.controls.register({name: 'slider_number', base: 'number', prototype: {
 	element_selector: '.slider input',
 
 	init: function(params){
-		expromptum.controls.slider_number.base.init.apply(this, arguments);
+		xP.controls.slider_number.base.init.apply(this, arguments);
 
 		var that = this;
 
@@ -389,7 +389,7 @@ expromptum.controls.register({name: 'slider_number', base: 'number', prototype: 
 			this._param('slider').destroy();
 		}
 
-		return expromptum.controls.slider_number.base.destroy.apply(
+		return xP.controls.slider_number.base.destroy.apply(
 				this, arguments
 			);
 	},
@@ -404,7 +404,7 @@ expromptum.controls.register({name: 'slider_number', base: 'number', prototype: 
 				break;
 		};
 
-		return expromptum.controls.slider_number.base.param.apply(
+		return xP.controls.slider_number.base.param.apply(
 				this, arguments
 			);
 	},
@@ -418,7 +418,7 @@ expromptum.controls.register({name: 'slider_number', base: 'number', prototype: 
 			);
 		}
 
-		return expromptum.controls.slider_number.base.disable.apply(
+		return xP.controls.slider_number.base.disable.apply(
 				this, arguments
 			);
 	}
@@ -430,11 +430,11 @@ expromptum.controls.register({name: 'slider_number', base: 'number', prototype: 
 Слайдер для набора значений.
 
 ```js
-expromptum.controls.register({name: 'slider_select', base: 'select', prototype: {
+xP.controls.register({name: 'slider_select', base: 'select', prototype: {
 	element_selector: '.slider select',
 
 	init: function(params){
-		expromptum.controls.slider_select.base.init.apply(this, arguments);
+		xP.controls.slider_select.base.init.apply(this, arguments);
 
 		var that = this;
 
@@ -462,7 +462,7 @@ expromptum.controls.register({name: 'slider_select', base: 'select', prototype: 
 			this._param('slider').destroy();
 		}
 
-		return expromptum.controls.slider_select.base.destroy.apply(
+		return xP.controls.slider_select.base.destroy.apply(
 				this, arguments
 			);
 	},
@@ -477,7 +477,7 @@ expromptum.controls.register({name: 'slider_select', base: 'select', prototype: 
 				break;
 		};
 
-		return expromptum.controls.slider_select.base.param.apply(
+		return xP.controls.slider_select.base.param.apply(
 				this, arguments
 			);
 	},
@@ -491,7 +491,7 @@ expromptum.controls.register({name: 'slider_select', base: 'select', prototype: 
 			);
 		}
 
-		return expromptum.controls.slider_select.base.disable.apply(
+		return xP.controls.slider_select.base.disable.apply(
 				this, arguments
 			);
 	}
@@ -503,11 +503,11 @@ expromptum.controls.register({name: 'slider_select', base: 'select', prototype: 
 Поле с редактированием через [Реформатор](http://www.artlebedev.ru/tools/reformator/).
 
 ```js
-expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
+xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 	element_selector: '.wysiwyg textarea',
 
 	init: function(params){
-		expromptum.controls.wysiwyg.base.init.apply(this, arguments);
+		xP.controls.wysiwyg.base.init.apply(this, arguments);
 		this._param('reformator', reformator.append(this.$element[0], {bar: true}));
 	},
 
@@ -516,7 +516,7 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 			this._param('reformator').destroy();
 		}
 
-		return expromptum.controls.wysiwyg.base.destroy.apply(this, arguments);
+		return xP.controls.wysiwyg.base.destroy.apply(this, arguments);
 	}
 }});
 ```
@@ -526,13 +526,13 @@ expromptum.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 Поля для ввода даты с использованием виджета [Datepicker](http://jqueryui.com/datepicker/).
 
 ```js
-expromptum.controls.register({name: 'date_picker', base: '_secret', prototype: {
+xP.controls.register({name: 'date_picker', base: '_secret', prototype: {
 	element_selector: 'input.date.picker, .date.picker input',
 
 	init: function(params){
-		this.locale = expromptum.locale;
+		this.locale = xP.locale;
 
-		expromptum.controls.date_picker.base.init.apply(this, arguments);
+		xP.controls.date_picker.base.init.apply(this, arguments);
 
 		var month_names = [],
 			day_names = [this.locale.weekday[6].name],
@@ -577,7 +577,7 @@ expromptum.controls.register({name: 'date_picker', base: '_secret', prototype: {
 
 			this.$element.datepicker('destroy');
 		}
-		return expromptum.controls.date_picker.base.destroy.apply(this, arguments);
+		return xP.controls.date_picker.base.destroy.apply(this, arguments);
 	},
 
 	param: function(name, value){
@@ -588,7 +588,7 @@ expromptum.controls.register({name: 'date_picker', base: '_secret', prototype: {
 				break;
 
 			default:
-				return expromptum.controls.datepicker.base.param.apply(this, arguments);
+				return xP.controls.datepicker.base.param.apply(this, arguments);
 		};
 	},
 
@@ -614,13 +614,13 @@ expromptum.controls.register({name: 'date_picker', base: '_secret', prototype: {
 }});
 
 
-expromptum.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
+xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 	element_selector: 'input.datetime.picker, .datetime.picker input',
 
 	init: function(params){
 		var value = params.$element.val();
 
-		expromptum.controls.datetime_picker.base.init.apply(this, arguments);
+		xP.controls.datetime_picker.base.init.apply(this, arguments);
 
 		this._.$time = $('<input value="' + value.substr(11,2)
 			+ '" class="hours"/>:<input value="' + value.substr(14,2)
@@ -635,11 +635,11 @@ expromptum.controls.register({name: 'datetime_picker', base: 'date_picker', prot
 				);
 			};
 
-		this._.time_control = new expromptum.list();
+		this._.time_control = new xP.list();
 
 		this._.$time.filter('input').each(function(){
 			that._.time_control.append(
-				(new expromptum.controls.number({
+				(new xP.controls.number({
 					$element: $(this),
 					min: 0,
 					max: 23,
@@ -668,14 +668,14 @@ expromptum.controls.register({name: 'datetime_picker', base: 'date_picker', prot
 			this._.$time.remove();
 		}
 
-		return expromptum.controls.datetime_picker.base.destroy.apply(this, arguments);
+		return xP.controls.datetime_picker.base.destroy.apply(this, arguments);
 	},
 
 	disable: function(disabled){
 		disabled = !arguments.length || disabled;
 
 		if(this.disabled !== disabled){
-			expromptum.controls.datetime_picker.base.disable.apply(this, arguments);
+			xP.controls.datetime_picker.base.disable.apply(this, arguments);
 
 			this._.time_control.each(function(){this.disable(disabled);});
 		}
@@ -691,7 +691,7 @@ expromptum.controls.register({name: 'datetime_picker', base: 'date_picker', prot
 ### Абстрактный контрол
 
 - Тип `_item`
-- Базовый тип [`expromptum.base`](#Абстрактный-класс)
+- Базовый тип [`xP.base`](#Абстрактный-класс)
 
 Используется в качестве базового класса для классов контролов.
 
@@ -1458,7 +1458,7 @@ expromptum.controls.register({name: 'datetime_picker', base: 'date_picker', prot
 
 ## Режим диагностики
 
-Для диагностики работы в адресной строке можно передать параметр `xp=значение`. При этом в консоль браузера будут выводится все обнаруженные ошибки и соответствующие значению сообщения:
+Для диагностики работы в адресной строке можно передать параметр `xP=значение`. При этом в консоль браузера будут выводится все обнаруженные ошибки и соответствующие значению сообщения:
 `controls` — инициализация контролов;
 `submit` — отправка формы;
 `dependencies` — инициализация и обработка всех зависимостей;

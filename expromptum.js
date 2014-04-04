@@ -2,23 +2,23 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-04-03
+// Updated: 2014-04-04
 
 
 (function(window){
 if(window.expromptum){return;}
 
-window.expromptum = (function(undefined){
+window.expromptum = window.xP = (function(undefined){
 
 /* Core */
 
-	var xp = function(params, parent){
+	var xP = function(params, parent){
 		// TODO: Добавить третий параметр в котором можно передавать data-xp.
 		if(!params){
 			params = '[data-xp], [data-expromptum]';
-			for(var i = 0, ii = xp_controls_registered.length; i < ii; i++){
+			for(var i = 0, ii = xP_controls_registered.length; i < ii; i++){
 				params += ','
-					+ xp.controls[xp_controls_registered[i]]
+					+ xP.controls[xP_controls_registered[i]]
 						.prototype.element_selector;
 			}
 		}
@@ -37,7 +37,7 @@ window.expromptum = (function(undefined){
 				params,
 				parent
 					? (
-						parent instanceof xp.controls._item
+						parent instanceof xP.controls._item
 							? parent.$container
 							: parent
 					)
@@ -46,14 +46,14 @@ window.expromptum = (function(undefined){
 		}
 
 		if(params instanceof jQuery){
-			return xp.controls.init(params);
+			return xP.controls.init(params);
 		}else if(params instanceof Object && parent){
-			return xp.controls.create(params, parent);
+			return xP.controls.create(params, parent);
 			// Create by params.
 		}else{
-			xp.debug('', 'error', 'unknown params', params);
+			xP.debug('', 'error', 'unknown params', params);
 
-			return new xp.list();
+			return new xP.list();
 		}
 	};
 
@@ -61,7 +61,7 @@ window.expromptum = (function(undefined){
 
 /* Tools */
 
-	xp.register = function(params){
+	xP.register = function(params){
 		var prototype = params.prototype || {},
 			expromptum = prototype.init
 				? function(){
@@ -102,7 +102,7 @@ window.expromptum = (function(undefined){
 		return expromptum;
 	};
 
-	xp.list = function(arr){
+	xP.list = function(arr){
 		var result = $.type(arr) === 'array' ? arr: (arr ? [arr] : []);
 
 		result.append = function(obj){
@@ -202,8 +202,8 @@ window.expromptum = (function(undefined){
 		return result;
 	};
 
-	xp.debug = function(){
-		if(location.href.indexOf('xp=' + arguments[0]) > 0){
+	xP.debug = function(){
+		if(location.href.indexOf('xP=' + arguments[0]) > 0){
 			console.log.apply(this, Array.prototype.slice.call(arguments, 1));
 
 			return true;
@@ -212,34 +212,34 @@ window.expromptum = (function(undefined){
 		}
 	};
 
-	xp.after = function(handler, i){
+	xP.after = function(handler, i){
 		if(i){
-			return setTimeout(function(){xp.after(handler, --i);}, 0);
+			return setTimeout(function(){xP.after(handler, --i);}, 0);
 		}else{
 			return setTimeout(function(){handler()}, 0);
 		}
 	};
 
-	xp.taint_regexp = function(value){
-		return value.replace(xp.taint_regexp_pattern, '\\');
+	xP.taint_regexp = function(value){
+		return value.replace(xP.taint_regexp_pattern, '\\');
 	};
 
-	xp.taint_regexp_pattern = /(?=[\\\^\$\.\[\]\|\(\)\?\*\+\{\}])/g;
+	xP.taint_regexp_pattern = /(?=[\\\^\$\.\[\]\|\(\)\?\*\+\{\}])/g;
 
-	xp.taint_css = function(value){
-		return value.replace(xp.taint_css_pattern, '\\');
+	xP.taint_css = function(value){
+		return value.replace(xP.taint_css_pattern, '\\');
 	};
 
-	xp.taint_css_pattern
+	xP.taint_css_pattern
 		= /(?=[\\\^\$\.\[\]\|\(\)\?\*\+\{\}\:\<\>\@\/\~\&\=])/g;
 
 
 
 /* Locale */
 
-	xp.locale = {
+	xP.locale = {
 		init: function(){
-			var t = xp.locale.number;
+			var t = xP.locale.number;
 
 			$.extend(
 				t,
@@ -305,17 +305,17 @@ window.expromptum = (function(undefined){
 		tomorrow: 'Завтра'
 	};
 
-	xp.locale.init();
+	xP.locale.init();
 
 
 
 /* Base */
 
-	xp.base = xp.register({name: 'xp.base', prototype: {
+	xP.base = xP.register({name: 'xP.base', prototype: {
 
 		init: function(params){
-			this._.on_destroy = new xp.list();
-			this._.on_change  = new xp.list();
+			this._.on_destroy = new xP.list();
+			this._.on_change  = new xP.list();
 
 			$.extend(this, params);
 		},
@@ -343,7 +343,7 @@ window.expromptum = (function(undefined){
 				if(!this._.change_inquiry){
 					var that = this;
 
-					that._.change_inquiry = xp.after(function(){
+					that._.change_inquiry = xP.after(function(){
 						that._.change_inquiry = null;
 
 						that._.on_change.each(function(){
@@ -383,9 +383,9 @@ window.expromptum = (function(undefined){
 
 /* Controls */
 
-	var xp_controls_registered = [];
+	var xP_controls_registered = [];
 
-	xp.controls = {
+	xP.controls = {
 		register: function(params){
 			var name = params.name;
 
@@ -395,7 +395,7 @@ window.expromptum = (function(undefined){
 
 			params.prototype.type = name;
 
-			this[params.name] = xp.register(
+			this[params.name] = xP.register(
 				$.extend(
 					params,
 					{
@@ -408,19 +408,19 @@ window.expromptum = (function(undefined){
 			);
 
 			if(params.prototype && params.prototype.element_selector){
-				xp_controls_registered.push(name);
+				xP_controls_registered.push(name);
 			}
 		},
 
 		init: function($elements){
-			var result = new xp.list(), that = this;
+			var result = new xP.list(), that = this;
 
 			$elements.each(function(){
 				var $element = $(this), control = that.link($element);
 
 				if(!control){
-					var params = $element.data('expromptum')
-						|| $element.data('xp');
+					var params = $element.data('xp')
+						|| $element.data('expromptum');
 
 					if($.type(params) === 'string'){
 						if(!params.match(/^^\s*\{/)){
@@ -436,24 +436,24 @@ window.expromptum = (function(undefined){
 					}
 
 					$element
-						.removeAttr('data-expromptum')
-						.removeAttr('data-xp');
+						.removeAttr('data-xp')
+						.removeAttr('data-expromptum');
 
 					if(!params){
 						params = {};
 					}
 
 					if(!params.type){
-						var i = xp_controls_registered.length;
+						var i = xP_controls_registered.length;
 
 						while(i--){
 							if(
 								$element.is(
-									xp.controls[xp_controls_registered[i]]
+									xP.controls[xP_controls_registered[i]]
 										.prototype.element_selector
 								)
 							){
-								params.type = xp_controls_registered[i];
+								params.type = xP_controls_registered[i];
 
 								break;
 							}
@@ -461,12 +461,12 @@ window.expromptum = (function(undefined){
 					}
 
 					if(
-						xp.controls[params.type]
-						&& xp.controls[params.type].base
+						xP.controls[params.type]
+						&& xP.controls[params.type].base
 					){
 						params.$element = $element;
 
-						control = new xp.controls[params.type](params);
+						control = new xP.controls[params.type](params);
 					}
 				}
 
@@ -490,15 +490,15 @@ window.expromptum = (function(undefined){
 	};
 
 
-	xp.controls.register({name: '_item', base: xp.base,  prototype: {
+	xP.controls.register({name: '_item', base: xP.base,  prototype: {
 		init: function(params){
-			xp.controls._item.base.init.apply(this, arguments);
+			xP.controls._item.base.init.apply(this, arguments);
 
 			if(!this.$element){
 				this.create();
 			}
 
-			xp.debug('controls', 'control', this.type, this.$element, this);
+			xP.debug('controls', 'control', this.type, this.$element, this);
 
 			if(!this.$container && this.container_selector){
 				this.$container
@@ -531,7 +531,7 @@ window.expromptum = (function(undefined){
 //				if(v){
 //					this.valid = new RegExp(v);
 //				}else{
-//					v = xp.dependencies.valid_match[
+//					v = xP.dependencies.valid_match[
 //						this.$element.attr('type')
 //					];
 //
@@ -549,12 +549,12 @@ window.expromptum = (function(undefined){
 			if(this.disabled || this.enabled === false){
 				this.disabled = false;
 				// Чтобы отключить добавленные элементы (secret).
-				xp.after(function(){
+				xP.after(function(){
 					that.disable();
 				});
 			}
 
-			xp.after(function(){
+			xP.after(function(){
 				that.change();
 				that._init_val();
 			});
@@ -563,7 +563,7 @@ window.expromptum = (function(undefined){
 			if(!this._.parent){
 				// TODO: Дописать перемещение детей из родителя.
 				this.$element.parentsUntil('body').each(function(){
-					var control = xp.controls.link($(this));
+					var control = xP.controls.link($(this));
 
 					if(control){
 						that._.parent = control;
@@ -583,14 +583,14 @@ window.expromptum = (function(undefined){
 				this._.root = this;
 			}
 
-			xp.controls.link(this.$element, this);
-			xp.controls.link(this.$container, this);
+			xP.controls.link(this.$element, this);
+			xP.controls.link(this.$container, this);
 
-			if(xp.repeats){
-				xp.repeats.init(this);
+			if(xP.repeats){
+				xP.repeats.init(this);
 			}
 
-			xp.dependencies.init(this);
+			xP.dependencies.init(this);
 		},
 
 		remove: function(){
@@ -612,7 +612,7 @@ window.expromptum = (function(undefined){
 		},
 
 		destroy: function(handler, remove){
-			xp.controls._item.base.destroy.apply(this, arguments);
+			xP.controls._item.base.destroy.apply(this, arguments);
 
 			if(!arguments.length){
 				if(this._.parent){
@@ -692,7 +692,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'html', base: '_item', prototype: {
+	xP.controls.register({name: 'html', base: '_item', prototype: {
 		element_selector: '.xp_html',
 
 		val: function(value){
@@ -709,15 +709,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: '_parent', base: '_item', prototype: {
+	xP.controls.register({name: '_parent', base: '_item', prototype: {
 		element_selector: '.xp',
 
 		init: function(params){
 			this.changed = {};
 
-			this._.children = new xp.list();
+			this._.children = new xP.list();
 
-			xp.controls._parent.base.init.apply(this, arguments);
+			xP.controls._parent.base.init.apply(this, arguments);
 
 			this._.children_values = {};
 
@@ -743,14 +743,14 @@ window.expromptum = (function(undefined){
 				this._.parent4values._unsave_val(this);
 			}
 
-			return xp.controls._parent.base.destroy.apply(this, arguments);
+			return xP.controls._parent.base.destroy.apply(this, arguments);
 		},
 
 		disable: function(disabled){
 			disabled = !arguments.length || disabled;
 
 			if(this.disabled !== disabled){
-				xp.controls._parent.base.disable.apply(this, arguments);
+				xP.controls._parent.base.disable.apply(this, arguments);
 
 				if(this.disabled){
 					this._.parent4values._unsave_val(this);
@@ -796,7 +796,7 @@ window.expromptum = (function(undefined){
 		_set_vals: function(value, suffix){
 			var that = this;
 
-			xp.after(function(){
+			xP.after(function(){
 				$.each(value, function(name, value){
 					var controls = that._find_by_name(name)
 							|| that._find_by_name(name + suffix);
@@ -816,7 +816,7 @@ window.expromptum = (function(undefined){
 				this._.parent4values._save_val(this);
 			}
 
-			return xp.controls._parent.base.change.apply(this, arguments);
+			return xP.controls._parent.base.change.apply(this, arguments);
 		},
 
 		_save_val: function(child){
@@ -839,7 +839,7 @@ window.expromptum = (function(undefined){
 								)[0]
 							: child.name;
 
-					if(child instanceof xp.controls.checkbox){
+					if(child instanceof xP.controls.checkbox){
 						// TODO: Надо это в соответствующий контрол утащить. Да и обо всем остальном подумать.
 						this._.children_values[name] = values = [];
 
@@ -896,7 +896,7 @@ window.expromptum = (function(undefined){
 				if(subresult){
 					result = result.concat(subresult);
 
-					if(!(subresult[0] instanceof xp.controls._option)){
+					if(!(subresult[0] instanceof xP.controls._option)){
 						return false;
 					}
 				}
@@ -907,7 +907,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'form', base: '_parent', prototype: {
+	xP.controls.register({name: 'form', base: '_parent', prototype: {
 		element_selector: 'form',
 
 		init: function(params){
@@ -917,9 +917,9 @@ window.expromptum = (function(undefined){
 			//this.uncomplete_if_invalid = false;
 			//this.uncomplete_if_unchanged = false;
 
-			xp.controls.form.base.init.apply(this, arguments);
+			xP.controls.form.base.init.apply(this, arguments);
 
-			this._.onsubmit = new xp.list();
+			this._.onsubmit = new xP.list();
 
 			var that = this;
 
@@ -931,18 +931,18 @@ window.expromptum = (function(undefined){
 				var uncompleted = this.uncompleted();
 
 				if(uncompleted){
-					xp.debug('submit', uncompleted);
+					xP.debug('submit', uncompleted);
 
 					return false;
 				}else if(this.locked){
-					xp.debug('submit', 'locked');
+					xP.debug('submit', 'locked');
 
 					return false;
 				}else{
 					this.locked = true;
 				}
 
-				return !xp.debug('submit', 'submit');
+				return !xP.debug('submit', 'submit');
 			});
 		},
 
@@ -1019,7 +1019,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'fields', base: '_parent', prototype: {
+	xP.controls.register({name: 'fields', base: '_parent', prototype: {
 		element_selector: 'fieldset, .fields, .sheets',
 
 		count: function(){
@@ -1030,7 +1030,7 @@ window.expromptum = (function(undefined){
 			var result = 0;
 
 			this.children().each(function(){
-				if(this instanceof xp.controls.fields){
+				if(this instanceof xP.controls.fields){
 					if(this.val()){
 						result++;
 					}
@@ -1044,16 +1044,16 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'sheet', base: 'fields', prototype: {
+	xP.controls.register({name: 'sheet', base: 'fields', prototype: {
 		element_selector: '.sheet',
 
 		init: function(params){
-			xp.controls.sheet.base.init.apply(this, arguments);
+			xP.controls.sheet.base.init.apply(this, arguments);
 
 			var id = this.$element.attr('id');
 
 			if(!this.$label && id){
-				this.$label = $("[for='" + xp.taint_css(id) + "']");
+				this.$label = $("[for='" + xP.taint_css(id) + "']");
 			}
 
 			if(this.$label && this.$label[0]){
@@ -1106,12 +1106,12 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: '_field', base: '_parent', prototype: {
+	xP.controls.register({name: '_field', base: '_parent', prototype: {
 		element_selector: 'input',
 		container_selector: '.field',
 
 		init: function(params){
-			xp.controls._field.base.init.apply(this, arguments);
+			xP.controls._field.base.init.apply(this, arguments);
 
 			var that = this;
 
@@ -1128,7 +1128,7 @@ window.expromptum = (function(undefined){
 			var id = this.$element.attr('id');
 
 			if(!this.$label && id){
-				this.$label = $("[for='" + xp.taint_css(id) + "']");
+				this.$label = $("[for='" + xP.taint_css(id) + "']");
 			}
 
 			if(this.$container == this.$element){
@@ -1149,7 +1149,7 @@ window.expromptum = (function(undefined){
 				});
 			}
 
-			xp.controls._field.base.change.apply(this);
+			xP.controls._field.base.change.apply(this);
 		},
 
 		change_events: 'keyup input change',
@@ -1160,7 +1160,7 @@ window.expromptum = (function(undefined){
 				this.$label = null;
 			}
 
-			return xp.controls._field.base.destroy.apply(this, arguments);
+			return xP.controls._field.base.destroy.apply(this, arguments);
 		},
 
 		change: function(handler, remove){
@@ -1176,7 +1176,7 @@ window.expromptum = (function(undefined){
 				}
 
 				if(changed){
-					return xp.controls._field.base.change.apply(
+					return xP.controls._field.base.change.apply(
 						this,
 						arguments
 					);
@@ -1184,7 +1184,7 @@ window.expromptum = (function(undefined){
 					return this;
 				}
 			}else{
-				return xp.controls._field.base.change.apply(this, arguments);
+				return xP.controls._field.base.change.apply(this, arguments);
 			}
 		},
 
@@ -1217,43 +1217,43 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'string', base: '_field', prototype: {
+	xP.controls.register({name: 'string', base: '_field', prototype: {
 		element_selector: 'input[type=text], input:not([type])'
 	}});
 
 
-	xp.controls.register({name: 'text', base: '_field', prototype: {
+	xP.controls.register({name: 'text', base: '_field', prototype: {
 		element_selector: 'textarea'
 	}});
 
 
-	xp.controls.register({name: 'hidden', base: '_field', prototype: {
+	xP.controls.register({name: 'hidden', base: '_field', prototype: {
 		element_selector: 'input[type=hidden]'
 	}});
 
 
-	xp.controls.register({name: 'file', base: '_field', prototype: {
+	xP.controls.register({name: 'file', base: '_field', prototype: {
 		element_selector: 'input[type=file]'
 	}});
 
 
-	xp.controls.register({name: 'button', base: '_parent', prototype: {
+	xP.controls.register({name: 'button', base: '_parent', prototype: {
 		element_selector: 'input[type=button], button, .button'
 	}});
 
 
-	xp.controls.register({name: 'submit', base: '_item', prototype: {
+	xP.controls.register({name: 'submit', base: '_item', prototype: {
 		element_selector: 'input[type=submit], button[type=submit]'
 	}});
 
 
-	xp.controls.register({name: 'select', base: '_field', prototype: {
+	xP.controls.register({name: 'select', base: '_field', prototype: {
 		element_selector: 'select',
 
 		hide_disabled_option: true,
 
 		init: function(params){
-			xp.controls.select.base.init.apply(this, arguments);
+			xP.controls.select.base.init.apply(this, arguments);
 
 			this._.options =  this.$element[0].options;
 
@@ -1287,7 +1287,7 @@ window.expromptum = (function(undefined){
 				}else{
 					var that = this;
 
-					xp.after(function(){
+					xP.after(function(){
 						that._.disabled_value = undefined;
 					});
 				}
@@ -1351,22 +1351,22 @@ window.expromptum = (function(undefined){
 				}
 				return this;
 			}else{
-				return xp.controls.select.base.disable.apply(this, arguments);
+				return xP.controls.select.base.disable.apply(this, arguments);
 			}
 		}
 	}});
 
 
-	xp.controls.register({name: 'options', base: 'fields', prototype: {
+	xP.controls.register({name: 'options', base: 'fields', prototype: {
 		element_selector: '.options'
 	}});
 
 
-	xp.controls.register({name: '_option', base: '_field', prototype: {
+	xP.controls.register({name: '_option', base: '_field', prototype: {
 		container_selector: '.option',
 
 		init: function(params){
-			xp.controls._option.base.init.apply(this, arguments);
+			xP.controls._option.base.init.apply(this, arguments);
 
 			if(!this.root()._param(this.type)){
 				this.root()._param(this.type, {});
@@ -1374,7 +1374,7 @@ window.expromptum = (function(undefined){
 
 			if(!this.root()._param(this.type)[this.name]){
 				this.root()._param(this.type)[this.name]
-					= {siblings: new xp.list()};
+					= {siblings: new xP.list()};
 			}
 
 			this._.group = this.root()._param(this.type)[this.name];
@@ -1391,7 +1391,7 @@ window.expromptum = (function(undefined){
 		change: function(handler, remove){
 			this.select(this.$element.is(':checked'), true);
 
-			xp.controls._option.base.change.apply(this, arguments);
+			xP.controls._option.base.change.apply(this, arguments);
 
 			return this;
 		},
@@ -1403,7 +1403,7 @@ window.expromptum = (function(undefined){
 				this.$container.addClass(this.container_initial_selected_class);
 			}
 
-			xp.controls._option.base._init_val.apply(this, arguments);
+			xP.controls._option.base._init_val.apply(this, arguments);
 		},
 
 		container_initial_selected_class: 'initial_selected',
@@ -1413,7 +1413,7 @@ window.expromptum = (function(undefined){
 			if(!arguments.length){
 				return !this.selected
 					? ''
-					: xp.controls._option.base.val.apply(this, arguments);
+					: xP.controls._option.base.val.apply(this, arguments);
 			}else if($.type(value) === 'array'){
 				var i = value.length;
 
@@ -1458,18 +1458,18 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'radio', base: '_option', prototype: {
+	xP.controls.register({name: 'radio', base: '_option', prototype: {
 		element_selector: 'input[type=radio]',
 
 		disable: function(disabled){
 			disabled = !arguments.length || disabled;
 
 			if(this.disabled !== disabled){
-				xp.controls.radio.base.disable.apply(this, arguments);
+				xP.controls.radio.base.disable.apply(this, arguments);
 
 				if(disabled){
 					if(this.selected){
-						//xp.after(function(){
+						//xP.after(function(){
 						this._.group.siblings.each(function(){
 							if(!this.disabled){
 								this.select();
@@ -1501,12 +1501,12 @@ window.expromptum = (function(undefined){
 					this._.group.selected = this;
 
 					if(that_selected){
-						//xp.after(function(){
+						//xP.after(function(){
 						that_selected.select(false);
 						//});
 					}
 				}
-				xp.controls.radio.base.select.apply(this, arguments);
+				xP.controls.radio.base.select.apply(this, arguments);
 			}
 
 			return this;
@@ -1514,26 +1514,26 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'checkbox', base: '_option', prototype: {
+	xP.controls.register({name: 'checkbox', base: '_option', prototype: {
 		element_selector: 'input[type=checkbox]'
 	}});
 
 
-	xp.controls.register({name: 'email', base: '_field', prototype: {
+	xP.controls.register({name: 'email', base: '_field', prototype: {
 		element_selector: '.email input, input.email',
 		valid: '[this].val().match(/^\\S+@\\S+\\.\\S{2,4}$/)'
 	}});
 
 
-	xp.controls.register({name: 'phone', base: '_field', prototype: {
+	xP.controls.register({name: 'phone', base: '_field', prototype: {
 		element_selector: '.phone input, input.phone',
 		valid: '[this].val().match(/^(?=[^()]*\\(([^()]*\\)[^()]*)?$|[^()]*$)(?=[\\s(]*\\+[^+]*$|[^+]*$)([-+.\\s()]*\\d){11,18}$/)'
 	}});
 
 
-	xp.controls.register({name: '_secret', base: '_field', prototype: {
+	xP.controls.register({name: '_secret', base: '_field', prototype: {
 		init: function(params){
-			xp.controls._secret.base.init.apply(this, arguments);
+			xP.controls._secret.base.init.apply(this, arguments);
 
 			this.$secret = $(
 				$('<div>')
@@ -1544,7 +1544,7 @@ window.expromptum = (function(undefined){
 
 			this.$element.removeAttr('name');
 
-			xp.controls.link(this.$secret, this);
+			xP.controls.link(this.$secret, this);
 		},
 
 		change: function(handler, remove){
@@ -1552,7 +1552,7 @@ window.expromptum = (function(undefined){
 				this.$secret.val(this.val());
 			}
 
-			return xp.controls._secret.base.change.apply(this, arguments);
+			return xP.controls._secret.base.change.apply(this, arguments);
 		},
 
 		destroy: function(handler, remove){
@@ -1560,7 +1560,7 @@ window.expromptum = (function(undefined){
 				this.$secret = null;
 			}
 
-			return xp.controls._secret.base.destroy.apply(this, arguments);
+			return xP.controls._secret.base.destroy.apply(this, arguments);
 		},
 
 		disable: function(disabled){
@@ -1572,7 +1572,7 @@ window.expromptum = (function(undefined){
 				}else{
 					this.$secret.removeAttr('disabled');
 				}
-				xp.controls._secret.base.disable.apply(this, arguments);
+				xP.controls._secret.base.disable.apply(this, arguments);
 			}
 
 			return this;
@@ -1580,11 +1580,11 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'password', base: '_secret', prototype: {
+	xP.controls.register({name: 'password', base: '_secret', prototype: {
 		element_selector: 'input[type=password]',
 
 		init: function(params){
-			xp.controls.password.base.init.apply(this, arguments);
+			xP.controls.password.base.init.apply(this, arguments);
 
 			var that = this;
 
@@ -1627,14 +1627,14 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'number', base: '_secret', prototype: {
+	xP.controls.register({name: 'number', base: '_secret', prototype: {
 		element_selector: 'input.number, .number input',
 
 		step: 1,
 		min: 1 - Number.MAX_VALUE,
 		def: 0,
 		max: Number.MAX_VALUE - 1,
-		locale: xp.locale,
+		locale: xP.locale,
 
 		init: function(params){
 			this.allow_chars_pattern = new RegExp(
@@ -1644,7 +1644,7 @@ window.expromptum = (function(undefined){
 				+ ']$'
 			);
 
-			xp.controls.number.base.init.apply(this, arguments);
+			xP.controls.number.base.init.apply(this, arguments);
 
 			this.$element.wrap(this.element_wrap_html);
 
@@ -1741,7 +1741,7 @@ window.expromptum = (function(undefined){
 				this.val(value);
 			}
 
-			return expromptum.controls.number.base.param.apply(
+			return xP.controls.number.base.param.apply(
 					this, arguments
 				);
 		},
@@ -1754,7 +1754,7 @@ window.expromptum = (function(undefined){
 			}else{
 				this.$secret.val(this._unformat(value));
 
-				return xp.controls.number.base.val.apply(
+				return xP.controls.number.base.val.apply(
 					this,
 					[this._format(value)]
 				);
@@ -1779,10 +1779,10 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'datemonth', base: '_field', prototype: {
+	xP.controls.register({name: 'datemonth', base: '_field', prototype: {
 		element_selector: 'input.datemonth, .datemonth input',
 
-		locale: xp.locale,
+		locale: xP.locale,
 
 		_month_name: 'name',
 
@@ -1797,7 +1797,7 @@ window.expromptum = (function(undefined){
 
 		init: function(params){
 
-			xp.controls.datemonth.base.init.apply(this, arguments);
+			xP.controls.datemonth.base.init.apply(this, arguments);
 
 			this.$element.hide();
 
@@ -1847,7 +1847,7 @@ window.expromptum = (function(undefined){
 
 			var that = this;
 
-			this._.pseudo = xp(this._.$pseudo).each(function(){
+			this._.pseudo = xP(this._.$pseudo).each(function(){
 				this.change(function(){
 					that._change_pseudo();
 				});
@@ -1898,7 +1898,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'date', base: 'datemonth', prototype: {
+	xP.controls.register({name: 'date', base: 'datemonth', prototype: {
 		element_selector: 'input.date, .date input',
 
 		_month_name: 'name_genitive',
@@ -1907,13 +1907,13 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'datetime', base: 'date', prototype: {
+	xP.controls.register({name: 'datetime', base: 'date', prototype: {
 		element_selector: 'input.datetime, .datetime input',
 
 		_spliters: ['-', '-', ' ', ':', ''],
 
 		init: function(params){
-			xp.controls.datetime.base.init.apply(this, arguments);
+			xP.controls.datetime.base.init.apply(this, arguments);
 
 			var html = this.number_begin_html + ', max: 23" value="' + this._.values[3]
 					+ '" size="2" class="hours"/><span class="time_spliter"></span>'
@@ -1922,7 +1922,7 @@ window.expromptum = (function(undefined){
 
 			var $time = $(html).insertAfter(this._.$pseudo_last), that = this;
 
-			this._.pseudo.append(xp($time).each(function(){
+			this._.pseudo.append(xP($time).each(function(){
 				this.change(function(){
 					that._change_pseudo();
 				});
@@ -1934,20 +1934,20 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'combobox', base: 'string', prototype: {
+	xP.controls.register({name: 'combobox', base: 'string', prototype: {
 		element_selector: '.combobox input, input.combobox, input[list]',
 		
 		search_from_start: true,
 
 		init: function(params){
-			xp.controls.combobox.base.init.apply(this, arguments);
+			xP.controls.combobox.base.init.apply(this, arguments);
 
 			var $element = $(
-					"select#" + xp.taint_css(this.$element.attr('list'))
+					"select#" + xP.taint_css(this.$element.attr('list'))
 				);
 
 			if($element[0]){
-				var list = new xp.controls._combolist({
+				var list = new xP.controls._combolist({
 						$element: $element,
 						$container: $element
 					}),
@@ -1965,7 +1965,7 @@ window.expromptum = (function(undefined){
 							false,
 							new RegExp(
 								(this.search_from_start ? '^' : '')
-								+ xp.taint_css(value)
+								+ xP.taint_css(value)
 							)
 						);
 
@@ -2022,10 +2022,10 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: '_combolist', base: 'select', prototype: {
+	xP.controls.register({name: '_combolist', base: 'select', prototype: {
 
 		init: function(params){
-			xp.controls._combolist.base.init.apply(this, arguments);
+			xP.controls._combolist.base.init.apply(this, arguments);
 
 			this.$element.css({'position': 'absolute', 'z-index': 888});
 			this.$element.attr('size', 7);
@@ -2050,9 +2050,9 @@ window.expromptum = (function(undefined){
 
 /* Dependencies */
 
-	var xp_dependencies_registered = [];
+	var xP_dependencies_registered = [];
 
-	xp.dependencies = {
+	xP.dependencies = {
 		_controls: {},
 		_functions: [],
 
@@ -2065,7 +2065,7 @@ window.expromptum = (function(undefined){
 
 			params.prototype.type = name;
 
-			this[params.name] = xp.register(
+			this[params.name] = xP.register(
 				$.extend(
 					params,
 					{
@@ -2077,31 +2077,31 @@ window.expromptum = (function(undefined){
 				)
 			);
 
-			xp_dependencies_registered.push(name);
+			xP_dependencies_registered.push(name);
 		},
 
 		init: function(params, control){
 			var that = this;
 
-			xp.after(function(){
-				if(!control && params instanceof xp.controls._item){
+			xP.after(function(){
+				if(!control && params instanceof xP.controls._item){
 					control = params;
 				}
 
-				var i = 0, ii = xp_dependencies_registered.length, param;
+				var i = 0, ii = xP_dependencies_registered.length, param;
 
 				for(; i < ii; i++){
-					param = params[xp_dependencies_registered[i]];
+					param = params[xP_dependencies_registered[i]];
 
-					if(param && !(param instanceof xp.dependencies._item)){
+					if(param && !(param instanceof xP.dependencies._item)){
 						if($.type(param) === 'array'){
 							for(var j = 0, jj = param.length; j < jj; j++){
-								new that[xp_dependencies_registered[i]](
+								new that[xP_dependencies_registered[i]](
 									param[j], control
 								);
 							}
 						}else{
-							new that[xp_dependencies_registered[i]](
+							new that[xP_dependencies_registered[i]](
 								param, control
 							);
 						}
@@ -2111,7 +2111,7 @@ window.expromptum = (function(undefined){
 		}
 	};
 
-	xp.dependencies.register({name: '_item', base: xp.base, prototype: {
+	xP.dependencies.register({name: '_item', base: xP.base, prototype: {
 		init: function(params, control){
 			this.to = control;
 
@@ -2119,7 +2119,7 @@ window.expromptum = (function(undefined){
 				params = {on: params};
 			}
 
-			xp.dependencies._item.base.init.apply(this, arguments);
+			xP.dependencies._item.base.init.apply(this, arguments);
 
 			var that = this;
 
@@ -2129,10 +2129,10 @@ window.expromptum = (function(undefined){
 						param = [param];
 					}
 
-					var result = new xp.list();
+					var result = new xP.list();
 					for(var i = 0, ii = param.length; i < ii; i++){
 						if($.type(param[i]) === 'string'){
-							result.append(xp(param[i]));
+							result.append(xP(param[i]));
 						}else{
 							result.append(param[i]);
 						}
@@ -2157,7 +2157,7 @@ window.expromptum = (function(undefined){
 						){
 							control = that.to;
 						}else{
-							control = xp(arguments[1]);
+							control = xP(arguments[1]);
 						}
 
 						that.from.append(control);
@@ -2166,7 +2166,7 @@ window.expromptum = (function(undefined){
 
 						if(id < 0){
 							// TODO: Может стоит отменить зависимость?
-							xp.debug(
+							xP.debug(
 								'', 'error',
 								arguments[1] + ' in dependence not found',
 								that
@@ -2178,7 +2178,7 @@ window.expromptum = (function(undefined){
 						return 'arguments["' + id + '"].'
 							+ (arguments[2] == '.'
 								? ''
-								: (control[0] instanceof xp.controls.fields
+								: (control[0] instanceof xP.controls.fields
 									? 'count'
 									: 'val') + '()'
 							);
@@ -2204,7 +2204,7 @@ window.expromptum = (function(undefined){
 			});
 
 			this.to.each(function(){
-				if(this[that.type] instanceof xp.dependencies._item){
+				if(this[that.type] instanceof xP.dependencies._item){
 					//this[that.type].destroy();
 				}
 				this[that.type] = that;
@@ -2214,21 +2214,21 @@ window.expromptum = (function(undefined){
 
 			if(
 				control
-				&& !(control[this.type] instanceof xp.dependencies._item)
+				&& !(control[this.type] instanceof xP.dependencies._item)
 			){
 				control[this.type] = null;
 			}
 
 			this.init_process();
 
-			xp.debug(
+			xP.debug(
 				'dependencies', 'dependence',
 				this.type, this.to.first().$element, this
 			);
 		},
 
 		init_process: function(){
-			xp.after(this.suprocess, 0);
+			xP.after(this.suprocess, 0);
 		},
 
 		destroy: function(){
@@ -2262,11 +2262,11 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: 'classed', base: '_item', prototype: {
+	xP.dependencies.register({name: 'classed', base: '_item', prototype: {
 		process: function(){
-			xp.debug('classed', 'classed', this.to.first().$element, this.to);
+			xP.debug('classed', 'classed', this.to.first().$element, this.to);
 
-			xp.dependencies.classed.base.process.apply(this);
+			xP.dependencies.classed.base.process.apply(this);
 
 			var that = this;
 
@@ -2283,11 +2283,11 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: 'computed', base: '_item', prototype: {
+	xP.dependencies.register({name: 'computed', base: '_item', prototype: {
 		process: function(){
-			xp.debug('computed', 'computed', this.to.first().$element, this.to);
+			xP.debug('computed', 'computed', this.to.first().$element, this.to);
 
-			xp.dependencies.classed.base.process.apply(this);
+			xP.dependencies.classed.base.process.apply(this);
 
 			var that = this;
 
@@ -2302,7 +2302,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: 'enabled', base: '_item', prototype: {
+	xP.dependencies.register({name: 'enabled', base: '_item', prototype: {
 		init_process: function(){
 			this.suprocess();
 
@@ -2314,7 +2314,7 @@ window.expromptum = (function(undefined){
 
 		process: function(){
 
-			xp.dependencies.enabled.base.process.apply(this);
+			xP.dependencies.enabled.base.process.apply(this);
 
 			// TODO: Вынести эту функцию.
 			var subprocess = function(children){
@@ -2335,7 +2335,7 @@ window.expromptum = (function(undefined){
 				if(that.values){
 					if(that.result){
 						enable = this;
-						xp.after(function(){
+						xP.after(function(){
 							enable.disable(false, that.values);
 						});
 					}else{
@@ -2350,7 +2350,7 @@ window.expromptum = (function(undefined){
 				}
 			});
 
-			xp.debug(
+			xP.debug(
 				'enabled', 'enabled',
 				this.to.first().$element, this.to, this.result
 			);
@@ -2359,16 +2359,16 @@ window.expromptum = (function(undefined){
 
 
 	//TODO: Надо бы сделать ее рабочей и для sheet-ов (для кнопок next и prev).
-	xp.dependencies.register({name: 'enabled_on_completed', base: '_item', prototype: {
+	xP.dependencies.register({name: 'enabled_on_completed', base: '_item', prototype: {
 		init: function(params, control){
-			xp.dependencies.enabled_on_completed.base.init.apply(
+			xP.dependencies.enabled_on_completed.base.init.apply(
 				this,
 				[{from: [control.root()]}, control]
 			);
 		},
 
 		process: function(){
-			xp.debug(
+			xP.debug(
 				'enabled_on_completed', 'enabled_on_completed',
 				this.to.first().$element, this.to
 			);
@@ -2384,18 +2384,18 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: '_rooted', base: '_item', prototype: {
+	xP.dependencies.register({name: '_rooted', base: '_item', prototype: {
 		init: function(params, control){
 			if(!this._.root_type){
 				this._.root_type = this.type;
 			}
 
-			xp.dependencies._rooted.base.init.apply(this, arguments);
+			xP.dependencies._rooted.base.init.apply(this, arguments);
 
 			var root = this.to.first().root();
 
 			this._.root = root._param(this._.root_type)
-				|| root._param(this._.root_type, new xp.list());
+				|| root._param(this._.root_type, new xP.list());
 		},
 
 		destroy: function(){
@@ -2405,7 +2405,7 @@ window.expromptum = (function(undefined){
 				this.to.first().root().change();
 			}
 
-			return xp.dependencies._rooted.base.destroy.apply(this, arguments);
+			return xP.dependencies._rooted.base.destroy.apply(this, arguments);
 		},
 
 		to_root: function(append){
@@ -2424,7 +2424,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: 'required', base: '_rooted', prototype: {
+	xP.dependencies.register({name: 'required', base: '_rooted', prototype: {
 		init: function(params, control){
 			if($.type(params) === 'string'){
 				params = {on: params};
@@ -2438,13 +2438,13 @@ window.expromptum = (function(undefined){
 			if(!params.on){
 				this.on = "![this]";
 			}
-			xp.dependencies.required.base.init.apply(this, [params, control]);
+			xP.dependencies.required.base.init.apply(this, [params, control]);
 		},
 
 		process: function(){
-			xp.debug('required', 'required', this.to.first().$element, this.to);
+			xP.debug('required', 'required', this.to.first().$element, this.to);
 
-			xp.dependencies.required.base.process.apply(this);
+			xP.dependencies.required.base.process.apply(this);
 
 			var that = this;
 
@@ -2468,15 +2468,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: 'valid', base: '_rooted', prototype: {
+	xP.dependencies.register({name: 'valid', base: '_rooted', prototype: {
 		init: function(params, control){
 			this._.root_type = 'invalid';
 
-			xp.dependencies.valid.base.init.apply(this, arguments);
+			xP.dependencies.valid.base.init.apply(this, arguments);
 		},
 
 		process: function(){
-			xp.debug(
+			xP.debug(
 				'valid', 'valid', this.result, this.to.first().$element, this.to
 			);
 
@@ -2484,14 +2484,14 @@ window.expromptum = (function(undefined){
 			
 			this.to.each(function(){
 				// TODO: Избавиться бы от проверки типа.
-				if(!this.val() && !(this instanceof xp.controls.fields)){
+				if(!this.val() && !(this instanceof xP.controls.fields)){
 					this.$container
 						.removeClass(that.container_valid_class)
 						.removeClass(that.container_invalid_class);
 
 					that.result = true;
 				}else{
-					xp.dependencies.valid.base.process.apply(that);
+					xP.dependencies.valid.base.process.apply(that);
 
 					if(that.result){
 						this.$container
@@ -2513,19 +2513,19 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.dependencies.register({name: 'changed', base: '_rooted', prototype: {
+	xP.dependencies.register({name: 'changed', base: '_rooted', prototype: {
 		init: function(params, control){
-			xp.dependencies.changed.base.init.apply(this, arguments);
+			xP.dependencies.changed.base.init.apply(this, arguments);
 
 			var that = this;
 
-			xp.after(function(){
+			xP.after(function(){
 				//that.change_parents();
 			}, 1);
 		},
 
 		process: function(){
-			xp.debug('changed', 'changed', this.to.first().$element, this.to);
+			xP.debug('changed', 'changed', this.to.first().$element, this.to);
 
 			var that = this;
 
@@ -2553,7 +2553,7 @@ window.expromptum = (function(undefined){
 		},
 
 		change_parents: function(){
-			var parents = new xp.list();
+			var parents = new xP.list();
 
 			this.to.each(function(){
 				var parent = this;
@@ -2575,15 +2575,15 @@ window.expromptum = (function(undefined){
 
 /* Repeats */
 
-	xp.controls.register({name: 'repeat_append_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_append_button', base: 'button', prototype: {
 		element_selector: '.repeat_append_button',
 
 		init: function(params){
-			xp.controls.repeat_append_button.base.init.apply(this, arguments);
+			xP.controls.repeat_append_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2599,15 +2599,15 @@ window.expromptum = (function(undefined){
 		}
 	}});
 
-	xp.controls.register({name: 'repeat_insert_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_insert_button', base: 'button', prototype: {
 		element_selector: '.repeat_insert_button',
 
 		init: function(params){
-			xp.controls.repeat_insert_button.base.init.apply(this, arguments);
+			xP.controls.repeat_insert_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2624,15 +2624,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'repeat_remove_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_remove_button', base: 'button', prototype: {
 		element_selector: '.repeat_remove_button',
 
 		init: function(params){
-			xp.controls.repeat_remove_button.base.init.apply(this, arguments);
+			xP.controls.repeat_remove_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2649,15 +2649,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'repeat_first_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_first_button', base: 'button', prototype: {
 		element_selector: '.repeat_first_button',
 
 		init: function(params){
-			xp.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_first_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2675,15 +2675,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'repeat_prev_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_prev_button', base: 'button', prototype: {
 		element_selector: '.repeat_prev_button',
 
 		init: function(params){
-			xp.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_first_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2701,15 +2701,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'repeat_next_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_next_button', base: 'button', prototype: {
 		element_selector: '.repeat_next_button',
 
 		init: function(params){
-			xp.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_first_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2727,15 +2727,15 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.controls.register({name: 'repeat_last_button', base: 'button', prototype: {
+	xP.controls.register({name: 'repeat_last_button', base: 'button', prototype: {
 		element_selector: '.repeat_last_button',
 
 		init: function(params){
-			xp.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_first_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
-			if(!(repeat instanceof xp.repeats.item)){
+			if(!(repeat instanceof xP.repeats.item)){
 				return;
 			}
 
@@ -2754,7 +2754,7 @@ window.expromptum = (function(undefined){
 	}});
 
 
-	xp.repeats = {
+	xP.repeats = {
 		init: function(control){
 			if(control.repeat){
 				if($.type(control.repeat) !== 'object'){
@@ -2771,7 +2771,7 @@ window.expromptum = (function(undefined){
 					repeats = control.root()._param('repeats');
 
 				if(!repeats[id]){
-					repeats[id] = new xp.repeats.item(control);
+					repeats[id] = new xP.repeats.item(control);
 				}else{
 					repeats[id].adopt(control);
 				}
@@ -2780,7 +2780,7 @@ window.expromptum = (function(undefined){
 	};
 
 
-	xp.repeats.item = xp.register({name: 'expromptum.repeats.item', base: xp.base, prototype: {
+	xP.repeats.item = xP.register({name: 'expromptum.repeats.item', base: xP.base, prototype: {
 		min: 1,
 		max: 300,
 
@@ -2795,35 +2795,35 @@ window.expromptum = (function(undefined){
 		container_template_class: 'repeated_template',
 
 		init: function(control){
-			xp.debug(
+			xP.debug(
 				'repeats', 'repeat',
 				control.$element, control.repeat.id, this
 			);
 
-			xp.repeats.item.base.init.apply(this);
+			xP.repeats.item.base.init.apply(this);
 
 			this.name_suffix_splitter = new RegExp(
 				'('
-				+ xp.taint_regexp(this.name_suffix_before)
+				+ xP.taint_regexp(this.name_suffix_before)
 				+ '\\d+'
-				+ xp.taint_regexp(this.name_suffix_after)
+				+ xP.taint_regexp(this.name_suffix_after)
 				+ ')(?=(?:'
-				+ xp.taint_regexp(this.name_suffix_before)
+				+ xP.taint_regexp(this.name_suffix_before)
 				+ '\\d+'
-				+ xp.taint_regexp(this.name_suffix_after)
+				+ xP.taint_regexp(this.name_suffix_after)
 				+ ')*$)'
 			);
 
 			this.id_suffix_pattern = new RegExp(
-				xp.taint_regexp(this.id_suffix_before)
+				xP.taint_regexp(this.id_suffix_before)
 				+ '\\d+'
-				+ xp.taint_regexp(this.id_suffix_after)
+				+ xP.taint_regexp(this.id_suffix_after)
 				+ '$'
 			);
 
 			this.container_position_class_pattern = new RegExp(
 				'(^|\\s)'
-				+ xp.taint_regexp(this.container_position_class)
+				+ xP.taint_regexp(this.container_position_class)
 				+ '\\d+(?=\\s|$)'
 			);
 
@@ -2846,7 +2846,7 @@ window.expromptum = (function(undefined){
 			// Если не был задан шаблон, создаем его сами.
 			var that = this;
 
-			xp.after(function(){
+			xP.after(function(){
 				if(!that.template){
 					that.temp_template = true;
 					// TODO: Добавить параметры reset_values и remove_siblings.
@@ -2862,7 +2862,7 @@ window.expromptum = (function(undefined){
 		},
 
 		destroy: function(handler, remove){
-			xp.repeats.item.base.destroy.apply(this, arguments);
+			xP.repeats.item.base.destroy.apply(this, arguments);
 
 			if(!arguments.length && this.control._){
 				this.control.root()._param('repeats')[this.id] = null;
@@ -2889,13 +2889,13 @@ window.expromptum = (function(undefined){
 			$.extend(this, control.repeat);
 
 			if(!this.control || template){
-				xp.after(function(){
+				xP.after(function(){
 					that.control = control;
 				});
 
 				control.$container
 				.find('*:not([id])').andSelf('*:not([id])').each(function(){
-					this.id = 'xp' + (Math.random() + '').substr(2, 8);
+					this.id = 'xP' + (Math.random() + '').substr(2, 8);
 				});
 
 				if(!control.html){
@@ -2905,11 +2905,11 @@ window.expromptum = (function(undefined){
 				}
 			}
 
-			xp.after(function(){
+			xP.after(function(){
 				control.$container
-				.find('*[id^=xp]').andSelf('*[id^=xp]').each(function(){
+				.find('*[id^=xP]').andSelf('*[id^=xP]').each(function(){
 					var $e = $(this),
-						control = xp.controls.link($e);
+						control = xP.controls.link($e);
 
 					if(!control || control.$element[0] !== this){
 						$e.removeAttr('id');
@@ -2925,7 +2925,7 @@ window.expromptum = (function(undefined){
 
 				control.$container.addClass(this.container_template_class);
 
-				xp.after(function(){
+				xP.after(function(){
 					control.$container
 					.find('input, textarea, select, button').andSelf()
 					.attr('disabled', true);
@@ -3057,8 +3057,8 @@ window.expromptum = (function(undefined){
 					)
 				);
 
-			$container.find('[data-expromptum]').removeAttr('data-expromptum');
-			$container.find('[data-xp]').removeAttr('data-xp');
+			$container.find('[data-xp], [data-expromptum]')
+				.removeAttr('data-xp').removeAttr('data-expromptum');
 
 			$container.find('[disabled]')
 				.add($container.filter('[disabled]'))
@@ -3103,7 +3103,7 @@ window.expromptum = (function(undefined){
 			return result;
 		}
 
-	}}, 'xp.repeats.item');
+	}}, 'xP.repeats.item');
 
 
 	var repeat_init_new_control = function(
@@ -3116,7 +3116,7 @@ window.expromptum = (function(undefined){
 			}
 
 			var selector = '#'
-				+ xp.taint_css(
+				+ xP.taint_css(
 					id.replace(
 						repeat.id_suffix_pattern, ''
 					)
@@ -3167,10 +3167,10 @@ window.expromptum = (function(undefined){
 				}
 			}
 
-			var result = xp.controls.link(params.$element);
+			var result = xP.controls.link(params.$element);
 
 			if(!result){
-				result = new xp.controls[params.type](params);
+				result = new xP.controls[params.type](params);
 			}
 
 			if(control.children){
@@ -3276,7 +3276,7 @@ window.expromptum = (function(undefined){
 				}
 			}else{
 				if(
-					object instanceof xp.controls._item
+					object instanceof xP.controls._item
 					&& object.$element
 					&& object.$element.attr('id')
 				){
@@ -3289,7 +3289,7 @@ window.expromptum = (function(undefined){
 					new_id = id.replace(repeat.id_suffix_pattern, '')
 						+ id_suffix;
 
-					tainted_new_id = xp.taint_css(new_id);
+					tainted_new_id = xP.taint_css(new_id);
 				}
 
 				if(
@@ -3301,8 +3301,8 @@ window.expromptum = (function(undefined){
 				){
 					result = '[id=' + tainted_new_id + ']';
 				}else if(
-					object instanceof xp.repeats.item
-					|| object instanceof xp.controls._item
+					object instanceof xP.repeats.item
+					|| object instanceof xP.controls._item
 				){
 					result = object;
 				}else if($.type(object) === 'object'){
@@ -3320,5 +3320,5 @@ window.expromptum = (function(undefined){
 		repeat_new_control_count = 0;
 
 
-	return xp;
+	return xP;
 })();})(window);
