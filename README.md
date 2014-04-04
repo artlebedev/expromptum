@@ -925,6 +925,11 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.container_blured_class = 'blured'`
 - Имя CSS-класса, назначаемое элементу контейнера после того, как произойдет событие `blur` у основного элемента данного контрола.
 
+#### Методы
+
+`.val([value])`
+- Чтение и запись значения контрола.
+
 * * *
 
 ### Строковое поле
@@ -1146,6 +1151,12 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Тип `datemonth`
 - Базовый тип [`_field`](#Абстрактное-поле)
 - Селектор элемента `input.datemonth, .datemonth input`
+
+#### Методы
+
+`.date([date])`
+- Чтение и запись даты в качестве значения контрола.
+
 
 ###### Пример
 
