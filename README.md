@@ -354,7 +354,7 @@ xP.controls.register({name: 'zip', base: '_field', prototype: {
 
 ###### Пример 2
 
-Слайдер для числового значения.
+Слайдер для числового значения с использованием виджета [Slider](http://jqueryui.com/slider/).
 
 ```js
 xP.controls.register({name: 'slider_number', base: 'number', prototype: {
@@ -427,7 +427,7 @@ xP.controls.register({name: 'slider_number', base: 'number', prototype: {
 
 ###### Пример 3
 
-Слайдер для набора значений.
+Слайдер для набора значений с использованием виджета [Slider](http://jqueryui.com/slider/).
 
 ```js
 xP.controls.register({name: 'slider_select', base: 'select', prototype: {
