@@ -171,6 +171,9 @@
 	}
 
 /* Datetime */
+	.date_control {
+		white-space: nowrap;
+	}
 	.datetime .hours, .datetime .minutes {
 		width: 1.5em;
 		margin: 0 2px;

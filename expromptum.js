@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-04-04
+// Updated: 2014-04-07
 
 
 (function(window){
@@ -1784,20 +1784,11 @@ window.expromptum = window.xP = (function(undefined){
 
 		locale: xP.locale,
 
-		_month_name: 'name',
-
-		_split_pattern: /[-\s:.\/\\]/,
-		
-		_spliters: ['-', ''],
-		
-		number_begin_html: '<input data-xp="type: \'number\','
-			+ 'allow_chars_pattern: /\\d/,'
-			+ '_format: function(v){return v},'
-			+ '_unformat: function(v){return v}',
-
 		init: function(params){
 
 			xP.controls.datemonth.base.init.apply(this, arguments);
+
+			this.$element.wrap(this.element_wrap_html);
 
 			this.$element.hide();
 
@@ -1812,7 +1803,7 @@ window.expromptum = window.xP = (function(undefined){
 			
 			for(var i = 0, ii = format.length; i < ii; i++){
 				if(format[i] == 'yy'){
-					html += this.number_begin_html + ', min: 1000" value="' + this._.values[0]
+					html += this._number_begin_html + ', min: 1000" value="' + this._.values[0]
 						+ '" size="4" maxlength="4" class="year"/>';
 				}else if(format[i] == 'mm'){
 					html += '<select class="month">';
@@ -1828,16 +1819,14 @@ window.expromptum = window.xP = (function(undefined){
 					if(this._month_name === 'name'){
 						html += '<input type="hidden" value="1" data-xp="type: \'hidden\'" class="day"/>';
 					}else{
-						html += this.number_begin_html + ', min: 1, max: 31" value="'
+						html += this._number_begin_html + ', min: 1, max: 31" value="'
 							+ (this._.values[2] !== undefined ? this._.values[2] : '')
 							+ '" size="2" maxlength="2" class="day"/>';
 					}
 				}
 			}
 
-			var $pseudo = $(html).insertAfter(this.$element);
-
-			this._.$pseudo_last = $pseudo.last();
+			var $pseudo = $(html).insertBefore(this.$element);
 
 			this._.$pseudo = $(
 				[$pseudo.filter('.year'),
@@ -1847,7 +1836,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			this._.pseudo = xP(this._.$pseudo).each(function(){
+			this._.pseudo = xP(that._.$pseudo).each(function(){
 				this.change(function(){
 					that._change_pseudo();
 				});
@@ -1869,6 +1858,19 @@ window.expromptum = window.xP = (function(undefined){
 				}
 			});
 		},
+
+		element_wrap_html: '<ins class="date_control"/>',
+
+		_month_name: 'name',
+
+		_split_pattern: /[-\s:.\/\\]/,
+		
+		_spliters: ['-', ''],
+		
+		_number_begin_html: '<input data-xp="type: \'number\','
+			+ 'allow_chars_pattern: /\\d/,'
+			+ '_format: function(v){return v},'
+			+ '_unformat: function(v){return v}',
 
 		date: function(date){
 			if(!arguments.length){
@@ -1946,14 +1948,14 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls.datetime.base.init.apply(this, arguments);
 
-			var html = this.number_begin_html + ', max: 23" value="'
+			var html = this._number_begin_html + ', max: 23" value="'
 					+ (this._.values[3] !== undefined ? this._.values[3] : '')
 					+ '" size="2" class="hours"/><span class="time_spliter"></span>'
-					+ this.number_begin_html + ', max: 59" value="'
+					+ this._number_begin_html + ', max: 59" value="'
 					+ (this._.values[4] !== undefined ? this._.values[4] : '')
 					+ '" size="2" class="minutes"/>';
 
-			var $time = $(html).insertAfter(this._.$pseudo_last), that = this;
+			var $time = $(html).insertBefore(this.$element), that = this;
 
 			this._.pseudo.append(xP($time).each(function(){
 				this.change(function(){
