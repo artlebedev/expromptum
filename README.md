@@ -397,7 +397,7 @@ xP.controls.register({name: 'slider_number', base: 'number', prototype: {
 	param: function(name, value){
 		switch(name){
 			case 'min':
-			case 'min':
+			case 'max':
 			case 'step':
 				this._param('slider').slider('option', name, value);
 
@@ -470,7 +470,7 @@ xP.controls.register({name: 'slider_select', base: 'select', prototype: {
 	param: function(name, value){
 		switch(name){
 			case 'min':
-			case 'min':
+			case 'max':
 			case 'step':
 				this._param('slider').slider('option', name, value);
 
