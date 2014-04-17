@@ -2199,7 +2199,7 @@ window.expromptum = window.xP = (function(undefined){
 
 						that.from.append(control);
 
-						id = that.from.index(control[0]);
+						var id = that.from.index(control[0]);
 
 						if(id < 0){
 							// TODO: Может стоит отменить зависимость?
@@ -3065,7 +3065,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		append: function(control, before){
-			var children = this.children(), i = ii = children.length;
+			var children = this.children(), i = children.length, i = ii;
 
 			while(i--){
 				if(control === children[i]){
