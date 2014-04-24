@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-04-10
+// Updated: 2014-04-24
 
 
 (function(window){
@@ -1521,7 +1521,7 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.controls.register({name: 'email', base: '_field', prototype: {
 		element_selector: '.email input, input.email',
-		valid: '[this].val().match(/^\\S+@\\S+\\.\\S{2,4}$/)'
+		valid: '[this].val().match(/^\\S+@\\S+\\.\\S{2,}$/)'
 	}});
 
 
