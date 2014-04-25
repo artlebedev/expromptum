@@ -1548,7 +1548,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		change: function(handler, remove){
-			if(!arguments.length){
+			if(!arguments.length && this.$secret){
 				this.$secret.val(this.val());
 			}
 
