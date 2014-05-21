@@ -12,10 +12,8 @@
 	select,
 	button,
 	.button,
-	.control_button,
-	html.with_reformator .reformator_wysiwyg,
-	html.with_reformator .reformator_current .reformator_wysiwyg {
-		border: 2px solid #ccc ! important;
+	.control_button {
+		border: 2px solid #ccc;
 		padding: 3px;
 		margin: 0 4px 0 0;
 	}
@@ -25,10 +23,8 @@
 	select:focus,
 	button:focus,
 	.button:focus,
-	.control_button:focus,
-	html.with_reformator .reformator_current .reformator_wysiwyg,
-	html.with_reformator .reformator_current .reformator_source {
-		border-color: #f96 ! important;
+	.control_button:focus {
+		border-color: #f96;
 		box-shadow: none;
 		outline: 0;
 	}
@@ -54,7 +50,7 @@
 	.button:hover,
 	.control_button:hover {
 		background: #fc9;
-		border-color: #fc9 ! important;
+		border-color: #fc9;
 	}
 
 	textarea, input[type=text] {
