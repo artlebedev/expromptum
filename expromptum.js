@@ -586,6 +586,8 @@ window.expromptum = window.xP = (function(undefined){
 			xP.controls.link(this.$element, this);
 			xP.controls.link(this.$container, this);
 
+			this.name = this.$element.attr('name');
+
 			if(xP.repeats){
 				xP.repeats.init(this);
 			}
@@ -1126,8 +1128,6 @@ window.expromptum = window.xP = (function(undefined){
 			this.$element.blur(function(){
 				that.$container.addClass(that.container_blured_class);
 			});
-
-			this.name = this.$element.attr('name');
 
 			var id = this.$element.attr('id');
 
@@ -2807,6 +2807,7 @@ window.expromptum = window.xP = (function(undefined){
 				}
 
 				control.repeat.id = control.repeat.id || control.name;
+				console.log(control.repeat.id, control.$element[0].name)
 
 				var id = control.repeat.id,
 					repeats = control.root()._param('repeats');
