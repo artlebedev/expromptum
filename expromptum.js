@@ -2807,7 +2807,6 @@ window.expromptum = window.xP = (function(undefined){
 				}
 
 				control.repeat.id = control.repeat.id || control.name;
-				console.log(control.repeat.id, control.$element[0].name)
 
 				var id = control.repeat.id,
 					repeats = control.root()._param('repeats');
