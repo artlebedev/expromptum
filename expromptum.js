@@ -1648,6 +1648,8 @@ window.expromptum = window.xP = (function(undefined){
 				+ ']$'
 			);
 
+			this.valid = '[this].min < [this] && [this] < [this].max';
+
 			xP.controls.number.base.init.apply(this, arguments);
 
 			this.$element.wrap(this.element_wrap_html);
