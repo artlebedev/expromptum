@@ -2049,7 +2049,6 @@ window.expromptum = window.xP = (function(undefined){
 						if(ev.type === 'click' || ev.keyCode === 13){
 							// enter.
 							that.val(list.val());
-							ev.preventDefault();
 							that.$element.focus();
 						}
 					})
