@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-05-22
+// Updated: 2014-06-23
 
 
 (function(window){
@@ -1648,7 +1648,7 @@ window.expromptum = window.xP = (function(undefined){
 				+ ']$'
 			);
 
-			this.valid = '[this].min < [this] && [this] < [this].max';
+			this.valid = '[this].min <= [this] && [this] <= [this].max';
 
 			xP.controls.number.base.init.apply(this, arguments);
 
@@ -2527,7 +2527,11 @@ window.expromptum = window.xP = (function(undefined){
 			
 			this.to.each(function(){
 				// TODO: Избавиться бы от проверки типа.
-				if(!this.val() && !(this instanceof xP.controls.fields)){
+				var value = this.val();
+				if(
+					!value && value !== 0
+					&& !(this instanceof xP.controls.fields)
+				){
 					this.$container
 						.removeClass(that.container_valid_class)
 						.removeClass(that.container_invalid_class);
