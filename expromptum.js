@@ -2021,10 +2021,10 @@ window.expromptum = window.xP = (function(undefined){
 						list.disable(false, /.?/);
 					}
 					list.$element[0].selectedIndex = 8888;
-				});
+				});console.log(this.$element)
 
 				this.$element
-					.bind('focus click keyup', function(){
+					.bind('focus click keyup', function(ev){
 						list.show();
 					})
 					.keydown(function(ev){
@@ -2045,12 +2045,12 @@ window.expromptum = window.xP = (function(undefined){
 					.mousedown(function(ev){
 						list._param('do_not_hide', true);
 					})
-					.bind('keydown click', function(ev){
+					.bind('keyup click', function(ev){
 						if(ev.type === 'click' || ev.keyCode === 13){
 							// enter.
 							that.val(list.val());
+							ev.preventDefault();
 							that.$element.focus();
-							list.hide();
 						}
 					})
 					.bind('blur keypress', function(ev){
