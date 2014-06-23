@@ -1122,7 +1122,7 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Минимальное значение контрола.
 
 `.def = 0`
-- Значение по умолчанию.
+- Значение по умолчанию, используемое в методах `inc` и `dec` при пустом `value`.
 
 `.max = Number.MAX_VALUE - 1`
 - Максимальное значение контрола.
