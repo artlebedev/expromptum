@@ -246,7 +246,7 @@ window.expromptum = window.xP = (function(undefined){
 				{
 					format: {
 						decimal: /\./,
-						grouping: /(\d\d|\d(?=\d{4}))(?=(\d{3})+([^\d]|$))/g
+						grouping: /(\d\d|\d(?=\d{4}))(?=(\d{3})+([^\d]|$)())/g
 					},
 
 					unformat: {
@@ -1758,7 +1758,8 @@ window.expromptum = window.xP = (function(undefined){
 					? undefined
 					: this._unformat(this.$element.val());
 			}else{
-				this.$secret.val(this._unformat(value));
+				value = this._unformat(value);
+				this.$secret.val(value);
 
 				return xP.controls.number.base.val.apply(
 					this,
@@ -1770,18 +1771,22 @@ window.expromptum = window.xP = (function(undefined){
 		_format: function(value){
 			var num = this.locale.number;
 
-			return (value + '')
-				.replace(num.format.decimal, num.decimal)
-				.replace(num.format.grouping, '$1' + num.grouping);
+			value = (value + '').split('.');
+
+			return value[0].replace(num.format.grouping, '$1' + num.grouping)
+					+ (value[1]
+						? num.decimal + value[1]
+						: '');
 		},
 
 		_unformat: function(value){
 			var num = this.locale.number;
 
 			return value !== ''
-					? (value + '')
+					? ((value + '')
 						.replace(num.unformat.grouping, '')
-						.replace(num.unformat.decimal, '.') * 1
+						.replace(num.unformat.decimal, '.') * 1)
+							.toPrecision(15) * 1
 					: '';
 		}
 	}});
