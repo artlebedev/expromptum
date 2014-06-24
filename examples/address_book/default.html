@@ -55,12 +55,12 @@
 		<label for="all_compact_view"><span class="hide_on_unselected">Open</span><span class="hide_on_selected">Close</span> All</label>
 	</span>
 
-	<div class="fields card" data-xp='{
-		"name": "person",
-		"repeat": true,
-		"classed": {"on": "[id=compact_view] && [id=first_name]", "do": "compact_view"},
-		"required": true
-	}'>
+	<div class="fields card" data-xp="
+		name: 'person',
+		repeat: true,
+		classed: {on: '[id=compact_view] && [id=first_name]', do: 'compact_view'},
+		required: true
+	">
 		<div class="horizontal">
 			<dl class="field">
 				<dt class="field_label"><label>Last name</label></dt>
@@ -106,16 +106,16 @@
 		</dl>
 
 		<span class="hide_in_compact_view">Contacts</span>
-		<div class="fields horizontal hide_nonfirst_in_compact_view" data-xp='{
-			"name": "contact",
-			"repeat": true
-		}'>
+		<div class="fields horizontal hide_nonfirst_in_compact_view" data-xp="
+			name: 'contact',
+			repeat: true
+		">
 			<dl class="field">
 				<dd class="field_control">
-					<input name="value" data-xp='{
-						"valid":
-							"([id=type].val().match(/phone/i) && [this].val().match(/^(?=[^()]*\\(([^()]*\\)[^()]*)?$|[^()]*$)(?=[\\s(]*\\+[^+]*$|[^+]*$)([-+.\\s()]*\\d){11,18}$/)) || ([id=type].val().match(/email/i) && [this].val().match(/^\\S+@\\S+\\.\\S{2,4}$/))"
-					}'/>
+					<input name="value" data-xp="
+						valid:
+							'([id=type].val().match(/phone/i) && [this].val().match(/^(?=[^()]*\\(([^()]*\\)[^()]*)?$|[^()]*$)(?=[\\s(]*\\+[^+]*$|[^+]*$)([-+.\\s()]*\\d){11,18}$/)) || ([id=type].val().match(/email/i) && [this].val().match(/^\\S+@\\S+\\.\\S{2,4}$/))'
+					"/>
 				</dd>
 			</dl>
 
@@ -138,10 +138,10 @@
 		</div>
 
 		<span class="option card_compact_view">
-			<input name="compact_view" id="compact_view" value="true" type="checkbox" data-xp='{
-				"enabled": "[id=first_name]",
-				"computed": "!!([id=all_compact_view]) + \"\""
-			}'/>
+			<input name="compact_view" id="compact_view" value="true" type="checkbox" data-xp="
+				enabled: '[id=first_name]',
+				computed: '!!([id=all_compact_view]) + \'\''
+			"/>
 			<label for="compact_view"><span class="hide_on_unselected">Open</span><span class="hide_on_selected">Close</span></label>
 		</span>
 
