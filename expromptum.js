@@ -2026,7 +2026,7 @@ window.expromptum = window.xP = (function(undefined){
 						list.disable(false, /.?/);
 					}
 					list.$element[0].selectedIndex = 8888;
-				});console.log(this.$element)
+				});
 
 				this.$element
 					.bind('focus click keyup', function(ev){
