@@ -586,7 +586,7 @@ window.expromptum = window.xP = (function(undefined){
 			xP.controls.link(this.$element, this);
 			xP.controls.link(this.$container, this);
 
-			this.name = this.name || this.$element.attr('name');
+			this.name = this.$element.attr('name') || this.name;
 
 			if(xP.repeats){
 				xP.repeats.init(this);
@@ -776,11 +776,11 @@ window.expromptum = window.xP = (function(undefined){
 					if($.type(value) !== 'array'){
 						value = [value];
 					}
-
 					for(var i = 0, ii = value.length, j, suffix; i < ii; i++){
 						if(i){
 							that = that.repeat.append(that);
 						}
+
 						that._set_vals(
 							value[i],
 							_suffix + that.repeat.name_suffix_before
