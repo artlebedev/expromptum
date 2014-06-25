@@ -322,6 +322,8 @@ window.expromptum = window.xP = (function(undefined){
 
 		destroy: function(handler, remove){
 			if(!arguments.length){
+				clearTimeout(this._.change_inquiry);
+
 				var that = this;
 
 				this._.on_destroy.each(function(){
@@ -341,6 +343,8 @@ window.expromptum = window.xP = (function(undefined){
 		change: function(handler, remove){
 			if(!arguments.length){
 				if(!this._.change_inquiry){
+					clearTimeout(this._.change_inquiry);
+
 					var that = this;
 
 					that._.change_inquiry = xP.after(function(){
@@ -623,7 +627,6 @@ window.expromptum = window.xP = (function(undefined){
 
 				this.$container
 					= this.$element
-					= this._
 					= null;
 			}
 			return this;
@@ -771,17 +774,24 @@ window.expromptum = window.xP = (function(undefined){
 			if(!arguments.length){
 				return this._.children_values;
 			}else{
-				var that = this;
-
 				if(this.repeat){
+
 					if($.type(value) !== 'array'){
 						value = [value];
 					}
+
+					// TODO: Надо будет не все удалять, а только лишние.
+					var siblings = this.repeat.children();
+					while(siblings.length > 1){
+						this.repeat.remove(siblings[siblings.length - 1]);
+					}
+					var that = siblings[0];
+
 					for(var i = 0, ii = value.length, j, suffix; i < ii; i++){
 						if(i){
-							that = that.repeat.append(that);
+							that = siblings[0].repeat.append(
+									siblings[siblings.length - 1]);
 						}
-
 						that._set_vals(
 							value[i],
 							_suffix + that.repeat.name_suffix_before
@@ -789,7 +799,7 @@ window.expromptum = window.xP = (function(undefined){
 						);
 					}
 				}else{
-					that._set_vals(value, '');
+					this._set_vals(value, '');
 				}
 
 				return this;
@@ -798,7 +808,6 @@ window.expromptum = window.xP = (function(undefined){
 
 		_set_vals: function(value, suffix){
 			var that = this;
-
 			xP.after(function(){
 				$.each(value, function(name, value){
 					var controls = that._find_by_name(name)
@@ -2571,12 +2580,13 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			xP.after(function(){
-				//that.change_parents();
-			}, 1);
+//			xP.after(function(){
+//				that.change_parents();
+//			}, 1);
 		},
 
 		process: function(){
+			if(!this.to){return;} // TODO: Надо разобраться с destroy.
 			xP.debug('changed', 'changed', this.to.first().$element, this.to);
 
 			var that = this;
@@ -2600,7 +2610,7 @@ window.expromptum = window.xP = (function(undefined){
 				if(parent){
 					parent.change();
 				}
-				//that.change_parents();
+//				that.change_parents();
 			});
 		},
 
