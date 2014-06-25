@@ -114,7 +114,10 @@
 				<dd class="field_control">
 					<input name="value" data-xp="
 						valid:
-							'([id=type].val().match(/phone/i) && [this].val().match(/^(?=[^()]*\\(([^()]*\\)[^()]*)?$|[^()]*$)(?=[\\s(]*\\+[^+]*$|[^+]*$)([-+.\\s()]*\\d){11,18}$/)) || ([id=type].val().match(/email/i) && [this].val().match(/^\\S+@\\S+\\.\\S{2,4}$/))'
+							'([id=type].val().match(/phone/i) && '
+							+ xP.controls.phone.prototype.valid
+							+ ') || ([id=type].val().match(/email/i) && '
+							+ xP.controls.email.prototype.valid + ')'
 					"/>
 				</dd>
 			</dl>
