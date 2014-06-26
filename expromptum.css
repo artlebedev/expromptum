@@ -172,7 +172,7 @@
 		text-decoration: none;
 	}
 	.datetime .hours, .datetime .minutes {
-		width: 1.5em;
+		width: 2em;
 		margin: 0 2px;
 	}
 	.datetime .hours {
