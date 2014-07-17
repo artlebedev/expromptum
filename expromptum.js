@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-06-26
+// Updated: 2014-07-17
 
 
 (function(window){
@@ -1242,11 +1242,6 @@ window.expromptum = window.xP = (function(undefined){
 	}});
 
 
-	xP.controls.register({name: 'hidden', base: '_field', prototype: {
-		element_selector: 'input[type=hidden]'
-	}});
-
-
 	xP.controls.register({name: 'file', base: '_field', prototype: {
 		element_selector: 'input[type=file]'
 	}});
@@ -1752,10 +1747,20 @@ window.expromptum = window.xP = (function(undefined){
 
 		param: function(name, value){
 			if(
-				(name == 'min' && this.val() < value)
-				|| (name == 'max' && this.val() > value)
+				(name === 'min' && this.val() < value)
+				|| (name === 'max' && this.val() > value)
 			){
 				this.val(value);
+			}
+
+			if((name === 'min' || name === 'max') && this.valid.process){
+				var result = xP.controls.number.base.param.apply(
+						this, arguments
+					);
+
+				this.valid.process();
+
+				return result;
 			}
 
 			return xP.controls.number.base.param.apply(
@@ -1827,7 +1832,8 @@ window.expromptum = window.xP = (function(undefined){
 			
 			for(var i = 0, ii = format.length; i < ii; i++){
 				if(format[i] == 'yy'){
-					html += this._number_begin_html + ', min: 1000" value="' + this._.values[0]
+					html += this._number_begin_html + ', min: 0" value="'
+						+ this._.values[0]
 						+ '" size="4" maxlength="4" class="year"/>';
 				}else if(format[i] == 'mm'){
 					html += '<select class="month">';
@@ -1841,12 +1847,14 @@ window.expromptum = window.xP = (function(undefined){
 					html += '</select>';
 				}else if(format[i] == 'dd'){
 					if(this._month_name === 'name'){
-						html += '<input type="hidden" value="1" data-xp="type: \'hidden\'" class="day"/>';
+						html += '<input type="hidden" value="1"';
 					}else{
-						html += this._number_begin_html + ', min: 1, max: 31" value="'
+						html += this._number_begin_html
+							+ ', min: 1, max: 31" value="'
 							+ (this._.values[2] !== undefined ? this._.values[2] : '')
-							+ '" size="2" maxlength="2" class="day"/>';
+							+ '" size="2" maxlength="2"';
 					}
+					html += ' class="day"/>';
 				}
 			}
 
@@ -1861,6 +1869,19 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this;
 
 			this._.pseudo = xP(this._.$pseudo).each(function(){
+				if(this.max !== 31){
+					this.change(function(){
+						that._.pseudo[2].param(
+							'max',
+							33 - new Date(
+								that._.pseudo[0].val(),
+								that._.pseudo[1].val() - 1,
+								33
+							).getDate()
+						);
+					});
+				}
+
 				this.change(function(){
 					that._change_pseudo();
 				});
@@ -1914,7 +1935,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		_change_pseudo: function(){
 			if(!this.disabled){
-				var i = 0, ii = this._spliters.length, val, value = '';
+				var i = 0, ii = this._spliters.length, val, value = '', s;
 
 				for(; i < ii; i ++){
 					val = this._.pseudo[i].val();
@@ -1924,7 +1945,8 @@ window.expromptum = window.xP = (function(undefined){
 
 						break;
 					}else{
-						value += (val + '').replace(/^(\d)$/, '0$1')
+						s = '000' + val;
+						value += s.substr(s.length - (!i ? 4 : 2))
 								+ this._spliters[i];
 					}
 				}
@@ -1974,10 +1996,11 @@ window.expromptum = window.xP = (function(undefined){
 
 			var html = this._number_begin_html + ', min: 0, max: 23" value="'
 					+ (this._.values[3] !== undefined ? this._.values[3] : '')
-					+ '" size="2" class="hours"/><span class="time_spliter"></span>'
+					+ '" size="2" maxlength="2" class="hours"/>'
+					+ '<span class="time_spliter"></span>'
 					+ this._number_begin_html + ', min: 0, max: 59" value="'
 					+ (this._.values[4] !== undefined ? this._.values[4] : '')
-					+ '" size="2" class="minutes"/>';
+					+ '" size="2" maxlength="2" class="minutes"/>';
 
 			var $time = $(html).insertBefore(this.$element), that = this;
 
@@ -2102,6 +2125,11 @@ window.expromptum = window.xP = (function(undefined){
 			this.$element.hide();
 			return this;
 		}
+	}});
+
+
+	xP.controls.register({name: 'hidden', base: '_field', prototype: {
+		element_selector: 'input[type=hidden]'
 	}});
 
 
