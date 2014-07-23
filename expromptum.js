@@ -2207,7 +2207,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.dependencies._item.base.init.apply(this, arguments);
 
-			var that = this;
+			var that = this, root = control.parent() ? control.root() : null;
 
 			//TODO: Оптимизировать. Теперь все проще.
 			var parse_controls = function(param){
@@ -2218,7 +2218,7 @@ window.expromptum = window.xP = (function(undefined){
 					var result = new xP.list();
 					for(var i = 0, ii = param.length; i < ii; i++){
 						if($.type(param[i]) === 'string'){
-							result.append(xP(param[i]));
+							result.append(xP(param[i]), root);
 						}else{
 							result.append(param[i]);
 						}
@@ -2243,7 +2243,7 @@ window.expromptum = window.xP = (function(undefined){
 						){
 							control = that.to;
 						}else{
-							control = xP(arguments[1]);
+							control = xP(arguments[1], root);
 						}
 
 						that.from.append(control);
