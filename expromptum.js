@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-07-17
+// Updated: 2014-07-24
 
 
 (function(window){
@@ -1268,6 +1268,7 @@ window.expromptum = window.xP = (function(undefined){
 			this._.options =  this.$element[0].options;
 
 			this._.all_options = [];
+			this._.enabled_options = xP.list();
 
 			var options = this.$element[0].options, i = 0, ii = options.length;
 
@@ -1276,30 +1277,21 @@ window.expromptum = window.xP = (function(undefined){
 			}
 		},
 
-		disable: function(disabled, values){
+		disable: function(disabled, dependence){
 			// TODO: Добавить поддержку values к radio и checkbox-ам.
-			if(values !== undefined){
+			if(dependence && dependence.values !== undefined){
+				var values = dependence.values, that = this;
+
 				if($.type(values) !== 'array'){
 					values = [values];
 				}
 
 				// TODO: Добавить поддержку optgroup.
 				var i = 0, ii = this._.all_options.length, option,
-					j, jj = values.length, disable, k = 0, value = this.val(),
-					options = this._.options, selected;
+					j, jj = values.length, disable;
 
-				if(this.hide_disabled_option){
-					options.length = 0;
-				}
-
-				if(disabled){
-					this._.disabled_value = value;
-				}else{
-					var that = this;
-
-					xP.after(function(){
-						that._.disabled_value = undefined;
-					});
+				if(!this._.enable_options){
+					this._.disabled_value = this.val();
 				}
 
 				for(;i < ii; i++){
@@ -1307,12 +1299,8 @@ window.expromptum = window.xP = (function(undefined){
 
 					option = this._.all_options[i];
 
-					if(!this.hide_disabled_option){
-						k = i;
-					}
-
 					if(!disabled){
-						for(j = 0;j < jj; j++){
+						for(j = 0; j < jj; j++){
 							if($.type(values[j]) === 'regexp'){
 								disable = !option.value.match(values[j]);
 							}else{
@@ -1320,26 +1308,7 @@ window.expromptum = window.xP = (function(undefined){
 							}
 
 							if(!disable){
-								if(
-									selected === undefined
-									|| value == option.value
-									|| (
-										value === null
-										&& this._.disabled_value == option.value
-									)
-								){
-									selected = k;
-								}
-
-								option.disabled = '';
-
-								if(
-									this.hide_disabled_option
-									&& !option.parentNode
-								){
-									options[options.length] = option;
-									k++;
-								}
+								this._.enabled_options.append(option);
 
 								break;
 							}
@@ -1351,14 +1320,36 @@ window.expromptum = window.xP = (function(undefined){
 					}
 				}
 
-				if(
-					selected !== undefined
-					&& this._.options[selected].value != value
-				){
-					this.$element[0].selectedIndex = selected;
+				clearTimeout(this._.enable_options);
 
-					this.$element.change();
-				}
+				this._.enable_options = xP.after(function(){
+
+					var options =  that._.options;
+
+					if(that.hide_disabled_option){
+						options.length = 0;
+					}
+
+					that._.enabled_options.each(function(i){
+						this.disabled = '';
+
+						if(
+							that.hide_disabled_option
+							&& !this.parentNode
+						){
+							options[options.length] = this;
+							if(this.value == that._.disabled_value){
+								that.$element[0].selectedIndex = i;
+
+								that.$element.change();
+							}
+						}
+					});
+
+					that._.enabled_options.length = 0;
+					that._.disabled_value = undefined;
+				});
+
 				return this;
 			}else{
 				return xP.controls.select.base.disable.apply(this, arguments);
@@ -2418,21 +2409,10 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this, enable;
 
 			this.to.each(function(){
-				if(that.values){
-					if(that.result){
-						enable = this;
-						xP.after(function(){
-							enable.disable(false, that.values);
-						});
-					}else{
-						this.disable(true, '');
-					}
-				}else{
-					this.disable(!that.result);
+				this.disable(!that.result, that);
 
-					if(that.result && this.children){
-						subprocess(this.children());
-					}
+				if(that.result && this.children){
+					subprocess(this.children());
 				}
 			});
 
