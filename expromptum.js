@@ -145,7 +145,11 @@ window.expromptum = window.xP = (function(undefined){
 			return this;
 		};
 
-		result.each = function(handler){
+		result.filter = function(handler){
+			return this.each(handler, true);
+		};
+
+		result.each = function(handler, _filter){
 			var i = 0, ii = this.length, current, result;
 
 			while(i < ii){
@@ -154,7 +158,11 @@ window.expromptum = window.xP = (function(undefined){
 				result = handler.apply(current, [i]);
 
 				if(result === false){
-					break;
+					if(_filter){
+						this.splice(i, 1);
+					}else{
+						break;
+					}
 				}
 
 				if(this[i] === current){
@@ -1278,13 +1286,8 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		disable: function(disabled, dependence){
-			// TODO: Добавить поддержку values к radio и checkbox-ам.
 			if(dependence && dependence.values !== undefined){
 				var values = dependence.values, that = this;
-
-				if($.type(values) !== 'array'){
-					values = [values];
-				}
 
 				// TODO: Добавить поддержку optgroup.
 				var i = 0, ii = this._.all_options.length, option,
@@ -2200,8 +2203,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this, root = control.parent() ? control.root() : null;
 
-			//TODO: Оптимизировать. Теперь все проще.
-			var parse_controls = function(param){
+			var parse_controls = function(param, values){
 					if($.type(param) !== 'array'){
 						param = [param];
 					}
@@ -2214,10 +2216,40 @@ window.expromptum = window.xP = (function(undefined){
 							result.append(param[i]);
 						}
 					}
+
+					if(values !== undefined){
+						result.filter(function(){
+							if(!this.$element.is('[value]')){
+								return true;
+							}else{
+								var i, ii = values.length;
+								for(i = 0; i < ii; i++){
+									if($.type(values[i]) === 'regexp'){
+										if(
+											this.$element.val()
+												.match(values[i])
+										){
+											return true;
+										}
+									}else{
+										if(this.$element.val() == values[i]){
+											return true;
+										}
+									}
+								}
+							}
+							return false;
+						});
+					}
+
 					return result;
 				};
 
-			this.to = parse_controls(this.to);
+			if(this.values !== undefined && $.type(this.values) !== 'array'){
+				this.values = [this.values];
+			}
+
+			this.to = parse_controls(this.to, this.values);
 
 			this.from = parse_controls(this.from);
 
