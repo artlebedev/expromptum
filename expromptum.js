@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-07-24
+// Updated: 2014-09-23
 
 
 (function(window){
@@ -1275,43 +1275,35 @@ window.expromptum = window.xP = (function(undefined){
 
 			this._.options =  this.$element[0].options;
 
-			this._.all_options = [];
+			this._.all_options = xP.list();
 			this._.enabled_options = xP.list();
 
 			var options = this.$element[0].options, i = 0, ii = options.length;
 
 			for(;i < ii; i++){
-				this._.all_options[i] = options[i];
+				this._.all_options.append(options[i]);
 			}
 		},
 
 		disable: function(disabled, dependence){
 			if(dependence && dependence.values !== undefined){
-				var values = dependence.values, that = this;
-
 				// TODO: Добавить поддержку optgroup.
-				var i = 0, ii = this._.all_options.length, option,
-					j, jj = values.length, disable;
+				var that = this, values = dependence.values,
+					i, ii = values.length;
 
-				if(!this._.enable_options){
-					this._.disabled_value = this.val();
-				}
-
-				for(;i < ii; i++){
-					disable = true;
-
-					option = this._.all_options[i];
+				this._.all_options.each(function(){
+					var disable = true;
 
 					if(!disabled){
-						for(j = 0; j < jj; j++){
-							if($.type(values[j]) === 'regexp'){
-								disable = !option.value.match(values[j]);
+						for(i = 0; i < ii; i++){
+							if($.type(values[i]) === 'regexp'){
+								disable = !this.value.match(values[i]);
 							}else{
-								disable = option.value != values[j];
+								disable = this.value != values[i];
 							}
 
 							if(!disable){
-								this._.enabled_options.append(option);
+								that._.enabled_options.append(this);
 
 								break;
 							}
@@ -1319,9 +1311,9 @@ window.expromptum = window.xP = (function(undefined){
 					}
 
 					if(disable){
-						option.disabled = 'true';
+						this.disabled = 'true';
 					}
-				}
+				});
 
 				clearTimeout(this._.enable_options);
 
@@ -1331,26 +1323,26 @@ window.expromptum = window.xP = (function(undefined){
 
 					if(that.hide_disabled_option){
 						options.length = 0;
+
+						that._.enabled_options.each(function(i){
+							this.disabled = '';
+
+							if(!this.parentNode){
+								options[options.length] = this;
+							}
+						});
+					}else{
+						that.$element[0].selectedIndex =
+							that._.all_options.index(
+								that._.enabled_options.first()
+							);
+
+						that._.enabled_options.each(function(i){
+							this.disabled = '';
+						});
 					}
 
-					that._.enabled_options.each(function(i){
-						this.disabled = '';
-
-						if(
-							that.hide_disabled_option
-							&& !this.parentNode
-						){
-							options[options.length] = this;
-							if(this.value == that._.disabled_value){
-								that.$element[0].selectedIndex = i;
-
-								that.$element.change();
-							}
-						}
-					});
-
 					that._.enabled_options.length = 0;
-					that._.disabled_value = undefined;
 				});
 
 				return this;
@@ -2193,13 +2185,18 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.dependencies.register({name: '_item', base: xP.base, prototype: {
 		init: function(params, control){
-			this.to = control;
 
 			if($.type(params) === 'string'){
 				params = {on: params};
 			}
 
 			xP.dependencies._item.base.init.apply(this, arguments);
+
+			if(!control){
+				control = this.to;
+			}else{
+				this.to = control;
+			}
 
 			var that = this, root = control.parent() ? control.root() : null;
 
@@ -2313,9 +2310,9 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			this.to.each(function(){
-				if(this[that.type] instanceof xP.dependencies._item){
-					//this[that.type].destroy();
-				}
+				//if(this[that.type] instanceof xP.dependencies._item){
+				//	this[that.type].destroy();
+				//}
 				this[that.type] = that;
 				// TODO: Нужно удалять только, когда удалены все контролы.
 				this.destroy(destroy);
