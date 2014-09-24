@@ -1273,10 +1273,10 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls.select.base.init.apply(this, arguments);
 
-			this._.options =  this.$element[0].options;
+			this._.options = this.$element[0].options;
 
-			this._.all_options = xP.list();
-			this._.enabled_options = xP.list();
+			this._.all_options = xP.list(this._.all_options);
+			this._.enabled_options = xP.list(this._.enabled_options);
 
 			var options = this.$element[0].options, i = 0, ii = options.length;
 
@@ -2190,13 +2190,13 @@ window.expromptum = window.xP = (function(undefined){
 				params = {on: params};
 			}
 
-			xP.dependencies._item.base.init.apply(this, arguments);
-
 			if(!control){
-				control = this.to;
+				control = params.to;
 			}else{
 				this.to = control;
 			}
+
+			xP.dependencies._item.base.init.apply(this, arguments);
 
 			var that = this, root = control.parent() ? control.root() : null;
 
@@ -2264,6 +2264,13 @@ window.expromptum = window.xP = (function(undefined){
 							control = that.to;
 						}else{
 							control = xP(arguments[1], root);
+
+							if(
+								!control[0]
+								&& root && root.$element.is(arguments[1])
+							){
+								control = [root];
+							}
 						}
 
 						that.from.append(control);
@@ -2278,7 +2285,7 @@ window.expromptum = window.xP = (function(undefined){
 								that
 							);
 
-							return arguments[1];
+							return arguments[0];
 						}
 
 						return 'arguments["' + id + '"].'
