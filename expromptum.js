@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-09-25
+// Updated: 2014-09-29
 
 
 (function(window){
@@ -2321,20 +2321,14 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			this.to.each(function(){
-				//if(this[that.type] instanceof xP.dependencies._item){
-				//	this[that.type].destroy();
-				//}
-				this[that.type] = that;
+				if(!this[that.type] || !this[that.type].append){
+					this[that.type] = new xP.list();
+				}
+
+				this[that.type].append(that);
 				// TODO: Нужно удалять только, когда удалены все контролы.
 				this.destroy(destroy);
 			});
-
-			if(
-				control
-				&& !(control[this.type] instanceof xP.dependencies._item)
-			){
-				control[this.type] = null;
-			}
 
 			this.init_process();
 
