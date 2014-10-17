@@ -1285,6 +1285,40 @@ window.expromptum = window.xP = (function(undefined){
 			}
 		},
 
+		append: function(params){
+			if($.type(params) !== 'array'){
+				params = [params];
+			}
+
+			var all_options = this._.all_options, options = this._.options,
+				i = 0, ii = params.length;
+
+			for(; i < ii; i++){
+				all_options.push(
+					options[options.length] = $.type(params[i]) === 'array'
+						? new Option(params[i][0], params[i][1])
+						: (
+							$.type(params[i]) !== 'object'
+							? new Option(params[i])
+							: (
+								params[i] instanceof Option
+								? params[i]
+								: new Option(params[i].label, params[i].value)
+							)
+						)
+				);
+			}
+
+			return this;
+		},
+
+		remove: function(){
+			this._.options.length = 0;
+			this._.all_options.length = 0;
+
+			return this;
+		},
+
 		disable: function(disabled, dependence){
 			if(dependence && dependence.values !== undefined){
 				// TODO: Добавить поддержку optgroup.
@@ -1384,6 +1418,32 @@ window.expromptum = window.xP = (function(undefined){
 			this.selected = null;
 
 			this._init_val();
+		},
+
+		append: function(params){
+			if($.type(params) !== 'array'){
+				params = [params];
+			}
+
+			var i = 0, ii = params.length, html = '', id;
+
+			for(; i < ii; i++){
+				id = this.name + '_' + (this._.group.siblings.length + i);
+
+				html += '<div class="option"><input type="' + this.type
+					+ '" name="' + this.name + '" id="' + id
+					+ '" value="' + (
+						$.type(params[i]) === 'array'
+						? params[i][1]
+						: params[i]
+					) + '"/> <label for="' + id + '">' + (
+						$.type(params[i]) === 'array'
+						? params[i][0]
+						: params[i]
+					) + '</label></div>'
+			}
+
+			return xP($(html).insertAfter(this.$container).find('input'));
 		},
 
 		change_events: 'change',
