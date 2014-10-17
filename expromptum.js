@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-09-29
+// Updated: 2014-10-17
 
 
 (function(window){
@@ -2202,7 +2202,9 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.dependencies._item.base.init.apply(this, arguments);
 
-			var that = this, root = control.parent() ? control.root() : null;
+			var that = this,
+				root = control.parent && control.parent()
+					? control.root() : null;
 
 			var parse_controls = function(param, values){
 					if($.type(param) !== 'array'){
@@ -2320,26 +2322,39 @@ window.expromptum = window.xP = (function(undefined){
 				this.destroy(destroy);
 			});
 
+			var dependence_init_inquiry = that.type + '_init_inquiry';
+
 			this.to.each(function(){
-				if(!this[that.type] || !this[that.type].append){
-					this[that.type] = new xP.list();
+				var control = this, dependence = control[that.type];
+
+				if(!dependence || !dependence.append){
+					dependence = control[that.type] = new xP.list();
 				}
 
-				this[that.type].append(that);
-				// TODO: Нужно удалять только, когда удалены все контролы.
-				this.destroy(destroy);
-			});
+				dependence.append(that);
 
-			this.init_process();
+				// TODO: Нужно удалять только, когда удалены все контролы.
+				control.destroy(destroy);
+
+				//return;
+				if(!control._param(dependence_init_inquiry)){
+					control._param(
+						dependence_init_inquiry,
+						xP.after(function(){
+							dependence.each(function(){
+								this.suprocess();
+							});
+
+							control._param(dependence_init_inquiry, null);
+						}, 0)
+					)
+				}
+			});
 
 			xP.debug(
 				'dependencies', 'dependence',
 				this.type, this.to.first().$element, this
 			);
-		},
-
-		init_process: function(){
-			xP.after(this.suprocess, 0);
 		},
 
 		destroy: function(){
@@ -2414,15 +2429,6 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.dependencies.register({name: 'enabled', base: '_item', prototype: {
-		init_process: function(){
-			this.suprocess();
-
-			//this.to.each(function(){
-				//this._init_val();
-			//});
-
-		},
-
 		process: function(){
 
 			xP.dependencies.enabled.base.process.apply(this);
