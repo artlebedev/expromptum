@@ -1436,7 +1436,7 @@ window.expromptum = window.xP = (function(undefined){
 						$.type(params[i]) === 'array'
 						? params[i][1]
 						: params[i]
-					) + '"/> <label for="' + id + '">' + (
+					) + '"/><label for="' + id + '">' + (
 						$.type(params[i]) === 'array'
 						? params[i][0]
 						: params[i]
