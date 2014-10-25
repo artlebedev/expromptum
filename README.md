@@ -59,10 +59,10 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```html
 <form data-xp="
 	type: 'form',
-	uncomplete_if_required: false,
-	uncomplete_if_invalid_required: false,
-	uncomplete_if_invalid: true,
-	uncomplete_if_unchanged: true
+	completed_on_required: false,
+	completed_on_valid_required: false,
+	completed_on_valid: true,
+	completed_on_changed: true
 "></form>
 ```
 
@@ -789,16 +789,16 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 #### Свойства
 
-`.uncomplete_if_required = true`
+`.completed_on_required = true`
 - Логическое значение `true` или `false`, по которому определяется считается ли форма готовой для отправки при незаполненных обязательных контролах.
 
-`.uncomplete_if_invalid_required = true`
+`.completed_on_valid_required = true`
 - Логическое значение `true` или `false`, по которому определяется считается ли форма готовой для отправки при неправильно заполненных обязательных контролах.
 
-`.uncomplete_if_invalid = false`
+`.completed_on_valid = false`
 - Логическое значение `true` или `false`, по которому определяется считается ли форма готовой для отправки при неправильно заполненных контролах.
 
-`.uncomplete_if_unchanged = false`
+`.completed_on_changed = false`
 - Логическое значение `true` или `false`, по которому определяется считается ли форма готовой для отправки если не менялось значение хотя бы одного из контролов.
 
 `.locked = false`

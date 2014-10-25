@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-10-17
+// Updated: 2014-10-25
 
 
 (function(window){
@@ -933,12 +933,22 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 
-			this.uncomplete_if_required = true;
-			this.uncomplete_if_invalid_required = true;
-			//this.uncomplete_if_invalid = false;
-			//this.uncomplete_if_unchanged = false;
+			this.completed_on_required = true;
+			this.completed_on_valid_required = true;
+			//this.completed_on_valid = false;
+			//this.completed_on_changed = false;
 
 			xP.controls.form.base.init.apply(this, arguments);
+
+			// Обратная совместимость
+			if(this.uncomplete_if_invalid !== undefined){
+				this.completed_on_valid = this.uncomplete_if_invalid;
+			}
+
+			if(this.uncomplete_if_unchanged !== undefined){
+				this.completed_on_changed = this.uncomplete_if_unchanged;
+			}
+			// Обратная совместимость
 
 			this._.onsubmit = new xP.list();
 
@@ -990,7 +1000,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		uncompleted: function(){
 			if(
-				this.uncomplete_if_required
+				this.completed_on_required
 				&& this._.required
 				&& $.grep(
 					this._.required,
@@ -1001,7 +1011,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			if(
-				this.uncomplete_if_invalid_required
+				this.completed_on_valid_required
 				&& this._.invalid
 				&& $.grep(
 					this._.invalid,
@@ -1012,7 +1022,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			if(
-				this.uncomplete_if_invalid
+				this.completed_on_valid
 				&& this._.invalid
 				&& $.grep(
 					this._.invalid,
@@ -1023,7 +1033,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			if(
-				this.uncomplete_if_unchanged
+				this.completed_on_changed
 				&& !(
 					this._.changed
 					&& $.grep(
