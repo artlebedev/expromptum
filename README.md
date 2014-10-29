@@ -347,7 +347,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```js
 xP.controls.register({name: 'zip', base: '_field', prototype: {
 	element_selector: '.zip input, input.zip',
-	valid: '[this].val().match(/^\\d{6}$/)',
+	valid: /^\d{6}$/,
 	allow_chars_pattern: /^\d+$/
 }});
 ```
@@ -1427,7 +1427,7 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 ###### Пример
 
 ```html
-<input name="zip" data-xp="valid: '[this].val().match(/^\\d{6}$/)'"/>
+<input name="zip" data-xp="valid: /^\d{6}$/'"/>
 ```
 
 * * *

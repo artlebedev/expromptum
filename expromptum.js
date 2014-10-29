@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-10-27
+// Updated: 2014-10-29
 
 
 (function(window){
@@ -1591,13 +1591,13 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.controls.register({name: 'email', base: '_field', prototype: {
 		element_selector: '.email input, input.email',
-		valid: '[this].val().match(/^\\S+@\\S+\\.\\S{2,}$/)'
+		valid: /^\S+@\S+\.\S{2,}$/
 	}});
 
 
 	xP.controls.register({name: 'phone', base: '_field', prototype: {
 		element_selector: '.phone input, input.phone',
-		valid: '[this].val().match(/^(?=[^()]*\\(([^()]*\\)[^()]*)?$|[^()]*$)(?=[\\s(]*\\+[^+]*$|[^+]*$)([-+.\\s()]*\\d){11,18}$/)'
+		valid: /^(?=[^()]*\(([^()]*\)[^()]*)?$|[^()]*$)(?=[\s(]*\+[^+]*$|[^+]*$)([-+.\s()]*\d){11,18}$/
 	}});
 
 
@@ -2647,6 +2647,12 @@ window.expromptum = window.xP = (function(undefined){
 	xP.dependencies.register({name: 'valid', base: '_rooted', prototype: {
 		init: function(params, control){
 			this._.root_type = 'invalid';
+			if($.type(params) === 'regexp'){
+				params = params.toString();
+			}
+			if($.type(params) === 'string' && params.indexOf('/') === 0){
+				params = '[this].val().match(' + params + ')';
+			}
 
 			xP.dependencies.valid.base.init.apply(this, arguments);
 		},
