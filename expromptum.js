@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2014-11-21
+// Updated: 2015-01-16
 
 
 (function(window){
@@ -3086,7 +3086,7 @@ window.expromptum = window.xP = (function(undefined){
 			xP.after(function(){
 				if(!that.template){
 					that.temp_template = true;
-					// TODO: Добавить параметры reset_values и remove_siblings.
+					// TODO: Добавить параметр remove_siblings.
 
 					var children = that.children(),
 						control = children[children.length - 1];
@@ -3301,20 +3301,6 @@ window.expromptum = window.xP = (function(undefined){
 				.add($container.filter('[disabled]'))
 				.removeAttr('disabled'); // For FF 28
 
-			if(this.reset){
-				$container.find('input, textarea')
-					.add($container.filter('input, textarea'))
-					.not(
-						'[type=button], [type=img], [type=hidden],'
-						+ '[type=checkbox], [type=radio]'
-					)
-					.val('');
-
-				$container.find('input[type=checkbox]')
-					.add($container.filter('input[type=checkbox]'))
-					.removeAttr('checked');
-			}
-
 			if(before){
 				$container.insertBefore(control.$container);
 			}else{
@@ -3328,6 +3314,22 @@ window.expromptum = window.xP = (function(undefined){
 					id_suffix,
 					this.temp_template ? 888 : i + 1
 				);
+
+			var that = this;
+
+			$container.find('input, textarea')
+				.add($container.filter('input, textarea'))
+				.not(function(){
+					var reset = xP(this).first().reset_on_repeat;
+					return that.reset && reset === false
+						|| !that.reset && !reset;
+				})
+				.removeAttr('checked')
+				.not(
+					'[type=button], [type=img], [type=submit],'
+					+ '[type=checkbox], [type=radio]'
+				)
+				.val('');
 
 			if(!this.temp_template){
 				var c = this.children().pop();
