@@ -1,0 +1,10 @@
+{
+  "name": "expromptum",
+  "main": "expromptum.js",
+  "version": "1.0",
+  "homepage": "http://www.artlebedev.ru/tools/expromptum/",
+  "authors": [
+    "Vladimir Tokmakov <vlalek@design.ru>"
+  ],
+  "description": "Expromptum js library"
+}
