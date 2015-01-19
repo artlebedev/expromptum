@@ -3165,6 +3165,11 @@ window.expromptum = window.xP = (function(undefined){
 			if(template){
 				control._.repeat_template = true;
 				control._.no_root_dependencies = true;
+				repeat_change_suffixes(
+					this,
+					control,
+					888
+				);
 
 				control.$container.hide();
 
@@ -3448,7 +3453,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			control._.repeat_suffix
-				= (repeat.parent ? repeat.parent._.repeat_suffix : '')
+				= (repeat.parent && repeat.parent._.repeat_suffix ? repeat.parent._.repeat_suffix : '')
 				+ repeat.name_suffix_before
 				+ position + repeat.name_suffix_after;
 
@@ -3463,7 +3468,7 @@ window.expromptum = window.xP = (function(undefined){
 					new_name = parts[0] + control._.repeat_suffix;
 
 				for(var i = repeat.nesting * 2 + 3; i < parts.length; i++){
-					new_name += parts[i]
+					new_name += parts[i];
 				}
 
 				if(name !== new_name){
