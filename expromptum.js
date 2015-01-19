@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-01-17
+// Updated: 2015-01-19
 
 
 (function(window){
@@ -2128,6 +2128,7 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: '.combobox input, input.combobox, input[list]',
 		
 		search_from_start: true,
+		case_sensitive: false,
 
 		init: function(params){
 			xP.controls.combobox.base.init.apply(this, arguments);
@@ -2149,27 +2150,31 @@ window.expromptum = window.xP = (function(undefined){
 					var value = this.val();
 
 					if(value != ''){
-						var length = list._param('options').length;
-
 						list.disable(
 							false,
 							{values: [
 								new RegExp(
 									(this.search_from_start ? '^' : '')
-									+ xP.taint_css(value)
+									+ xP.taint_css(value),
+									this.case_sensitive ? '': 'i'
 								)
 							]}
 						);
-
-						var new_length = list._param('options').length;
-
-						if(new_length === 0){
-							list.hide();
-						}
 					}else{
 						list.disable(false, {values: [/.?/]});
 					}
-					list.$element[0].selectedIndex = 8888;
+
+					xP.after(function(){
+						var new_length = list.$element[0].options.length;
+
+						list.$element[0].selectedIndex = 8888;
+
+						if(new_length === 1){
+							list.$element[0].options[0].selected = true;
+						}else if(new_length === 0){
+							list.hide();
+						}
+					});
 				});
 
 				this.$element
@@ -2182,6 +2187,9 @@ window.expromptum = window.xP = (function(undefined){
 							list._param('do_not_hide', true);
 							list.show();
 							list.$element.focus();
+							if(list.$element[0].selectedIndex === -1){
+								list.$element[0].selectedIndex = 0;
+							}
 						}
 					})
 					.blur(function(){
