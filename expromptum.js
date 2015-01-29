@@ -2133,14 +2133,14 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls.combobox.base.init.apply(this, arguments);
 
-			var $element = $(
-					"select#" + xP.taint_css(this.$element.attr('list'))
+			var $list = $(
+					"select#" + xP.taint_css(this.$element.attr('list') + '')
 				);
 
-			if($element[0]){
+			if($list[0]){
 				var list = new xP.controls._combolist({
-						$element: $element,
-						$container: $element
+						$element: $list,
+						$container: $list
 					}),
 					that = this;
 
