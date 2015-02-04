@@ -2216,6 +2216,7 @@ window.expromptum = window.xP = (function(undefined){
 						if(that.$element.is(':focus')){
 							list.show();
 						}
+							list._param('do_not_show', false);
 					});
 				});
 
@@ -2261,6 +2262,7 @@ window.expromptum = window.xP = (function(undefined){
 							|| ev.keyCode === 27
 						){
 							list._param('do_not_filter', false);
+							list._param('do_not_show', true);
 							that.val(list.val());
 							that.$element.focus();
 							list.hide();
@@ -2277,14 +2279,15 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls._combolist.base.init.apply(this, arguments);
 
-			this.$element.css({'position': 'absolute', 'z-index': 888});
-			this.$element.attr('size', 7);
-			this.$element[0].selectedIndex = -1;
-			this.hide();
+			this.$element
+				.css({'position': 'absolute', 'z-index': 888})
+				.attr('size', 7).attr('tabIndex', -1)
+				.hide()[0].selectedIndex = -1;
+			;
 		},
 
 		show: function(){
-			if(this.$element[0].options.length){
+			if(!this._param('do_not_show') && this.$element[0].options.length){
 				this.$element.show();
 			}
 			return this;
