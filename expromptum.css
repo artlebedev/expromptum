@@ -12,10 +12,13 @@
 	select,
 	button,
 	.button,
-	.control_button {
+	.control_button,
+	.selectus .select,
+	.selectus .selectors {
 		border: 2px solid #ccc;
 		padding: 3px;
 		margin: 0 4px 0 0;
+		background: #fff;
 	}
 
 	textarea:focus,
@@ -37,7 +40,8 @@
 	input[type=button],
 	button,
 	.button,
-	.control_button {
+	.control_button,
+	.selectus .select:after {
 		background: #ccc;
 		font-weight: bold;
 		cursor: pointer;
@@ -48,7 +52,8 @@
 	input[type=button]:hover,
 	button:hover,
 	.button:hover,
-	.control_button:hover {
+	.control_button:hover,
+	.selectus .select:hover:after {
 		background: #fc9;
 		border-color: #fc9;
 	}
@@ -190,6 +195,70 @@
 /* Number */
 	.number .field_control input {
 		width: 10em;
+	}
+
+/* Selectus */
+	.selectus {
+		position: relative;
+	}
+	.selectus .field_control {
+		position: relative;
+	}
+	.selectus .select {
+		display: inline-block;
+		text-decoration: none;
+		padding: 0;
+	}
+	.selectus .select:after {
+		content: '\25bc';
+		margin-left: 0.5em;
+	}
+	.selectus .select .selected {
+		display: inline-block;
+		text-decoration: none;
+		padding: 3px;
+	}
+	.selectus .hidden {
+		display: block;
+		max-height: 0;
+		margin-left: -10000px;
+		transition: max-height 0.3s ease, margin-left 0s 0.3s;
+	}
+	.selectus .selectors:not(.hidden) {
+		top: 100%;
+		left: 0;
+		height: auto;
+		max-height: 10em;
+		margin-left: 0;
+		transition: max-height 0.3s ease, margin-left 0s;
+	}
+	.selectus .selectors {
+		position: absolute;
+		margin-top: -2px;
+		padding: 0;
+		overflow: auto;
+		overflow-y: scroll;
+		box-sizing: border-box;
+		z-index: 888;
+	}
+	.selectus .selectors .option {
+		display: block;
+		border: 1px solid #fff;
+	}
+	.selectus .selectors input {
+		position: absolute;
+		left: -100px;
+	}
+	.selectus .selectors label {
+		display: block;
+		margin: 0.5em 0;
+		padding: 0 4px;
+	}
+	.selectus .selectors .focus {
+		border: 1px solid red;
+	}
+	.selectus .selectors .selected {
+		background: #ccc;
 	}
 
 /* Repeated -- dev rules */

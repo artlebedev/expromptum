@@ -1497,6 +1497,144 @@ window.expromptum = window.xP = (function(undefined){
 	}});
 
 
+	xP.controls.register({name: 'selectus', base: 'options', prototype: {
+		element_selector: '.selectus',
+
+		init: function(params){
+			xP.controls.selectus.base.init.apply(this, arguments);
+
+			// TODO: Добавить поддержку append
+			var $options = this.$element.find('[type=radio], [type=checkbox]'),
+				that = this;
+
+			this.$selectors = this.$container.find('.' + this.selectors_class);
+
+			this.options = xP($options).each(function(i){
+				var option = this;
+
+				option.$element.on('focus', function(){
+					option.$container.addClass('focus');
+				}).on('blur', function(){
+					option.$container.removeClass('focus');
+				}).on('keydown', function(ev){
+					if(ev.keyCode === 40 || ev.keyCode === 38){
+						var ii = i + (ev.keyCode === 40 ? 1 : -1);
+
+						if(ii >= 0 && ii < that.options.length){
+							that.options.eq(ii).$element.focus()
+								.not('[type=checkbox]').click();
+						}
+						return false;
+					}
+				});
+			});
+
+			if(!this.$selectors[0]){
+				this.options.each(function(){
+					$options = $options.add(this.$container);
+				});
+
+				this.$selectors = $options
+					.wrapAll('<div class="' + this.selectors_class + '"></div>')
+					.parents('.' + this.selectors_class);
+			}
+
+			this.close();
+
+			this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>')
+				.insertBefore(this.$selectors);
+
+			new xP.dependencies.computed(
+				{
+					from: this.options,
+					on: function(){
+						var html = '';
+
+						that.options.first()._.group.siblings.each(function(){
+							if(this.$element.is(':checked')){
+								html += '<ins class="selected">'
+									+ this.$label.html() + '</ins>';
+							}
+						});
+						return html;
+					}
+				},
+				new xP.controls.html({
+					$element: this.$select,
+					type: 'html'
+				})
+			);
+
+			this.$select.on('mouseup keypress', function(ev){
+				if(
+					!that.disabled
+					&& (
+						ev.type === 'mouseup'
+						|| ev.keyCode === 13
+						|| ev.keyCode === 40
+					)
+				){
+					if(that.$selectors.hasClass('hidden')){
+						that.open();
+
+						return false;
+					}
+				}
+			});
+
+			this.$selectors.on('keydown', function(ev){
+				if(ev.keyCode === 13 || ev.keyCode === 27){
+					that.close();
+
+					that.$select.focus();
+
+					return false;
+				}
+			}).on('mouseup', function(){
+				return false;
+			});
+		},
+
+		selectors_class: 'selectors',
+		select_class: 'select',
+
+		open: function(){
+			if(xP.controls.opened){
+				xP.controls.opened.close();
+			}
+
+			xP.controls.opened = this;
+
+			var that = this;
+
+			this.$selectors.removeClass('hidden');
+
+			if(this.options.first()._.group.selected){
+				this.options.first()._.group.selected.$element.focus();
+			}else{
+				this.options.first().$element.focus();
+			}
+
+			return this;
+		},
+
+		close: function(){
+			xP.controls.opened = null;
+
+			this.$selectors.addClass('hidden');
+
+			return this;
+		}
+	}});
+
+
+	$(document).bind('mouseup.expromptum_controls_opened', function(ev){
+		if(xP.controls.opened){
+			xP.controls.opened.close();
+		}
+	});
+
+
 	xP.controls.register({name: '_option', base: '_field', prototype: {
 		container_selector: '.option',
 

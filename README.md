@@ -194,12 +194,29 @@ Expromptum — библиотека JavaScript, предназначенная �
 <div><a href="#controls.options">Группа переключателей</a></div>
 ```html
 <div class="options" data-xp="type: 'options'">
-	<input type="radio" data-xp="type: 'radio'"/>
-	<input type="radio" data-xp="type: 'radio'"/>
+	<input type="radio"/>
+	<input type="radio"/>
 </div>
 
 <div class="options" data-xp="type: 'options'">
-	<input type="checkbox" data-xp="type: 'checkbox'"/>
+	<input type="checkbox"/>
+</div>
+```
+
+<div><a href="#controls.selectus">Выпадающий список из переключателей</a></div>
+```html
+<div class="selectus" data-xp="type: 'selectus'">
+	<input type="radio" id="r1"/>
+	<label for="r1">Item 1</label>
+	<input type="radio" id="r2"/>
+	<label for="r2">Item 2</label>
+</div>
+
+<div class="selectus" data-xp="type: 'selectus'">
+	<input type="checkbox" id="r1"/>
+	<label for="r1">Item 1</label>
+	<input type="checkbox" id="r2"/>
+	<label for="r2">Item 2</label>
 </div>
 ```
 
@@ -1043,6 +1060,14 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Селектор элемента `.options`
 
 Группирующий контрол, применяемый для назначения зависимостей на группу переключателей или включателей.
+
+* * *
+
+### <a href="#controls.selectus" name="controls.selectus">Выпадающий список из переключателей</a>
+
+- Тип `selectus`
+- Базовый тип [`options`](#controls.options)
+- Селектор элемента `.selectus`
 
 * * *
 
