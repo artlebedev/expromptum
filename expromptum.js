@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-02-16
+// Updated: 2015-02-18
 
 
 (function(window){
@@ -2216,23 +2216,28 @@ window.expromptum = window.xP = (function(undefined){
 						if(list.$element[0].options.length === 0){
 							list.hide();
 						}else if(value){
-							var first_value = list.$element[0].options[0].value;
+							var i = 0, ii = list.$element[0].options.length;
+							for(; i < ii; i++){
+								var ovalue = list.$element[0].options[i].value;
 
-							if(!that.case_sensitive){
-								value = value.toLowerCase();
-								first_value = first_value.toLowerCase();
-							}
+								if(!that.case_sensitive){
+									value = value.toLowerCase();
+									ovalue = ovalue.toLowerCase();
+								}
 
-							if(value ===  first_value){
-								list.$element[0].selectedIndex = 0;
-								list.$element.change();
+								if(value === ovalue){
+									list.$element[0].selectedIndex = i;
+									list.$element.change();
+									break;
+								}
 							}
 						}
 
 						if(that.$element.is(':focus')){
 							list.show();
 						}
-							list._param('do_not_show', false);
+
+						list._param('do_not_show', false);
 					});
 				});
 
