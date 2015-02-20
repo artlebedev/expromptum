@@ -1,8 +1,4 @@
 /* Common */
-	form {
-		max-width: 40em;
-	}
-
 	input[type=radio], input[type=checkbox] {
 		vertical-align: middle;
 	}
@@ -14,12 +10,17 @@
 	.button,
 	.control_button,
 	.selectus .select,
+	.selectus .select .selected,
 	.selectus .selectors {
 		border: 1px solid #ccc;
 		padding: 3px;
-		margin: 0 4px 0 0;
-		min-height: 16px;
+		line-height: 1.2;
+		font-size: 100%;
+		margin: 0 4px 2px 0;
 		background: #fff;
+	}
+	textarea {
+		font-size: 120%;
 	}
 
 	textarea:focus,
@@ -65,12 +66,9 @@
 		border-color: #ccc;
 		font-weight: bold;
 		cursor: pointer;
-		padding: 3px;
-		line-height: 1;
-		min-width: 24px;
-		min-height: 24px;
+		min-width: 1.7em;
+		min-height: 1.6em;
 		text-align: center;
-		vertical-align: top;
 		display: inline-block;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
@@ -112,8 +110,8 @@
 	}
 
 	.field {
-		padding: 5px 10px;
-		margin: 1em 0;
+		padding: 0;
+		margin: 0 0 20px;
 	}
 	.field_label {
 		margin: 0 0 5px;
@@ -140,8 +138,10 @@
 	.field.required label, label.required {
 		font-weight: bold;
 	}
-	.disabled {
+	.disabled,
+	:hover.disabled {
 		opacity: 0.45;
+		cursor: default;
 	}
 	.disabled .disabled {
 		opacity: 1;
@@ -223,12 +223,14 @@
 	.selectus .select:after {
 		content: '\25bc';
 		margin-left: 0.5em;
+		line-height: 1.5;
 	}
 	.selectus .select .selected {
 		display: inline-block;
 		text-decoration: none;
 		padding: 2px 3px;
-		vertical-align: bottom;
+		margin: 0;
+		border: none;
 	}
 	.selectus .hidden {
 		display: block;
@@ -263,8 +265,8 @@
 	}
 	.selectus .selectors label {
 		display: block;
-		margin: 0.5em 0;
-		padding: 0 4px;
+		margin: 0;
+		padding: 4px;
 	}
 	.selectus .selectors .focus {
 		border: 1px solid #f96;
