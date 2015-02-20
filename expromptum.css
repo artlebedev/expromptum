@@ -74,6 +74,13 @@
 		box-sizing: border-box;
 		zoom: 1;
 	}
+	input[type=submit],
+	input[type=button],
+	button,
+	.button {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 
 	input[type=submit]:hover,
 	input[type=button]:hover,
@@ -232,23 +239,23 @@
 		margin: 0;
 		border: none;
 	}
-	.selectus .hidden {
+	.selectus .selectors.hidden {
 		display: block;
 		max-height: 0;
 		margin-left: -10000px;
 		transition: max-height 0.3s ease, margin-left 0s 0.3s;
 	}
 	.selectus .selectors:not(.hidden) {
-		top: 100%;
-		left: 0;
 		height: auto;
 		max-height: 10em;
 		margin-left: 0;
 		transition: max-height 0.3s ease, margin-left 0s;
 	}
 	.selectus .selectors {
+		top: 100%;
+		left: 0;
 		position: absolute;
-		margin-top: -1px;
+		margin-top: -2px;
 		padding: 0;
 		overflow: auto;
 		overflow-y: scroll;
