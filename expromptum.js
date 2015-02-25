@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-02-19
+// Updated: 2015-02-25
 
 
 (function(window){
@@ -1344,19 +1344,19 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: 'select',
 
 		hide_disabled_option: true,
+		enable_by: 'value',
 
 		init: function(params){
 			xP.controls.select.base.init.apply(this, arguments);
 
-			this._.options = this.$element[0].options;
+			this._.element = this.$element[0];
+			this._.options = this._.element.options;
 
 			this._.all_options = xP.list(this._.all_options);
 			this._.enabled_options = xP.list(this._.enabled_options);
 
-			var options = this.$element[0].options, i = 0, ii = options.length;
-
-			for(;i < ii; i++){
-				this._.all_options.append(options[i]);
+			for(var i = 0, ii = this._.options.length; i < ii; i++){
+				this._.all_options.append(this._.options[i]);
 			}
 		},
 
@@ -1406,9 +1406,9 @@ window.expromptum = window.xP = (function(undefined){
 					if(!disabled){
 						for(i = 0; i < ii; i++){
 							if($.type(values[i]) === 'regexp'){
-								disable = !this.value.match(values[i]);
+								disable = !this[that.enable_by].match(values[i]);
 							}else{
-								disable = this.value != values[i];
+								disable = this[that.enable_by] != values[i];
 							}
 
 							if(!disable){
@@ -1445,10 +1445,10 @@ window.expromptum = window.xP = (function(undefined){
 							this.disabled = '';
 						});
 
-						var selected = that.$element[0].selectedIndex;
+						var selected = that._.element.selectedIndex;
 
 						if(!options[selected] || options[selected].disabled){
-							that.$element[0].selectedIndex =
+							that._.element.selectedIndex =
 								that._.all_options.index(
 									that._.enabled_options.first()
 								);
@@ -1470,7 +1470,7 @@ window.expromptum = window.xP = (function(undefined){
 			if(!arguments.length){
 				return this.disabled ? undefined : this.$element.val();
 			}else{
-				if(this.$element[0].value != value){
+				if(this._.element.value != value){
 					this.$element.val(value);
 
 					this.change();
@@ -1480,12 +1480,18 @@ window.expromptum = window.xP = (function(undefined){
 			}
 		},
 
+		text: function(){
+			if(this.disabled){
+				return undefined;
+			}else{
+				var option = this._.options[this._.element.selectedIndex];
+				return option ? option.text : null;
+			}
+		},
+
 		change: function(handler, remove){
 			if(!arguments.length){
-				var $element = this.$element[0],
-					selected = $element.selectedIndex;
-
-				this.$selected = $($element.options[selected]);
+				this.$selected = $(this._.options[this._.element.selectedIndex]);
 			}
 
 			return xP.controls.select.base.change.apply(this, arguments);
@@ -2352,12 +2358,12 @@ window.expromptum = window.xP = (function(undefined){
 					xP.after(function(){
 						list.$element[0].selectedIndex = 8888;
 
-						if(list.$element[0].options.length === 0){
+						if(list._.options.length === 0){
 							list.hide();
 						}else if(value){
-							var i = 0, ii = list.$element[0].options.length;
+							var i = 0, ii = list._.options.length;
 							for(; i < ii; i++){
-								var ovalue = list.$element[0].options[i].value;
+								var ovalue = list._.options[i][list.enable_by];
 
 								if(!that.case_sensitive){
 									value = value.toLowerCase();
@@ -2410,7 +2416,7 @@ window.expromptum = window.xP = (function(undefined){
 						list.hide();
 					})
 					.bind('change', function(ev){
-						that.val(list.val());
+						that.val(list.text());
 					})
 					.bind('mousedown', function(ev){
 						list._param('do_not_hide', true);
@@ -2423,7 +2429,7 @@ window.expromptum = window.xP = (function(undefined){
 						){
 							list._param('do_not_filter', false);
 							list._param('do_not_show', true);
-							that.val(list.val());
+							that.val(list.text());
 							that.$element.focus();
 							list.hide();
 						}
@@ -2436,6 +2442,8 @@ window.expromptum = window.xP = (function(undefined){
 	xP.controls.register({name: '_combolist', base: 'select', prototype: {
 		element_selector: '.combolist select, select.combolist',
 
+		enable_by: 'text',
+
 		init: function(params){
 			xP.controls._combolist.base.init.apply(this, arguments);
 
@@ -2447,7 +2455,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		show: function(){
-			if(!this._param('do_not_show') && this.$element[0].options.length){
+			if(!this._param('do_not_show') && this._.options.length){
 				this.$element.show();
 			}
 			return this;

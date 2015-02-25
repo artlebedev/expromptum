@@ -1040,6 +1040,9 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.hide_disabled_option = true`
 - Определяет видимость недоступных элементов. При значении `false` нужный результат будет только в тех браузерах, которые это поддерживают.
 
+`enable_by = 'value'`
+- Определяет по какому свойству option определять доступность.
+
 #### Методы
 
 `.disable([disabled[, values]])`
@@ -1050,6 +1053,9 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.remove()`
 - Удаляет все пункты выбора. Возвращает данный контрол.
+
+`.text()`
+- Возращает текстовое значение выбранного option.
 
 * * *
 
