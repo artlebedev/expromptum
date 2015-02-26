@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-02-25
+// Updated: 2015-02-26
 
 
 (function(window){
@@ -1357,6 +1357,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			for(var i = 0, ii = this._.options.length; i < ii; i++){
 				this._.all_options.append(this._.options[i]);
+				this._.enabled_options.append(this._.options[i]);
 			}
 		},
 
@@ -1365,23 +1366,26 @@ window.expromptum = window.xP = (function(undefined){
 				params = [params];
 			}
 
-			var all_options = this._.all_options, options = this._.options,
-				i = 0, ii = params.length;
+			var options = this._.options, i = 0, ii = params.length, iii;
 
 			for(; i < ii; i++){
-				all_options.push(
-					options[options.length] = $.type(params[i]) === 'array'
-						? new Option(params[i][0], params[i][1])
+				iii = options.length;
+
+				options[iii] = $.type(params[i]) === 'array'
+					? new Option(params[i][0], params[i][1])
+					: (
+						$.type(params[i]) !== 'object'
+						? new Option(params[i])
 						: (
-							$.type(params[i]) !== 'object'
-							? new Option(params[i])
-							: (
-								params[i] instanceof Option
-								? params[i]
-								: new Option(params[i].label, params[i].value)
-							)
+							params[i] instanceof Option
+							? params[i]
+							: new Option(params[i].label, params[i].value)
 						)
-				);
+					);
+
+				this._.all_options.push(options[iii]);
+
+				this._.enabled_options.push(options[iii]);
 			}
 
 			return this;
@@ -1390,6 +1394,7 @@ window.expromptum = window.xP = (function(undefined){
 		remove: function(){
 			this._.options.length = 0;
 			this._.all_options.length = 0;
+			this._.enabled_options.length = 0;
 
 			return this;
 		},
@@ -1400,13 +1405,18 @@ window.expromptum = window.xP = (function(undefined){
 				var that = this, values = dependence.values,
 					i, ii = values.length;
 
+				if(!this._.enable_options){
+					this._.enabled_options.length = 0;
+				}
+
 				this._.all_options.each(function(){
 					var disable = true;
 
 					if(!disabled){
 						for(i = 0; i < ii; i++){
 							if($.type(values[i]) === 'regexp'){
-								disable = !this[that.enable_by].match(values[i]);
+								disable
+									= !this[that.enable_by].match(values[i]);
 							}else{
 								disable = this[that.enable_by] != values[i];
 							}
@@ -1427,6 +1437,7 @@ window.expromptum = window.xP = (function(undefined){
 				clearTimeout(this._.enable_options);
 
 				this._.enable_options = xP.after(function(){
+					that._.enable_options = null;
 
 					var options =  that._.options;
 
@@ -1457,7 +1468,7 @@ window.expromptum = window.xP = (function(undefined){
 
 					that.change();
 
-					that._.enabled_options.length = 0;
+					//that._.enabled_options.length = 0;
 				});
 
 				return this;
@@ -2331,51 +2342,70 @@ window.expromptum = window.xP = (function(undefined){
 				var list = xP($list).first(),
 					that = this;
 
-				that.list = list;
+				this.list = list;
 
 				this.change(function(){
 					if(list._param('do_not_filter')){
 						return;
 					}
 
-					var value = that.val();
+					var value = that.val(), i = 0, ii = list._.options.length,
+						options = list._.options;
+
+					options.length = 0;
 
 					if(value != '' && value != undefined){
-						list.disable(
-							false,
-							{values: [
-								new RegExp(
-									(that.search_from_start ? '^' : '')
-									+ xP.taint_css(value),
-									that.case_sensitive ? '': 'i'
-								)
-							]}
-						);
+						var mask = new RegExp(
+								(that.search_from_start ? '^' : '')
+								+ xP.taint_css(value),
+								that.case_sensitive ? '': 'i'
+							);
+
+						list._.enabled_options.each(function(i){
+							if(this.text.match(mask)){
+								this.disabled = '';
+
+								options[options.length] = this;
+							}
+						});
 					}else{
-						list.disable(false, {values: [/.?/]});
+						list._.enabled_options.each(function(i){
+							this.disabled = '';
+
+							options[options.length] = this;
+						});
 					}
 
 					xP.after(function(){
-						list.$element[0].selectedIndex = 8888;
+						var selected_index = list._.element.selectedIndex;
+
+						list._.element.selectedIndex = -1;
 
 						if(list._.options.length === 0){
 							list.hide();
 						}else if(value){
+							if(!that.case_sensitive){
+								value = value.toLowerCase();
+							}
+
 							var i = 0, ii = list._.options.length;
+
 							for(; i < ii; i++){
-								var ovalue = list._.options[i][list.enable_by];
+								var ovalue = list._.options[i].text;
 
 								if(!that.case_sensitive){
-									value = value.toLowerCase();
 									ovalue = ovalue.toLowerCase();
 								}
 
 								if(value === ovalue){
-									list.$element[0].selectedIndex = i;
-									list.$element.change();
+									list._.element.selectedIndex = i;
 									break;
 								}
 							}
+						}
+
+						if(selected_index !== list._.element.selectedIndex){
+							list.$element.change();
 						}
 
 						if(that.$element.is(':focus')){
@@ -2416,7 +2446,10 @@ window.expromptum = window.xP = (function(undefined){
 						list.hide();
 					})
 					.bind('change', function(ev){
-						that.val(list.text());
+						var value = list.text();
+						if(value){
+							that.val(value);
+						}
 					})
 					.bind('mousedown', function(ev){
 						list._param('do_not_hide', true);
@@ -2441,8 +2474,6 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.controls.register({name: '_combolist', base: 'select', prototype: {
 		element_selector: '.combolist select, select.combolist',
-
-		enable_by: 'text',
 
 		init: function(params){
 			xP.controls._combolist.base.init.apply(this, arguments);
