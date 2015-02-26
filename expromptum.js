@@ -1857,7 +1857,7 @@ window.expromptum = window.xP = (function(undefined){
 					.append(this.$element.clone().hide())
 					.html()
 					.replace(/\s+(type|id)\s*=\s*[^\s>]+/g, '')
-			).insertBefore(this.$element);
+			).insertAfter(this.$element);
 
 			this.$element.removeAttr('name');
 
