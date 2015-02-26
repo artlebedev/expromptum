@@ -1911,7 +1911,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.control_button_view
 				= $(this.control_button_view_html)
-					.insertAfter(this.$element)
+					.insertAfter(this.$secret)
 					.click(function(){
 						if(that.disabled){
 							return false;
