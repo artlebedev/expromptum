@@ -64,7 +64,6 @@
 	.selectus .select.disabled:hover:after {
 		background: #ccc;
 		border-color: #ccc;
-		font-weight: bold;
 		cursor: pointer;
 		min-width: 1.7em;
 		min-height: 1.6em;
