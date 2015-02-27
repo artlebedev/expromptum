@@ -2344,6 +2344,8 @@ window.expromptum = window.xP = (function(undefined){
 
 				this.list = list;
 
+				list.combobox = this;
+
 				this.change(function(){
 					if(list._param('do_not_filter')){
 						return;
@@ -2488,6 +2490,12 @@ window.expromptum = window.xP = (function(undefined){
 		show: function(){
 			if(!this._param('do_not_show') && this._.options.length){
 				this.$element.show();
+
+				var offset = this.combobox.$element.offset();
+
+				offset.top += this.combobox.$element.outerHeight();
+
+				this.$element.offset(offset);
 			}
 			return this;
 		},
