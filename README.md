@@ -930,6 +930,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.select([select])`
 - Отмечает контрол. Возвращает данный контрол.
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#sheet)
+
 * * *
 
 ### <a href="#controls.foldable" name="controls.foldable">Сворачиваемая панель</a>
@@ -953,6 +955,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.fold([fold, complete])`
 - Сворачивает или разворачивает (в случае `fold = false`) контрол и выполняет после этого функцию переданную в параметре `complete`. Возвращает данный контрол.
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#foldable)
 
 * * *
 
@@ -1057,6 +1061,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.text()`
 - Возращает текстовое значение выбранного option.
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#select)
+
 * * *
 
 ### <a href="#controls.options" name="controls.options">Группа переключателей</a>
@@ -1074,6 +1080,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Тип `selectus`
 - Базовый тип [`options`](#controls.options)
 - Селектор элемента `.selectus`
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#selectus)
 
 * * *
 
@@ -1116,6 +1124,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Базовый тип [`_option`](#controls._option)
 - Селектор элемента `input[type=radio]`
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#radio)
+
 * * *
 
 ### <a href="#controls.checkbox" name="controls.checkbox">Включатель</a>
@@ -1123,6 +1133,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Тип `checkbox`
 - Базовый тип [`_option`](#controls._option)
 - Селектор элемента `input[type=checkbox]`
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#radio)
 
 * * *
 
@@ -1132,6 +1144,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Базовый тип [`_field`](#controls._field)
 - Селектор элемента `.email input, input.email`
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#email)
+
 * * *
 
 ### <a href="#controls.phone" name="controls.phone">Поле для телефона</a>
@@ -1139,6 +1153,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Тип `phone`
 - Базовый тип [`_field`](#controls._field)
 - Селектор элемента `.phone input, input.phone`
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#phone)
 
 * * *
 
@@ -1174,6 +1190,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.control_button_view_html = '<span class="control_button control_button_password"/>'`
 - HTML-код для создания элемента управления видом контрола.
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#password)
 
 * * *
 
@@ -1216,6 +1234,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.dec()`
 - Уменьшает значения контрола. Возвращает данный контрол.
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#number)
+
 * * *
 
 ### <a href="#controls.datemonth" name="controls.datemonth">Поле для года и месяца</a>
@@ -1235,6 +1255,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 ```html
 <input name="datemonth" value="2013-04" class="datemonth"/>
 ```
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#datemonth)
 
 * * *
 
@@ -1258,6 +1280,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 </span>
 ```
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#date)
+
 * * *
 
 ### <a href="#controls.datetime" name="controls.datetime">Поле для даты и времени</a>
@@ -1271,6 +1295,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 ```html
 <input name="datetime" value="2013-04-01 12:00" class="datetime"/>
 ```
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#datetime)
 
 * * *
 
@@ -1292,6 +1318,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.[list](#controls._combolist)`
 - Контрол, указывающий на список значений.
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#combobox)
 
 * * *
 
@@ -1358,6 +1386,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 <input name="thing" data-xp="classed: [{on: '[name=some]', do: 'some'}, {on: '[name=some] == \'\'', do: 'no'}]"/>
 ```
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#classed)
+
 * * *
 
 ### <a href="#dependencies.computed" name="dependencies.computed">Вычисляемое значение</a>
@@ -1392,6 +1422,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 <input name="number_3" data-xp="type: 'number', computed: 'eval([name=number_1] * 1 + [name=operator] + [name=number_2] * 1)'" readonly="true"/>
 ```
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#computed)
+
 * * *
 
 ### <a href="#dependencies.enabled" name="dependencies.enabled">Доступность</a>
@@ -1412,6 +1444,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 <input name="b" data-xp="enabled: '[name=a]'"/>
 ```
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#enabled)
+
 * * *
 
 ### <a href="#dependencies.enabled_on_completed" name="dependencies.enabled_on_completed">Доступность при полном заполнении</a>
@@ -1430,6 +1464,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 	<input type="submit" data-xp="enabled_on_completed: true"/>
 </form>
 ```
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#enabled_on_completed)
 
 * * *
 
@@ -1472,6 +1508,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 <input name="b" data-xp="required: '[name=a]'"/>
 ```
 
+[Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#required)
+
 * * *
 
 ### <a href="#dependencies.valid" name="dependencies.valid">Соответствие выражению</a>
@@ -1495,6 +1533,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 ```html
 <input name="zip" data-xp="valid: /^\d{6}$/'"/>
 ```
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#valid)
 
 * * *
 
@@ -1538,6 +1578,8 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 	<button class="repeat_remove_button">&minus;</button>
 </span>
 ```
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/repeats/)
 
 * * *
 
