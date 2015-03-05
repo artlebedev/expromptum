@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-02-26
+// Updated: 2015-03-05
 
 
 (function(window){
@@ -592,7 +592,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				this._.root = this._.parent._.root;
 			}else{
-				this._.root = this;
+				this._.root = xP.root || this;
 			}
 
 			xP.controls.link(this.$element, this);
@@ -939,6 +939,8 @@ window.expromptum = window.xP = (function(undefined){
 			//this.completed_on_changed = false;
 
 			xP.controls.form.base.init.apply(this, arguments);
+
+			this._.root = this;
 
 			// Обратная совместимость
 			if(this.uncomplete_if_invalid !== undefined){
@@ -3058,6 +3060,8 @@ window.expromptum = window.xP = (function(undefined){
 		container_changed_class: 'changed'
 	}});
 
+
+	xP.root = new xP.controls.fields({$element: $('html')});
 
 
 /* Repeats */
