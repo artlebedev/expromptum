@@ -930,6 +930,9 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.select([select])`
 - Отмечает контрол. Возвращает данный контрол.
 
+`.show([complete])`
+- Отмечает контрол и выполняет после этого переданную функцию. Возвращает данный контрол.
+
 [Демо](http://www.artlebedev.ru/tools/expromptum/controls/#sheet)
 
 * * *
@@ -955,6 +958,9 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.fold([fold, complete])`
 - Сворачивает или разворачивает (в случае `fold = false`) контрол и выполняет после этого функцию переданную в параметре `complete`. Возвращает данный контрол.
+
+`.show([complete])`
+- Отмечает контрол и выполняет после этого переданную функцию. Возвращает данный контрол.
 
 [Демо](http://www.artlebedev.ru/tools/expromptum/controls/#foldable)
 
@@ -982,6 +988,9 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.val([value])`
 - Чтение и запись значения контрола.
+
+`.focus()`
+- Устанавливает фокус. Возвращает данный контрол.
 
 * * *
 

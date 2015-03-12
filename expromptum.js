@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-03-05
+// Updated: 2015-03-12
 
 
 (function(window){
@@ -1108,12 +1108,26 @@ window.expromptum = window.xP = (function(undefined){
 			}
 		},
 
+		show: function(complete){
+			if(!this.selected){
+				this.select();
+
+				if(complete){
+					complete();
+				}
+			}
+
+			return this;
+		},
+
 		select: function(select){
 			if(this.disabled){
 				return this;
 			}
 
-			if(!arguments.length || select){
+			this.selected = !arguments.length || select;
+
+			if(this.selected){
 				var parent = this.parent(),
 					previous = parent._param('selected_sheet');
 				
@@ -1183,6 +1197,10 @@ window.expromptum = window.xP = (function(undefined){
 			}
 		},
 
+		show: function(complete){
+			return this.fold(false, complete);
+		},
+
 		fold: function(fold, complete, _duration){
 			this.unfolded = !fold;
 
@@ -1214,6 +1232,8 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 			xP.controls._field.base.init.apply(this, arguments);
+
+			this._.$pocus = this.$element;
 
 			var that = this;
 
@@ -1313,6 +1333,26 @@ window.expromptum = window.xP = (function(undefined){
 
 				return this;
 			}
+		},
+
+		focus: function(){
+			var that = this, f = function(){
+					that._.$pocus.focus()[0].scrollIntoView();
+				};
+
+			if(!this._.$pocus.is(':visible')){
+				var parent = this;
+
+				while((parent = parent.parent()) && parent != this){
+					if(parent.show){
+						parent.show(f);
+					}
+				}
+			}else{
+				f();
+			}
+
+			return this;
 		}
 	}});
 
@@ -2169,11 +2209,14 @@ window.expromptum = window.xP = (function(undefined){
 
 			var $pseudo = $(html).insertBefore(this.$element);
 
+			this._.$pocus = $pseudo.filter('input, select').first();
+
 			this._.$pseudo = $(
 				[$pseudo.filter('.year'),
 				$pseudo.filter('.month'),
 				$pseudo.filter('.day')]
 			);
+
 
 			var that = this;
 
