@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-03-12
+// Updated: 2015-03-18
 
 
 (function(window){
@@ -732,6 +732,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.controls._parent.base.init.apply(this, arguments);
 
+			this._.$pocus = this.$element;
+
 			this._.children_values = {};
 
 			var parent4values = this._.parent || this._.root;
@@ -900,6 +902,26 @@ window.expromptum = window.xP = (function(undefined){
 					delete this._.children_values[name];
 				}
 			}
+		},
+
+		focus: function(){
+			var that = this, f = function(){
+					that._.$pocus.focus()[0].scrollIntoView();
+				};
+
+			if(!this._.$pocus.is(':visible')){
+				var parent = this;
+
+				while((parent = parent.parent()) && parent != this){
+					if(parent.show){
+						parent.show(f);
+					}
+				}
+			}else{
+				f();
+			}
+
+			return this;
 		},
 
 		_find_by_name: function(name){
@@ -1233,8 +1255,6 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls._field.base.init.apply(this, arguments);
 
-			this._.$pocus = this.$element;
-
 			var that = this;
 
 			this.$element.bind(this.change_events, function(){
@@ -1333,26 +1353,6 @@ window.expromptum = window.xP = (function(undefined){
 
 				return this;
 			}
-		},
-
-		focus: function(){
-			var that = this, f = function(){
-					that._.$pocus.focus()[0].scrollIntoView();
-				};
-
-			if(!this._.$pocus.is(':visible')){
-				var parent = this;
-
-				while((parent = parent.parent()) && parent != this){
-					if(parent.show){
-						parent.show(f);
-					}
-				}
-			}else{
-				f();
-			}
-
-			return this;
 		}
 	}});
 

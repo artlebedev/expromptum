@@ -801,6 +801,9 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 `.val([object | objects array])`
 - Позволяет принимать в качестве значения объект или массив объектов. Значения свойств объекта будут устанавливаться в качестве значений для одноименных контролов, находящихся внутри данного.
 
+`.focus()`
+- Устанавливает фокус. Возвращает данный контрол.
+
 * * *
 
 ### <a href="#controls.form" name="controls.form">Форма</a>
@@ -988,9 +991,6 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 
 `.val([value])`
 - Чтение и запись значения контрола.
-
-`.focus()`
-- Устанавливает фокус. Возвращает данный контрол.
 
 * * *
 
