@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-03-18
+// Updated: 2015-03-23
 
 
 (function(window){
@@ -3034,7 +3034,7 @@ window.expromptum = window.xP = (function(undefined){
 				// TODO: Избавиться бы от проверки типа.
 				var value = this.val();
 				if(
-					!value && value !== 0
+					!value && value !== 0 && !isNaN(value)
 					&& !(this instanceof xP.controls.fields)
 				){
 					this.$container
