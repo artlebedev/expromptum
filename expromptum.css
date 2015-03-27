@@ -260,6 +260,7 @@
 		padding: 0;
 		overflow: auto;
 		overflow-y: scroll;
+		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 		z-index: 888;
 	}

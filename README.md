@@ -1032,6 +1032,11 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Базовый тип [`_parent`](#controls._parent)
 - Селектор элемента `input[type=button], button, .button`
 
+#### Методы
+
+`.click([function()[, remove]])`
+- Обработчик нажатия кнопки. При передачи в параметре функции, добавляет ее в список. При передаче значения `true` во втором параметре, удаляет функцию из списка. При вызове метода без параметров — выполняет функции в списке. Возвращает контрол.
+
 * * *
 
 ### <a href="#controls.submit" name="controls.submit">Кнопка отправки</a>

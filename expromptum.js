@@ -1373,7 +1373,41 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.controls.register({name: 'button', base: '_parent', prototype: {
-		element_selector: 'input[type=button], button, .button'
+		element_selector: 'input[type=button], button, .button',
+
+		init: function(params){
+			xP.controls.button.base.init.apply(this, arguments);
+
+			this._.on_click = new xP.list();
+
+			var that = this;
+
+			this.$element.click(function(){
+				that.click();
+
+				return false;
+			});
+		},
+
+		click: function(handler, remove){
+			if(!arguments.length){
+				if(!this.disabled){
+					var that = this;
+
+					this._.on_click.each(function(){
+						this.call(that);
+					});
+				}
+			}else{
+				if(remove){
+					this._.on_click.remove(handler);
+				}else{
+					this._.on_click.append(handler);
+				}
+			}
+
+			return this;
+		}
 	}});
 
 
@@ -3122,14 +3156,10 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
-				repeat.append(parent);
-
-				return false;
-			});
-
-			this.enabled = {
-				on: function(){return repeat.val() < repeat.max}, from: repeat
+			this.click(function(){repeat.append(parent);})
+			.enabled = {
+				on: function(){return repeat.val() < repeat.max},
+				from: repeat
 			};
 		}
 	}});
@@ -3146,14 +3176,10 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
-				repeat.append(parent, true);
-
-				return false;
-			});
-
-			this.enabled = {
-				on: function(){return repeat.val() < repeat.max}, from: repeat
+			this.click(function(){repeat.append(parent, true);})
+			.enabled = {
+				on: function(){return repeat.val() < repeat.max},
+				from: repeat
 			};
 		}
 	}});
@@ -3171,14 +3197,10 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
-				repeat.remove(parent);
-
-				return false;
-			});
-
-			this.enabled = {
-				on: function(){return repeat.val() > repeat.min}, from: repeat
+			this.click(function(){repeat.remove(parent);})
+			.enabled = {
+				on: function(){return repeat.val() > repeat.min},
+				from: repeat
 			};
 		}
 	}});
@@ -3196,13 +3218,8 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
-				repeat.move(parent, 0);
-
-				return false;
-			});
-
-			this.enabled = {
+			this.click(function(){repeat.move(parent, 0);})
+			.enabled = {
 				on: function(){return 0 < parent._param('repeat_position') * 1},
 				from: repeat
 			};
@@ -3222,14 +3239,12 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
+			this.click(function(){
 				repeat.move(parent, parent._param('repeat_position') - 1);
-
-				return false;
-			});
-
-			this.enabled = {
-				on: function(){return 0 < parent._param('repeat_position') * 1},
+			}).enabled = {
+				on: function(){
+					return 0 < parent._param('repeat_position') * 1
+				},
 				from: repeat
 			};
 		}
@@ -3248,14 +3263,12 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
+			this.click(function(){
 				repeat.move(parent, parent._param('repeat_position') * 1 + 1);
-
-				return false;
-			});
-
-			this.enabled = {
-				on: function(){return repeat.children().length - 1 > parent._param('repeat_position') * 1},
+			}).enabled = {
+				on: function(){
+					return repeat.children().length - 1 > parent._param('repeat_position') * 1
+				},
 				from: repeat
 			};
 		}
@@ -3274,14 +3287,9 @@ window.expromptum = window.xP = (function(undefined){
 				return;
 			}
 
-			this.$element.click(function(){
-				//repeat.remove(parent);
+			this.click(function(){
 				repeat.move(parent, repeat.children().length - 1);
-
-				return false;
-			});
-
-			this.enabled = {
+			}).enabled = {
 				on: function(){return repeat.children().length - 1 > parent._param('repeat_position') * 1},
 				from: repeat
 			};
