@@ -103,9 +103,9 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```html
 <input type="button" value="Button" data-xp="type: 'button'"/>
 
-<button data-xp="type: 'button'">Button<button>
+<button data-xp="type: 'button'">Button</button>
 
-<span class="button" data-xp="type: 'button'">Button<span>
+<span class="button" data-xp="type: 'button'">Button</span>
 ```
 
 <div><a href="#controls.submit">Кнопка отправки</a></div>
