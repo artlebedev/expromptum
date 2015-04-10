@@ -623,6 +623,12 @@ window.expromptum = window.xP = (function(undefined){
 			destroy_with_children(this);
 
 			$container.remove();
+
+			var parent = this.parent();
+
+			if(parent){
+				parent.change();
+			}
 		},
 
 		destroy: function(handler, remove){
@@ -3753,7 +3759,8 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			control._.repeat_suffix
-				= (repeat.parent && repeat.parent._.repeat_suffix ? repeat.parent._.repeat_suffix : '')
+				= (repeat.parent && repeat.parent._.repeat_suffix
+					? repeat.parent._.repeat_suffix : '')
 				+ repeat.name_suffix_before
 				+ position + repeat.name_suffix_after;
 
@@ -3776,15 +3783,22 @@ window.expromptum = window.xP = (function(undefined){
 				}
 			});
 
-			control.parent().children().sort(function(a, b){
-				if(a._param('repeat_position') < b._param('repeat_position')){
-					b.change();
+			var parent = control.parent();
 
-					return -1;
-				}else{
-					return 1;
-				}
-			});
+			if(parent){
+				parent.children().sort(function(a, b){
+					if(
+						a._param('repeat_position')
+						< b._param('repeat_position')
+					){
+						b.change();
+
+						return -1;
+					}else{
+						return 1;
+					}
+				});
+			}
 		},
 
 		repeat_get_params = function(repeat, $container, object, id_suffix){
