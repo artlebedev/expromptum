@@ -573,18 +573,28 @@ window.expromptum = window.xP = (function(undefined){
 
 
 			if(!this._.parent){
-				// TODO: Дописать перемещение детей из родителя.
 				this.$element.parentsUntil('body').each(function(){
 					var control = xP.controls.link($(this));
 
 					if(control){
 						that._.parent = control;
+
 						return false;
 					}
 				});
 			}
 
 			if(this._.parent && !(this instanceof xP.controls.form)){
+				this._.parent.children().each(function(){
+					if(that.$container.has(this.$container)[0]){
+						that._.parent._.children.remove(this);
+
+						this._.parent = that;
+
+						that._.children.append(this);
+					}
+				});
+
 				this._.no_root_dependencies
 					= this._.parent._.no_root_dependencies;
 
