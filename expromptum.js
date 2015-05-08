@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-05-05
+// Updated: 2015-05-08
 
 
 (function(window, $){
@@ -3599,12 +3599,14 @@ window.expromptum = window.xP = (function(undefined){
 
 			control.remove();
 
-			while(ii-- && ii >= i){
+			while(i < ii){
 				repeat_change_suffixes(
 					this,
-					children[ii],
-					ii
+					children[i],
+					i
 				);
+
+				i++;
 			}
 
 			this.change();
