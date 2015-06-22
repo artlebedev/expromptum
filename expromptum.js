@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-05-08
+// Updated: 2015-06-22
 
 
 (function(window, $){
@@ -2019,7 +2019,7 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this;
 
 			this.$secret.bind(this.change_events, function(){
-				that.$element.val(that.$secret.val());
+				that.$element.val(that.$secret.val()).change();
 			});
 
 			this.control_button_view
