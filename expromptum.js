@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-06-22
+// Updated: 2015-07-28
 
 
 (function(window, $){
@@ -2221,7 +2221,8 @@ window.expromptum = window.xP = (function(undefined){
 			return value !== ''
 					? ((value + '')
 						.replace(num.unformat.grouping, '')
-						.replace(num.unformat.decimal, '.') * 1)
+						.replace(num.unformat.decimal, '.')
+						.replace(/[^-.0-9]/g, '') * 1)
 							.toPrecision(15) * 1
 					: '';
 		}
