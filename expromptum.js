@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-07-28
+// Updated: 2015-08-14
 
 
 (function(window, $){
@@ -574,7 +574,7 @@ window.expromptum = window.xP = (function(undefined){
 
 
 			if(!this._.parent){
-				this.$element.parentsUntil('body').each(function(){
+				this.$container.parentsUntil('body').each(function(){
 					var control = xP.controls.link($(this));
 
 					if(control){
