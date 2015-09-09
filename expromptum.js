@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-08-14
+// Updated: 2015-09-09
 
 
 (function(window, $){
@@ -1616,6 +1616,11 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls.selectus.base.init.apply(this, arguments);
 
+			var that = this;
+			xP.after(function(){that.after_init()});
+		},
+
+		after_init: function(){
 			// TODO: Добавить поддержку append
 			var $options = this.$element.find('[type=radio], [type=checkbox]'),
 				that = this;
