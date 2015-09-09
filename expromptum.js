@@ -2684,9 +2684,11 @@ window.expromptum = window.xP = (function(undefined){
 					if(param && !(param instanceof xP.dependencies._item)){
 						if($.type(param) === 'array'){
 							for(var j = 0, jj = param.length; j < jj; j++){
-								new that[xP_dependencies_registered[i]](
-									param[j], control
-								);
+								if(!(param[j] instanceof xP.dependencies._item)){
+									new that[xP_dependencies_registered[i]](
+										param[j], control
+									);
+								}
 							}
 						}else{
 							new that[xP_dependencies_registered[i]](
