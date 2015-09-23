@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-09-10
+// Updated: 2015-09-23
 
 
 (function(window, $){
@@ -1243,18 +1243,34 @@ window.expromptum = window.xP = (function(undefined){
 		fold: function(fold, complete, _duration){
 			this.unfolded = !fold;
 
+			var that = this;
+
 			if(fold){
-				this.$container.add(this.$label)
-					.removeClass(this.unfolded_class)
-					.addClass(this.folded_class);
+				this.$container.slideUp(
+					_duration || this.duration,
+					function(){
+						that.$container.add(that.$label)
+							.removeClass(that.unfolded_class)
+							.addClass(that.folded_class);
 
-				this.$container.slideUp(_duration || this.duration, complete);
+						if(complete){
+							complete();
+						}
+					}
+				);
 			}else{
-				this.$container.add(this.$label)
-					.removeClass(this.folded_class)
-					.addClass(this.unfolded_class);
+				this.$container.slideDown(
+					_duration || this.duration,
+					function(){
+						that.$container.add(that.$label)
+							.removeClass(that.folded_class)
+							.addClass(that.unfolded_class);
 
-				this.$container.slideDown(_duration || this.duration, complete);
+						if(complete){
+							complete();
+						}
+					}
+				);
 			}
 
 			return this;
