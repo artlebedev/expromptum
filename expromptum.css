@@ -63,7 +63,7 @@
 	.control_button,
 	.disabled :hover.control_button,
 	.selectus .select:after,
-	.selectus .select.disabled:hover:after {
+	.selectus .select:after.disabled:hover {
 		background: #ccc;
 		border-color: #ccc;
 		cursor: pointer;
@@ -88,7 +88,7 @@
 	button:hover,
 	html .button:hover,
 	.control_button:hover,
-	.selectus .select:hover:after {
+	.selectus .select:after:hover {
 		background: #fc9;
 		border-color: #fc9;
 	}
@@ -227,17 +227,22 @@
 		display: inline-block;
 		text-decoration: none;
 		padding: 0;
+		min-width: 128px;
+		min-height: 1.6em;
+		position: relative;
 	}
 	.selectus .select:after {
 		content: '\25bc';
-		margin-left: 0.5em;
 		line-height: 1.5;
+		position: absolute;
+		right: 0;
+		bottom: 0;
 	}
 	.selectus .select .selected {
 		display: inline-block;
 		text-decoration: none;
 		padding: 2px 3px;
-		margin: 0;
+		margin: 0 2em 0 0;
 		border: none;
 	}
 	.selectus .selectors.hidden {
