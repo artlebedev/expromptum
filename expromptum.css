@@ -62,8 +62,7 @@
 	.disabled .button:hover,
 	.control_button,
 	.disabled :hover.control_button,
-	.selectus .select:after,
-	.selectus .select:after.disabled:hover {
+	.selectus .select:after {
 		background: #ccc;
 		border-color: #ccc;
 		cursor: pointer;
@@ -87,8 +86,7 @@
 	input[type=button]:hover,
 	button:hover,
 	html .button:hover,
-	.control_button:hover,
-	.selectus .select:after:hover {
+	.control_button:hover {
 		background: #fc9;
 		border-color: #fc9;
 	}
