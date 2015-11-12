@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-10-28
+// Updated: 2015-11-11
 
 
 (function(window, $){
@@ -3720,8 +3720,11 @@ window.expromptum = window.xP = (function(undefined){
 					+ repeat_new_control_count + this.id_suffix_after,
 				$container = $(
 					this.control._get_html().replace(
-						/(\s(id|for|list)\s*=\s*([\"\'])?[^\s>]+)\3/g,
-						'$1' + id_suffix + '$3'
+						/(\s(id|for|list)\s*=\s*"[^"]+)"/g,
+						'$1' + id_suffix + '"'
+					).replace(
+						/(\sname\s*=\s*"[^"]+)"/g,
+						'$1_xp_repeat_temp"'
 					)
 				);
 
@@ -3887,7 +3890,7 @@ window.expromptum = window.xP = (function(undefined){
 				var $e = $(this),
 					name = $e.attr('name'),
 					type = $e.attr('type'),
-					parts = name.split(repeat.name_suffix_splitter),
+					parts = name.replace(/_xp_repeat_temp$/, '').split(repeat.name_suffix_splitter),
 					new_name = parts[0] + control._.repeat_suffix;
 
 				for(var i = repeat.nesting * 2 + 3; i < parts.length; i++){
