@@ -1860,7 +1860,7 @@ window.expromptum = window.xP = (function(undefined){
 		val: function(value){
 			if(!arguments.length){
 				return !this.selected
-					? ''
+					? (this.disabled ? undefined : '')
 					: xP.controls._option.base.val.apply(this, arguments);
 			}else if($.type(value) === 'array'){
 				var i = value.length;
