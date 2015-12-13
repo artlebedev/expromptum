@@ -2931,6 +2931,10 @@ window.expromptum = window.xP = (function(undefined){
 						dependence_init_inquiry,
 						xP.after(function(){
 							dependence.each(function(){
+								this.to.each(function(){
+									this._init_val();
+								});
+
 								this.suprocess();
 							});
 
@@ -3221,8 +3225,6 @@ window.expromptum = window.xP = (function(undefined){
 	xP.dependencies.register({name: 'changed', base: '_rooted', prototype: {
 		init: function(params, control){
 			xP.dependencies.changed.base.init.apply(this, arguments);
-
-			var that = this;
 		},
 
 		process: function(){
@@ -3236,7 +3238,7 @@ window.expromptum = window.xP = (function(undefined){
 				var cur = this.val(),//this._param('value'),
 					ini = this._param('initial_value');
 
-				that.result = (ini === undefined ? '' : ini) != cur;
+				that.result = ini != cur;
 
 				this.$container.toggleClass(
 					that.container_changed_class,
