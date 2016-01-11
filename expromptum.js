@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2015-12-09
+// Updated: 2016-01-11
 
 
 (function(window, $){
@@ -3753,8 +3753,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			$container.find('input, textarea')
-				.add($container.filter('input, textarea'))
+			$container.find('input, textarea, select')
+				.add($container.filter('input, textarea, select'))
 				.not(function(){
 					var reset = xP(this).first().reset_on_repeat;
 					return that.reset && reset === false
@@ -3765,7 +3765,8 @@ window.expromptum = window.xP = (function(undefined){
 					'[type=button], [type=img], [type=submit],'
 					+ '[type=checkbox], [type=radio]'
 				)
-				.val('');
+				.val('')
+				.filter('select').each(function(){this.selectedIndex = 0});
 
 			if(!this.temp_template){
 				var c = this.children().pop();
@@ -3827,9 +3828,19 @@ window.expromptum = window.xP = (function(undefined){
 
 			if(control.repeat){
 				if(control.repeat.id !== repeat.id){
-					params.repeat = {
-						id: control.repeat.id + id_suffix
-					};
+					params.repeat = {};
+					$.each(control.repeat, function(name, value){
+						if(
+							name.indexOf('_') != 0
+							&& name !== 'position'
+							&& !(value instanceof xP.controls._item)
+							&& !(value instanceof jQuery)
+							&& $.type(value) !== 'function'
+						){
+							params.repeat[name] = value;
+						}
+					});
+					params.repeat.id = control.repeat.id + id_suffix;
 
 					if(
 						control === control.repeat.control
@@ -3939,8 +3950,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			$.each(object, function(name, value){
 				if(
-					(name.indexOf('_') != 0)
-					&& !(value instanceof jQuery)
+					name.indexOf('_') != 0
 					&& !(value instanceof jQuery)
 					&& ($.type(value) !== 'function' || name === 'on')
 				){
