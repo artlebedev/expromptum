@@ -47,7 +47,8 @@
 	}
 
 	select {
-		padding: 2px;
+		padding-top: 2px;
+		padding-bottom: 2px;
 	}
 
 	input[type=submit],
@@ -61,8 +62,7 @@
 	.button:visited,
 	.disabled .button:hover,
 	.control_button,
-	.disabled :hover.control_button,
-	.selectus .select:after {
+	.disabled :hover.control_button {
 		background: #ccc;
 		border-color: #ccc;
 		cursor: pointer;
@@ -217,6 +217,8 @@
 /* Selectus */
 	.selectus {
 		position: relative;
+		display: inline-block;
+		vertical-align: top;
 	}
 	.selectus .field_control {
 		position: relative;
@@ -231,10 +233,18 @@
 	}
 	.selectus .select:after {
 		content: '\25bc';
-		line-height: 1.5;
+		line-height: inherit;
+		font-size: 9px;
 		position: absolute;
-		right: 0;
-		bottom: 0;
+		right: 5px;
+		bottom: 50%;
+		margin-bottom: -5px;
+	}
+	.selectus .select:before {
+		content: '';
+		height: 1.2em;
+		width: 1px;
+		display: inline-block;
 	}
 	.selectus .select .selected {
 		display: inline-block;
