@@ -14,10 +14,12 @@
 	.selectus .selectors {
 		border: 1px solid #ccc;
 		padding: 3px;
+		min-height: 1.6em;
 		line-height: 1.2;
 		font-size: 100%;
 		margin: 0 4px 2px 0;
 		background: #fff;
+		box-sizing: border-box;
 	}
 	textarea {
 		font-size: 120%;
@@ -67,7 +69,6 @@
 		border-color: #ccc;
 		cursor: pointer;
 		min-width: 1.7em;
-		min-height: 1.6em;
 		text-align: center;
 		display: inline-block;
 		-moz-box-sizing: border-box;
@@ -226,9 +227,7 @@
 	.selectus .select {
 		display: inline-block;
 		text-decoration: none;
-		padding: 0;
 		min-width: 128px;
-		min-height: 1.6em;
 		position: relative;
 	}
 	.selectus .select:after {
@@ -242,16 +241,17 @@
 	}
 	.selectus .select:before {
 		content: '';
-		height: 1.2em;
+		height: 1px;
 		width: 1px;
 		display: inline-block;
 	}
 	.selectus .select .selected {
 		display: inline-block;
 		text-decoration: none;
-		padding: 2px 3px;
 		margin: 0 2em 0 0;
+		min-height: auto;
 		border: none;
+		padding: 0;
 	}
 	.selectus .selectors.hidden {
 		display: block;
