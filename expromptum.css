@@ -204,9 +204,7 @@
 	.time_spliter:before {
 		content: ':';
 	}
-	.date .control_button_dec, .date .control_button_inc,
-	.datemonth .control_button_dec, .datemonth .control_button_inc,
-	.datetime .control_button_dec, .datetime .control_button_inc {
+	.date_control .control_button_dec, .date_control .control_button_inc {
 		display: none;
 	}
 
