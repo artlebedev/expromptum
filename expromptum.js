@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2016-04-28
+// Updated: 2016-06-02
 
 
 (function(window, $){
@@ -1169,7 +1169,7 @@ window.expromptum = window.xP = (function(undefined){
 			if(this.selected){
 				var parent = this.parent(),
 					previous = parent._param('selected_sheet');
-				
+
 				if(previous !== this){
 					if(previous){
 						previous.select(false);
@@ -1368,7 +1368,7 @@ window.expromptum = window.xP = (function(undefined){
 				return this.disabled ? undefined : this.$element.val();
 			}else{
 				var el = this.$element[0];
-				
+
 				if(this.$element.is(':focus')){
 					var start = el.selectionStart,
 						end = el.selectionEnd;
@@ -1666,9 +1666,14 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			if(!this.$selectors[0]){
+				var options = [];
 				this.options.each(function(){
-					$options = $options.add(this.$container);
+					for (var i = 0; i < this.$container.length; i++) {
+						options.push(this.$container[i]);
+					}
 				});
+
+				$options = $options.add(options);
 
 				this.$selectors = $options
 					.wrapAll('<div class="' + this.selectors_class + '"></div>')
@@ -2308,7 +2313,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var html = '',
 				format = this.locale.date.split(this._split_pattern);
-			
+
 			for(var i = 0, ii = format.length; i < ii; i++){
 				if(format[i] == 'yy'){
 					html += this._number_begin_html + ', min: 0" value="'
@@ -2389,9 +2394,9 @@ window.expromptum = window.xP = (function(undefined){
 		_month_name: 'name',
 
 		_split_pattern: /[-\s:.\/\\]/,
-		
+
 		_spliters: ['-', ''],
-		
+
 		_number_begin_html: '<input data-xp="type: \'number\','
 			+ 'container_selector: \'.none\','
 			+ 'allow_chars_pattern: /\\d/,'
@@ -2499,7 +2504,7 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.controls.register({name: 'combobox', base: 'string', prototype: {
 		element_selector: '.combobox input, input.combobox, input[list]',
-		
+
 		search_from_start: true,
 		case_sensitive: false,
 
@@ -3188,7 +3193,7 @@ window.expromptum = window.xP = (function(undefined){
 			);
 
 			var that = this;
-			
+
 			this.to.each(function(){
 				// TODO: Избавиться бы от проверки типа.
 				var value = this.val();
