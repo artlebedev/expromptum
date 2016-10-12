@@ -21,6 +21,9 @@
 		background: #fff;
 		box-sizing: border-box;
 	}
+	input[type=file] {
+		background: inherit;
+	}
 	textarea {
 		font-size: 120%;
 	}
@@ -68,7 +71,6 @@
 		background: #ccc;
 		border-color: #ccc;
 		cursor: pointer;
-		min-width: 1.7em;
 		text-align: center;
 		display: inline-block;
 		-moz-box-sizing: border-box;
