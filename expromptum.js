@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2016-10-13
+// Updated: 2016-12-14
 
 
 (function(window, $){
@@ -3563,7 +3563,7 @@ window.expromptum = window.xP = (function(undefined){
 				});
 
 				control.$container
-				.find('*:not([id])').andSelf('*:not([id])').each(function(){
+				.find('*:not([id])').addBack('*:not([id])').each(function(){
 					this.id = 'xP' + (Math.random() + '').substr(2, 8);
 				});
 
@@ -3576,7 +3576,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.after(function(){
 				control.$container
-				.find('*[id^=xP]').andSelf('*[id^=xP]').each(function(){
+				.find('*[id^=xP]').addBack('*[id^=xP]').each(function(){
 					var $e = $(this),
 						control = xP.controls.link($e);
 
@@ -3601,7 +3601,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				xP.after(function(){
 					control.$container
-					.find('input, textarea, select, button').andSelf()
+					.find('input, textarea, select, button').addBack()
 					.attr('disabled', true);
 				});
 			}else{
@@ -3905,7 +3905,7 @@ window.expromptum = window.xP = (function(undefined){
 			var option_names = {},
 				root_options = control.root()._param('_option');
 
-			control.$container.find('[name]').andSelf('[name]').each(function(){
+			control.$container.find('[name]').addBack('[name]').each(function(){
 				var $e = $(this),
 					name = $e.attr('name'),
 					type = $e.attr('type'),
