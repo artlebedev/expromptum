@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2016-12-14
+// Updated: 2016-12-21
 
 
 (function(window, $){
@@ -1632,6 +1632,8 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: '.selectus',
 
 		init: function(params){
+			this.find_text = '';
+
 			xP.controls.selectus.base.init.apply(this, arguments);
 
 			var that = this;
@@ -1648,6 +1650,10 @@ window.expromptum = window.xP = (function(undefined){
 			this.options = xP($options).each(function(i){
 				var option = this;
 
+				this.label_text = this.$label.text();
+
+				this.label_html = this.$label.html();
+
 				option.$element.on('focus', function(){
 					option.$container.addClass('focus');
 				}).on('blur', function(){
@@ -1661,6 +1667,14 @@ window.expromptum = window.xP = (function(undefined){
 								.not('[type=checkbox]').click();
 						}
 						return false;
+					}else if((ev.keyCode === 46 || ev.keyCode === 8) && that.find_text){
+						that.find_text = that.find_text.substr(0, that.find_text.length - 1);
+
+						that.find_option();
+					}else if(ev.keyCode > 31){
+						that.find_text += ev.key;
+
+						that.find_option();
 					}
 				});
 			});
@@ -1693,7 +1707,8 @@ window.expromptum = window.xP = (function(undefined){
 						that.options.first()._.group.siblings.each(function(){
 							if(this.$element.is(':checked')){
 								html += '<ins class="selected">'
-									+ this.$label.html() + '</ins>';
+									+ this.label_html
+									+ '</ins>';
 							}
 						});
 						return html;
@@ -1763,7 +1778,52 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.$selectors.addClass('hidden');
 
+			this.find_text = '';
+
+			this.unhighlight_option();
+
 			return this;
+		},
+
+		find_option: function(){
+			var that = this, found = false;
+
+			if(!that.find_text){
+				this.unhighlight_option();
+
+				return;
+			}
+
+			this.options.each(function(){
+				if(this.label_text.indexOf(that.find_text) > -1){
+					found = true;
+
+					that.unhighlight_option();
+
+					that.found_option = this;
+
+					this.$label.html(this.label_html.replace(
+						new RegExp('(' + that.find_text + ')', 'ig'),
+						'<u>$1</u>'
+					));
+
+					this.$label.focus();
+
+					return false;
+				}
+			});
+
+			if(!found){
+				this.find_text = this.find_text.substr(0, this.find_text.length - 1);
+			}
+		},
+
+		unhighlight_option: function(){
+			if(this.found_option){
+				this.found_option.$label.html(
+					this.found_option.label_html
+				);
+			}
 		}
 	}});
 
