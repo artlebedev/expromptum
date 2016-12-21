@@ -1303,7 +1303,13 @@ window.expromptum = window.xP = (function(undefined){
 			var id = this.$element.attr('id');
 
 			if(!this.$label && id){
-				this.$label = $("[for='" + xP.taint_css(id) + "']");
+				var s = "[for='" + xP.taint_css(id) + "']";
+
+				this.$label = $(s, this.$container != this.$element ? this.$container : null);
+
+				if(!this.$label.length){
+					this.$label = $(s);
+				}
 			}
 
 			if(this.$container == this.$element){
