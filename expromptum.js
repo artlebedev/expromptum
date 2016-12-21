@@ -1650,7 +1650,7 @@ window.expromptum = window.xP = (function(undefined){
 			this.options = xP($options).each(function(i){
 				var option = this;
 
-				this.label_text = this.$label.text();
+				this.label_text = this.$label.text().toLowerCase();
 
 				this.label_html = this.$label.html();
 
@@ -1672,7 +1672,7 @@ window.expromptum = window.xP = (function(undefined){
 
 						that.find_option();
 					}else if(ev.keyCode > 31){
-						that.find_text += ev.key;
+						that.find_text += ev.key.toLowerCase();
 
 						that.find_option();
 					}
