@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2016-12-21
+// Updated: 2016-12-29
 
 
 (function(window, $){
@@ -471,6 +471,10 @@ window.expromptum = window.xP = (function(undefined){
 								break;
 							}
 						}
+					}
+
+					if(!params.type){
+						params.type = 'fields';
 					}
 
 					if(
