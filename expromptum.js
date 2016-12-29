@@ -533,7 +533,7 @@ window.expromptum = window.xP = (function(undefined){
 				v = this.$element.attr(a[i]);
 
 				if(v !== undefined && !this[a[i]] !== undefined){
-					this[a[i]] = v;
+					this[a[i]] = v === a[i] | v;
 				}
 			}
 
