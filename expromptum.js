@@ -396,7 +396,7 @@ window.expromptum = window.xP = (function(undefined){
 
 /* Controls */
 
-	var xP_controls_registered = [];
+	var xP_controls_registered = [], xP_controls_params = {};
 
 	xP.controls = {
 		register: function(params){
@@ -440,12 +440,16 @@ window.expromptum = window.xP = (function(undefined){
 							params = '{' + params + '}';
 						}
 
-						params = eval(
-							'(function(){return '
-							+ params
-								.replace(/([\{,])\s*do\s*:/g, '$1\'do\':')
-							+ '})()'
-						);
+						if(!xP_controls_params[params]){
+							xP_controls_params[params] = eval(
+								'(function(){return '
+								+ params
+									.replace(/([\{,])\s*do\s*:/g, '$1\'do\':')
+								+ '})'
+							);
+						}
+
+						params = xP_controls_params[params]();
 					}
 
 					$element
@@ -2776,7 +2780,7 @@ window.expromptum = window.xP = (function(undefined){
 
 /* Dependencies */
 
-	var xP_dependencies_registered = [];
+	var xP_dependencies_registered = [], xP_dependencies_on = {};
 
 	xP.dependencies = {
 		_controls: {},
@@ -2964,7 +2968,11 @@ window.expromptum = window.xP = (function(undefined){
 							);
 					});
 
-				eval('this.on = function(){return ' + this.on + '}');
+				if(!xP_dependencies_on[this.on]){
+					xP_dependencies_on[this.on] = eval('(function (){return ' + this.on + '})');
+				}
+
+				this.on = xP_dependencies_on[this.on];
 			}
 
 			if(!this.from.length){
