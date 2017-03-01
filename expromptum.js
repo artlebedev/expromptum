@@ -242,6 +242,26 @@ window.expromptum = window.xP = (function(undefined){
 	xP.taint_css_pattern
 		= /(?=[\\\^\$\.\[\]\|\(\)\?\*\+\{\}\:\<\>\@\/\~\&\=])/g;
 
+	(function(){
+		var e = Element.prototype,
+			match = (
+				e.matchesSelector
+				|| e.msMatchesSelector
+				|| e.mozMatchesSelector
+				|| e.webkitMatchesSelector
+				|| e.oMatchesSelector
+			);
+		if(match){
+			xP.css_selector_match = function($element, selector){
+				return match.call($element[0], selector);
+			};
+		}else{
+			xP.css_selector_match = function($element, selector){
+				return $element.is($element, selector);
+			};
+		}
+	})();
+
 
 
 /* Locale */
@@ -465,7 +485,9 @@ window.expromptum = window.xP = (function(undefined){
 
 						while(i--){
 							if(
-								$element.is(
+								xP.css_selector_match(
+									$element,
+
 									xP.controls[xP_controls_registered[i]]
 										.prototype.element_selector
 								)
