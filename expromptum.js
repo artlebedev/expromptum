@@ -245,7 +245,8 @@ window.expromptum = window.xP = (function(undefined){
 	(function(){
 		var e = Element.prototype,
 			match = (
-				e.matchesSelector
+				e.matches
+				|| e.matchesSelector
 				|| e.msMatchesSelector
 				|| e.mozMatchesSelector
 				|| e.webkitMatchesSelector
