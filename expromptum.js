@@ -257,7 +257,7 @@ window.expromptum = window.xP = (function(undefined){
 			};
 		}else{
 			xP.css_selector_match = function($element, selector){
-				return $element.is($element, selector);
+				return $element.is(selector);
 			};
 		}
 	})();
@@ -2218,7 +2218,7 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.controls.register({name: 'number', base: '_secret', prototype: {
-		element_selector: '* input.number, .number input',
+		element_selector: 'input.number, .number input',
 
 		step: 1,
 		min: 1 - Number.MAX_VALUE,
