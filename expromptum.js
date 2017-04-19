@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2017-04-18
+// Updated: 2017-04-19
 
 
 (function(window, $){
@@ -522,7 +522,9 @@ window.expromptum = window.xP = (function(undefined){
 			if(control){
 				$element.data('expromptum.control', control);
 
-				$element[0].expromptum = control;
+				if($element[0]){
+					$element[0].expromptum = control;
+				}
 			}else{
 				return $element.data('expromptum.control');
 			}
@@ -1126,6 +1128,7 @@ window.expromptum = window.xP = (function(undefined){
 					this.$label = $(s);
 				}
 			}
+			xP.controls.link(this.$label, this);
 		},
 
 		destroy: function(handler, remove){
@@ -1338,7 +1341,11 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			if(this.$container == this.$element){
-				this.$container = this.$container.add(this.$label);
+				if(this.$label[0] && this.$element.parents(this.$label)){
+					this.$container = this.$label;
+				}else{
+					this.$container = this.$container.add(this.$label);
+				}
 			}
 
 			if(this.allow_chars_pattern){
@@ -1687,7 +1694,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				this.label_text = this.$label.text().toLowerCase();
 
-				this.label_html = this.$label.html();
+				this.label_html = this.$label.html().replace(/<input[^>]*>/g, '');
 
 				option.$element.on('focus', function(){
 					option.$container.addClass('focus');
