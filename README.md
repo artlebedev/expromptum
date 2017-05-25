@@ -1545,7 +1545,7 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 ###### Пример
 
 ```html
-<input name="zip" data-xp="valid: /^\d{6}$/'"/>
+<input name="zip" data-xp="'valid: /^\d{6}$/'"/>
 ```
 
 [Демо](http://www.artlebedev.ru/tools/expromptum/dependencies/#valid)
