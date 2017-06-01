@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2017-05-16
+// Updated: 2017-06-01
 
 
 (function(window, $){
@@ -1016,7 +1016,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			this.$element.bind('submit', function(){
+			this.$element.on('submit', function(){
 				return that.submit();
 			});
 
@@ -1335,7 +1335,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			this.$element.bind(this.change_events, function(){
+			this.$element.on(this.change_events, function(){
 				that.change();
 			});
 
@@ -1873,7 +1873,7 @@ window.expromptum = window.xP = (function(undefined){
 	}});
 
 
-	$(document).bind('mouseup.expromptum_controls_opened', function(ev){
+	$(document).on('mouseup.expromptum_controls_opened', function(ev){
 		if(xP.controls.opened){
 			xP.controls.opened.close();
 		}
@@ -2185,7 +2185,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			this.$secret.bind(this.change_events, function(){
+			this.$secret.on(this.change_events, function(){
 				that.$element.val(that.$secret.val()).change();
 			});
 
@@ -2702,14 +2702,14 @@ window.expromptum = window.xP = (function(undefined){
 				});
 
 				this.$element
-					.bind('focus', function(ev){
+					.on('focus', function(ev){
 						list._param('do_not_filter', false);
 						list.show();
 					})
-					.bind('blur', function(ev){
+					.on('blur', function(ev){
 						list.hide();
 					})
-					.bind('keydown', function(ev){
+					.on('keydown', function(ev){
 						if(ev.keyCode === 38 || ev.keyCode === 40){
 							// up & down.
 							if(!list.$element[0].options.length){
@@ -2729,20 +2729,20 @@ window.expromptum = window.xP = (function(undefined){
 					});
 
 				list.$element
-					.bind('blur', function(ev){
+					.on('blur', function(ev){
 						list._param('do_not_hide', false);
 						list.hide();
 					})
-					.bind('change', function(ev){
+					.on('change', function(ev){
 						var value = list.text();
 						if(value){
 							that.val(value);
 						}
 					})
-					.bind('mousedown', function(ev){
+					.on('mousedown', function(ev){
 						list._param('do_not_hide', true);
 					})
-					.bind('click keyup', function(ev){
+					.on('click keyup', function(ev){
 						if(
 							ev.type === 'click'
 							|| ev.keyCode === 13
@@ -2757,7 +2757,7 @@ window.expromptum = window.xP = (function(undefined){
 							return false;
 						}
 					})
-					.bind('keydown', function(ev){
+					.on('keydown', function(ev){
 						if(
 							ev.keyCode !== 13
 							&& ev.keyCode !== 27
