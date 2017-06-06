@@ -2559,7 +2559,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				for(; i < l; i++){
 					if(a[i]){
-						this._.pseudo[i].val(a[i] * 1);
+						this._.pseudo[i].val(i < 3 ? a[i] * 1 : a[i]);
 					}
 				}
 			}
