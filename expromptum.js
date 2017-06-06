@@ -1407,7 +1407,7 @@ window.expromptum = window.xP = (function(undefined){
 						end = el.selectionEnd;
 				}
 
-				if(el.value != value){
+				if(el.value + '' != value + ''){
 					el.value = value;
 
 					if(this.$element.is(':focus')){
@@ -2385,7 +2385,7 @@ window.expromptum = window.xP = (function(undefined){
 		_unformat: function(value){
 			var num = this.locale.number;
 
-			return value !== ''
+			return value !== '' && value !== undefined
 					? ((value + '')
 						.replace(num.unformat.grouping, '')
 						.replace(num.unformat.decimal, '.')
