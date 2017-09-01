@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2017-07-31
+// Updated: 2017-09-01
 
 
 
@@ -3155,7 +3155,7 @@ window.expromptum = window.xP = (function(undefined){
 	}});
 
 
-	xP.dependencies.register({name: 'enabled for', base: '_item', prototype: {
+	xP.dependencies.register({name: 'enabled', base: '_item', prototype: {
 		process: function(){
 
 			xP.dependencies.enabled.base.process.apply(this);
