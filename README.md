@@ -177,6 +177,23 @@ Expromptum — библиотека JavaScript, предназначенная �
 <input class="phone" data-xp="type: 'phone'"/>
 ```
 
+#### Календарь
+
+<div><a href="#controls.datemonth_picker">Поле для года и месяца с календарем</a></div>
+```html
+<input class="datemonth picker" data-xp="type: 'date_picker'"/>
+```
+
+<div><a href="#controls.date_picker">Поле для даты с календарем</a></div>
+```html
+<input class="date  picker" data-xp="type: 'date_picker'"/>
+```
+
+<div><a href="#controls.datetime_picker">Поле для даты и времени с календарем</a></div>
+```html
+<input class="datetime picker" data-xp="type: 'date_picker'"/>
+```
+
 
 #### Выбор значений
 
@@ -543,169 +560,6 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 }});
 ```
 
-###### Пример 5
-
-Поля для ввода даты с использованием виджета [Datepicker](http://jqueryui.com/datepicker/).
-
-```js
-xP.controls.register({name: 'date_picker', base: '_secret', prototype: {
-	element_selector: 'input.date.picker, .date.picker input',
-
-	init: function(params){
-		this.locale = xP.locale;
-
-		xP.controls.date_picker.base.init.apply(this, arguments);
-
-		var month_names = [],
-			day_names = [this.locale.weekday[6].name],
-			day_names_min = [this.locale.weekday[6].abbr];
-
-		for(var i = 0, ii = this.locale.month.length; i < ii; i++){
-			month_names.push(this.locale.month[i].name);
-		}
-
-		for(var i = 0, ii = this.locale.weekday.length - 1; i < ii; i++){
-			day_names.push(this.locale.weekday[i].name);
-
-			day_names_min.push(this.locale.weekday[i].abbr);
-		}
-
-		this.$element.datepicker($.extend({
-			autoSize: true,
-			changeMonth: true,
-			changeYear: true,
-			dateFormat: this.locale.date,
-			firstDay: this.locale.first_day,
-			prevText: this.locale.prev_month,
-			nextText: this.locale.next_month,
-			dayNames: day_names,
-			dayNamesMin: day_names_min,
-			monthNamesShort: month_names,
-			altField: this.$secret,
-			altFormat: 'yy-mm-dd'
-		}, this.datepicker));
-
-		if(this._.initial_value){
-			this.$element.datepicker(
-				'setDate',
-				new Date(this._.initial_value.replace(/\s*\d+:\S+\s*/, ''))
-			);
-		}
-	},
-
-	destroy: function(handler, remove){
-		if(!arguments.length){
-			this.locale.destroy();
-
-			this.$element.datepicker('destroy');
-		}
-		return xP.controls.date_picker.base.destroy.apply(this, arguments);
-	},
-
-	param: function(name, value){
-		switch(name){
-			case 'min':
-				this.$element.datepicker('option', 'minDate', value);
-				return value;
-				break;
-
-			default:
-				return xP.controls.datepicker.base.param.apply(this, arguments);
-		};
-	},
-
-	date: function(){
-		return this.$element.datepicker('getDate');
-	},
-
-	val: function(value){
-		if(!arguments.length){
-			return this.disabled
-				? undefined
-				: (
-					this.$secret
-						? this.$secret.val()
-						: this.$element.val()
-				);
-		}else{
-			this.$element.datepicker('setDate', new Date(value));
-
-			return this;
-		}
-	}
-}});
-
-
-xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
-	element_selector: 'input.datetime.picker, .datetime.picker input',
-
-	init: function(params){
-		var value = params.$element.val();
-
-		xP.controls.datetime_picker.base.init.apply(this, arguments);
-
-		this._.$time = $('<input value="' + value.substr(11,2)
-			+ '" class="hours"/>:<input value="' + value.substr(14,2)
-			+ '" class="minutes"/>').insertAfter(this.$element);
-
-		var that = this,
-			add_time = function(){
-				that.$secret.val(
-					that.$secret.val().replace(/\s+\d+:\d+/, '')
-						+ ' ' + that._.$time.first().val() + ':'
-						+ that._.$time.last().val()
-				);
-			};
-
-		this._.time_control = new xP.list();
-
-		this._.$time.filter('input').each(function(){
-			that._.time_control.append(
-				(new xP.controls.number({
-					$element: $(this),
-					min: 0,
-					max: 23,
-					changed: null
-				}))
-					.change(add_time)
-					.change(function(){
-						that.change();
-					})
-			);
-		});
-
-		this._.time_control.last().max = 59;
-
-		this.change(add_time);
-
-		if(this._.initial_value){
-			this.$secret.val(this._.initial_value);
-		}
-	},
-
-	destroy: function(handler, remove){
-		if(!arguments.length){
-			this._.time_control.each(function(){this.destroy();});
-
-			this._.$time.remove();
-		}
-
-		return xP.controls.datetime_picker.base.destroy.apply(this, arguments);
-	},
-
-	disable: function(disabled){
-		disabled = !arguments.length || disabled;
-
-		if(this.disabled !== disabled){
-			xP.controls.datetime_picker.base.disable.apply(this, arguments);
-
-			this._.time_control.each(function(){this.disable(disabled);});
-		}
-
-		return this;
-	}
-}});
-```
 
 
 * * *
@@ -1169,6 +1023,36 @@ xP.controls.register({name: 'datetime_picker', base: 'date_picker', prototype: {
 - Селектор элемента `.phone input, input.phone`
 
 [Демо](http://www.artlebedev.ru/tools/expromptum/controls/#phone)
+
+* * *
+
+### <a href="#controls.datemonth_picker">Поле для года и месяца с календарем</a>
+
+- Тип `date_picker`
+- Базовый тип [`date`](#controls.date)
+- Селектор элемента `input.datemonth.picker, .datemonth.picker input`
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#picker_datemonth)
+
+* * *
+
+### <a href="#controls.date_picker">Поле для даты с календарем</a>
+
+- Тип `date_picker`
+- Базовый тип [`date`](#controls.date)
+- Селектор элемента `input.date.picker, .date.picker input`
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#picker_date)
+
+* * *
+
+### <a href="#controls.datetime_picker">Поле для даты и времени с календарем</a>
+
+- Тип `date_picker`
+- Базовый тип [`date`](#controls.date)
+- Селектор элемента `input.datetime.picker, .datetime.picker input`
+
+[Демо](http://www.artlebedev.ru/tools/expromptum/controls/#datetime_picker)
 
 * * *
 

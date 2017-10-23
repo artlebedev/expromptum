@@ -296,3 +296,99 @@
 	.selectus .selectors .selected {
 		background: #ccc;
 	}
+
+/* Date Picker */
+
+	.date_picker_control {
+		display: inline-block;
+		position: relative;
+	}
+
+	.date_picker_control.focused {
+		z-index: 1000;
+	}
+
+	.date_picker_control .calendar {
+		position: absolute;
+		background: white;
+		box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+		border-radius: 2px;
+		padding: 3px;
+	}
+
+	.date_picker_control .calendar .close {
+		position: absolute;
+		right: 5px;
+		cursor: pointer;
+	}
+
+	.date_picker_control .calendar .days .current {
+		background: #ccfdcc;
+	}
+
+	.date_picker_control .calendar .days .current.selected {
+		background: #fcfdcc;
+	}
+
+	.date_picker_control .calendar .days .prev {
+		background: #ececec;
+	}
+
+	.date_picker_control .calendar .days .next {
+		background: #ececec;
+	}
+
+	.date_picker_control .calendar .days .d {
+		padding: 2px;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.date_picker_control .calendar .days .d:hover {
+		background: rgba(205, 204, 253, 0.5);
+	}
+
+	.date_picker_control .calendar .control_button_inc:before,
+	.date_picker_control .calendar .control_button_dec:before {
+		content: '';
+	}
+
+	.date_picker_control .calendar .days .invalid {
+		color: #ababab;
+		cursor: default;
+	}
+
+	.date_picker_control .calendar .control_button_now {
+		display: block;
+		clear: both;
+	}
+
+	.date_picker_control .calendar .month .title {
+		min-width: 70px;
+		display: inline-block;
+		text-align: center;
+	}
+	
+	.date_picker_control .calendar .time {
+		white-space: nowrap;
+	}
+
+	.date_picker_control .calendar .hour:after {
+		content: ': ';
+	}
+
+	.datemonth_picker .year .title,
+	.datemonth_picker .month .title {
+		cursor: pointer;
+	}
+
+	.datemonth_picker .year .title.invalid,
+	.datemonth_picker .month .title.invalid {
+		color: grey;
+		cursor: default;
+	}
+
+
+	.datetime_picker .date_picker_control .calendar {
+		min-width: 230px;
+	}

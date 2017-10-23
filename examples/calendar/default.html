@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>expromptum &mdash; calculator</title>
+
+		<script src="http://yandex.st/jquery/2.1.0/jquery.js"></script>
+
+		<script src="../../expromptum.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="../../expromptum.css" />
+		
+	</head>
+
+	<body>
+			<div class="email">
+				email : <input name="email"/>
+			</div>
+		<h3>old school</h3>
+			<div class="datemonth">
+				datemonth : <input name="date_example01"/>
+			</div>
+			<div class="date">
+				date : <input name="date_example02"/>
+				
+			</div>
+			<div class="field">
+				date repeat: <input name="date_example03" class="date" data-xp='{ repeat: true}'/>
+				<button class="repeat_append_button">+</button>
+				<button class="repeat_remove_button">&minus;</button>
+			</div>
+			
+			<p class="field">
+
+				datetime: <input name="date_example4" data-xp='{"type": "datetime", "minute_round": 10}'/>
+			</p>
+			
+		<h3>new</h3>
+			<div>
+				datecalendar: <input name="date_picker_example" class="date picker" data-xp='{min: new Date(2016,4,1), max: new Date(2018,3,1)}'/>
+			</div>
+			
+			<p class="field">
+
+				datecalendar repeat:<input name="date_picker_example2" class="date picker" data-xp='{"type": "date_picker", repeat: true, min: new Date(2016,4,1), max: new Date(2018,3,1)}'/>
+				<button class="repeat_append_button">+</button>
+				<button class="repeat_remove_button">&minus;</button>
+			</p>
+			
+			
+			<p class="field">
+
+				datemonth: <input name="date_picker_example3" class="datemonth picker" data-xp='{min: new Date(2016,4,1), max: new Date(2018,3,1)}'/>
+			</p>
+			
+			<p class="field datetime picker">
+
+				datetime: <input name="date_picker_example4" class="datetime picker" value="11:00" data-xp='{ "minute_round": 10}'/>
+			</p>
+
+			
+			<p class="field">
+				range:
+				<input name="from" class="date picker" data-xp='{computed: {on: "[name=to]", do: "max"}}'/>
+				<input name="to" class="date picker" data-xp='{computed: {on: "[name=from]", do: "min"}  }'/>
+			</p>
+			<script>
+			xP.locale.secret_date = 'yyyy-mm-dd xxx';
+			expromptum();
+			
+
+		</script>
+	</body>
+</html>
