@@ -257,13 +257,13 @@
 		display: block;
 		max-height: 0;
 		margin-left: -10000px;
-		transition: max-height 0.3s ease, margin-left 0s 0.3s;
+		/*transition: max-height 0.3s ease, margin-left 0s 0.3s;*/
 	}
 	.selectus .selectors:not(.hidden) {
 		height: auto;
 		max-height: 10em;
 		margin-left: 0;
-		transition: max-height 0.3s ease, margin-left 0s;
+		/*transition: max-height 0.3s ease, margin-left 0s;*/
 	}
 	.selectus .selectors {
 		top: 100%;

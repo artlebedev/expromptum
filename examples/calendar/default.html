@@ -13,6 +13,8 @@
 	</head>
 
 	<body>
+	
+		
 			<div class="email">
 				email : <input name="email"/>
 			</div>
@@ -64,6 +66,36 @@
 				<input name="from" class="date picker" data-xp='{computed: {on: "[name=to]", do: "max"}}'/>
 				<input name="to" class="date picker" data-xp='{computed: {on: "[name=from]", do: "min"}  }'/>
 			</p>
+			
+			
+			<style>
+			.selectus .comment {display: block; font-size: 80%;}
+			.selectus .select .comment {display: none;}
+			</style>
+
+			<p class="selectus">
+				<input type="radio" name="s_radio" value="1" id="s_radio1" checked="true"/>
+				<label for="s_radio1">Пункт 1<ins class="comment">Комментарий к пункту 1</ins></label>
+
+				<input type="radio" name="s_radio" value="2" id="s_radio2"/>
+				<label for="s_radio2">Пункт 2<ins class="comment">Комментарий к пункту 2</ins></label>
+			</p>
+
+			<p class="selectus">
+				<input type="checkbox" name="s_checkbox" value="1" id="s_checkbox1" checked="true"/>
+				<label for="s_checkbox1">Пункт 1<ins class="comment">Комментарий к пункту 1</ins></label>
+
+				<input type="checkbox" name="s_checkbox" value="2" id="s_checkbox2" checked="true"/>
+				<label for="s_checkbox2">Пункт 2<ins class="comment">Комментарий к пункту 2</ins></label>
+
+				<input type="checkbox" name="s_checkbox" value="3" id="s_checkbox3" checked="true"/>
+				<label for="s_checkbox3">Пункт 3<ins class="comment">Комментарий к пункту 3</ins></label>
+
+				<input type="checkbox" name="s_checkbox" value="4" id="s_checkbox4" checked="true"/>
+				<label for="s_checkbox4">Пункт 4<ins class="comment">Комментарий к пункту 4</ins></label>
+			</p>
+			
+			
 			<script>
 			xP.locale.secret_date = 'yyyy-mm-dd xxx';
 			expromptum();

@@ -286,13 +286,16 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.offset_by_viewport =  function($element, $relative){
-		$element.css({'margin-top':0});
+		
+		$element.css({'top':'100%'});
 		var position = $element.offset(),
+			element_height = $element.height(),
 			window_bottom_pos = window.scrollY + $(window).height(),
-			element_bottom_pos = position.top + $element.height();
+			element_bottom_pos = position.top + element_height;
 
+			
 		if(window_bottom_pos < element_bottom_pos){
-			$element.css({'margin-top': -1 * ($element.outerHeight(true) + $relative.outerHeight(true)) + 'px' });
+			$element.css({'top': -1 * ($element.outerHeight(true)) + 'px' });
 		}
 	};
 
@@ -1873,6 +1876,7 @@ window.expromptum = window.xP = (function(undefined){
 
 						that.find_option();
 					}
+					
 				});
 			});
 
@@ -1889,7 +1893,7 @@ window.expromptum = window.xP = (function(undefined){
 					.wrapAll('<div class="' + this.selectors_class + '"></div>')
 					.parents('.' + this.selectors_class);
 			}
-
+			
 			this.close();
 
 			this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>')
@@ -1946,6 +1950,16 @@ window.expromptum = window.xP = (function(undefined){
 				return false;
 			});
 		},
+		
+		change: function(handler, remove){
+			xP.controls.select.base.change.apply(this, arguments);
+			
+			if(typeof this.$selectors != 'undefined'){
+				xP.offset_by_viewport(this.$selectors, this.$element);
+			}
+			
+			return this;
+		},
 
 		selectors_class: 'selectors',
 		select_class: 'select',
@@ -1959,6 +1973,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
+
 			this.$selectors.removeClass('hidden');
 
 			if(this.options.first()._.group.selected){
@@ -1967,6 +1982,7 @@ window.expromptum = window.xP = (function(undefined){
 				this.options.first().$element.focus();
 			}
 
+			xP.offset_by_viewport(this.$selectors, this.$element)
 			return this;
 		},
 
@@ -3284,10 +3300,10 @@ window.expromptum = window.xP = (function(undefined){
 				_max = this.max;
 			}
 
-			if(draft_state && _min && draft_state <= _min){
+			if(draft_state && _min && draft_state < _min){
 				valid = false;
 			}
-			if(draft_state && _max && draft_state >= _max){
+			if(draft_state && _max && draft_state > _max){
 				valid = false;
 			}
 
