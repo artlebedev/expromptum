@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2017-10-23
+// Updated: 2017-11-15
 
 
 
@@ -316,6 +316,10 @@ window.expromptum = window.xP = (function(undefined){
 		}
 
 		var result = {};
+
+		if(!value){
+			value = '';
+		}
 
 		value = value.replace(
 			parse_date_time_pattern,
@@ -2817,12 +2821,15 @@ window.expromptum = window.xP = (function(undefined){
 			this.last_build = [0,0,0];
 
 			this.change(function(){
-				if(that.val().length == 0){
+				var value = that.val();
+
+				if(!value || value.length == 0){
 					that.$element.removeClass(that.container_invalid_class);
+
 					return;
 				}
 
-				var d = xP.parse_date(that.val());
+				var d = xP.parse_date(value);
 
 				if(
 					d[0] && d[1]
