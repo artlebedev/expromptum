@@ -11,7 +11,8 @@
 	.control_button,
 	.selectus .select,
 	.selectus .select .selected,
-	.selectus .selectors {
+	.selectus .selectors,
+	.date_picker_control .calendar {
 		border: 1px solid #ccc;
 		padding: 3px;
 		min-height: 1.6em;
@@ -310,10 +311,6 @@
 
 	.date_picker_control .calendar {
 		position: absolute;
-		background: white;
-		box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-		border-radius: 2px;
-		padding: 3px;
 	}
 
 	.date_picker_control .calendar .close {
@@ -361,6 +358,7 @@
 	.date_picker_control .calendar .control_button_now {
 		display: block;
 		clear: both;
+		margin: 4px 0 0;
 	}
 
 	.date_picker_control .calendar .month .title {
