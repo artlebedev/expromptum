@@ -305,79 +305,63 @@
 		display: inline-block;
 		position: relative;
 	}
-
 	.date_picker_control.focused {
 		z-index: 1000;
 	}
-
 	.date_picker_control .calendar {
 		position: absolute;
 	}
-
 	.date_picker_control .calendar .close {
 		position: absolute;
 		right: 5px;
 		cursor: pointer;
 	}
-
 	.date_picker_control .calendar .days .prev,
 	.date_picker_control .calendar .days .next {
 		opacity: 0.6;
 	}
-
 	.date_picker_control .selected {
 		background: #6cf;
 	}
-
 	.date_picker_control .calendar .days .d {
 		padding: 4px 8px;
 		text-align: right;
 		cursor: pointer;
 	}
-
 	.date_picker_control .calendar .control_button_inc:before,
 	.date_picker_control .calendar .control_button_dec:before {
 		content: '';
 	}
-
 	.date_picker_control .calendar .days .invalid {
 		background: #ccc;
 		opacity: 0.45;
 		cursor: default;
 	}
-
 	.date_picker_control .calendar .control_button_now {
 		display: block;
 		clear: both;
 		margin: 4px 0 0;
 	}
-
 	.date_picker_control .calendar .month .title {
 		min-width: 70px;
 		display: inline-block;
 		text-align: center;
 	}
-	
 	.date_picker_control .calendar .time {
 		white-space: nowrap;
 	}
-
 	.date_picker_control .calendar .hour:after {
 		content: ': ';
 	}
-
 	.datemonth_picker .year .title,
 	.datemonth_picker .month .title {
 		cursor: pointer;
 	}
-
 	.datemonth_picker .year .title.invalid,
 	.datemonth_picker .month .title.invalid {
-		color: grey;
+		opacity: 0.45;
 		cursor: default;
 	}
-
-
 	.datetime_picker .date_picker_control .calendar {
 		min-width: 230px;
 	}
