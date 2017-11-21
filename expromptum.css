@@ -90,7 +90,8 @@
 	input[type=button]:hover,
 	button:hover,
 	html .button:hover,
-	.control_button:hover {
+	.control_button:hover,
+	.date_picker_control .d:hover {
 		background: #fc9;
 		border-color: #fc9;
 	}
@@ -319,30 +320,19 @@
 		cursor: pointer;
 	}
 
-	.date_picker_control .calendar .days .current {
-		background: #ccfdcc;
-	}
-
-	.date_picker_control .calendar .days .current.selected {
-		background: #fcfdcc;
-	}
-
-	.date_picker_control .calendar .days .prev {
-		background: #ececec;
-	}
-
+	.date_picker_control .calendar .days .prev,
 	.date_picker_control .calendar .days .next {
-		background: #ececec;
+		opacity: 0.6;
+	}
+
+	.date_picker_control .selected {
+		background: #6cf;
 	}
 
 	.date_picker_control .calendar .days .d {
-		padding: 2px;
-		text-align: center;
+		padding: 4px 8px;
+		text-align: right;
 		cursor: pointer;
-	}
-
-	.date_picker_control .calendar .days .d:hover {
-		background: rgba(205, 204, 253, 0.5);
 	}
 
 	.date_picker_control .calendar .control_button_inc:before,
@@ -351,7 +341,8 @@
 	}
 
 	.date_picker_control .calendar .days .invalid {
-		color: #ababab;
+		background: #ccc;
+		opacity: 0.45;
 		cursor: default;
 	}
 
