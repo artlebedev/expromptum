@@ -323,10 +323,14 @@
 	.date_picker_control .selected {
 		background: #6cf;
 	}
-	.date_picker_control .calendar .days .d {
+	.date_picker_control .calendar .days .d,
+	.date_picker_control .calendar .days .dn {
 		padding: 4px 8px;
 		text-align: right;
 		cursor: pointer;
+	}
+	.date_picker_control .calendar .days .dn {
+		cursor: default;
 	}
 	.date_picker_control .calendar .control_button_inc:before,
 	.date_picker_control .calendar .control_button_dec:before {

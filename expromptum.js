@@ -2801,6 +2801,8 @@ window.expromptum = window.xP = (function(undefined){
 		locale: xP.locale,
 
 		init: function(params){
+			var that = this;
+			
 			xP.controls.date_picker.base.init.apply(this, arguments);
 
 			if(this.$element.is('.date, .date input')){
@@ -2810,26 +2812,27 @@ window.expromptum = window.xP = (function(undefined){
 			}else{
 				this.sub_type = 'datemonth_picker';
 			}
+			
+			if(that.val().length != 0){
+				that._set_value(xP.parse_date(that.val()), false);
+			}
 
 			this.$wrapper = this.$element
 				.wrap(this.element_wrap_html).parent().addClass(this.sub_type);
 
-			var that = this;
+			
 
 			this._draft_state = [];
 
 			this.last_build = [0,0,0];
 
 			this.change(function(){
-				var value = that.val();
-
-				if(!value || value.length == 0){
+				if(that.val().length == 0){
 					that.$element.removeClass(that.container_invalid_class);
-
 					return;
 				}
 
-				var d = xP.parse_date(value);
+				var d = xP.parse_date(that.val());
 
 				if(
 					d[0] && d[1]
@@ -3062,9 +3065,7 @@ window.expromptum = window.xP = (function(undefined){
 			})
 
 			$(this.$calendar_close).click(function(){
-				that.$wrapper.removeClass('focused');
-
-				that.$control_calendar.hide();
+				that.close();
 			})
 			
 			this.$calendar_time
@@ -3120,6 +3121,9 @@ window.expromptum = window.xP = (function(undefined){
 					return false;
 				}
 
+				that.$control_calendar.find('.selected').removeClass('selected');
+				$(this).addClass('selected')
+				
 				var new_day = parseInt($(this).html(), 10),
 					year = parseInt(that.$control_calendar.find('.year .title').data('val'), 10),
 					month = parseInt(that.$control_calendar.find('.month .title').data('val'), 10);
@@ -3200,49 +3204,23 @@ window.expromptum = window.xP = (function(undefined){
 
 				that.build();
 
-				that.$control_calendar.show();
-				xP.offset_by_viewport(that.$control_calendar, that.$element)
+				that.open();
 			});
 
 			this.$element.on('keydown', function(event){
 				var keyCode = event.keyCode || event.which; 
-
+				
 				if(keyCode == 9 || keyCode == 13 || keyCode == 27){ /*tab  enter  escape*/
 					event.stopPropagation();
-					that.$wrapper.removeClass('focused');
-
-					var entered_date = xP.parse_date(that.val())
-
-					if(entered_date[0] && entered_date[1] && entered_date[2]){
-						that._set_value(entered_date, true);
-					}else{
-						that._set_value(entered_date, true);
-					}
-					that.$control_calendar.hide();
+					that._set_value(xP.parse_date(that.val()), true);
+					that.close();
 				}else{
 					that.$element.focus()
 				}
 			});
 
-			$(document).click(function(event){
-				if(!that.$control_calendar.is(event.target) &&
-						!that.$control_calendar.has(event.target).length > 0){
-					if(that.$element && !that.$element.is(':focus')){
-						that.$wrapper.removeClass('focused');
 
-						var entered_date = xP.parse_date(that.val())
-
-						if(entered_date[0] && entered_date[1] && entered_date[2]){
-							that._set_value(entered_date, true);
-						}else{
-							that._set_value(entered_date, true);
-						}
-
-						that.$control_calendar.hide();
-					}
-				}
-			});
-
+			
 			this.initial_date = xP.parse_date(this.val());
 			if(
 				!this.initial_date[0] && !this.initial_date[1] && !this.initial_date[2]
@@ -3252,7 +3230,56 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.build();
 		},
+		
+		open: function(){
+			var that = this;
+			if(xP.controls.opened){
+				xP.controls.opened.close();
+			}
 
+			xP.controls.opened = this;
+
+			
+
+			that.$control_calendar.show();
+			xP.offset_by_viewport(that.$control_calendar, that.$element)
+
+			return this;
+		},
+
+		close: function(){
+			var that = this;
+			var keyCode = event.keyCode || event.which;
+			
+			if(keyCode == 3) return this;
+			
+			if(
+				( !$(event.target).parents('.calendar').length )
+				|| (that.$calendar_close && that.$calendar_close.is(event.target))
+			){
+				
+				if(that.$element && (!that.$element.is(':focus') || (keyCode == 9 || keyCode == 13 || keyCode == 27) )){
+					
+					that.$wrapper.removeClass('focused');
+
+					var entered_date = xP.parse_date(that.val())
+
+					if(entered_date[0] && entered_date[1] && entered_date[2]){
+						that._set_value(entered_date, true);
+					}else{
+						that._set_value(entered_date, true);
+					}
+
+					xP.controls.opened = null;
+
+					that.$control_calendar.hide();
+				}
+			}
+
+			
+			return this;
+		},
+		
 		_set_value: function(d, closePopup){
 			var that = this;
 			var valid = true;
@@ -3484,6 +3511,7 @@ window.expromptum = window.xP = (function(undefined){
 				today = new Date();
 
 			if(d === undefined){
+				
 				if(this.val().length == 0){
 					if(!this.initial_date){
 						d = this.get_now_array();
@@ -3492,10 +3520,8 @@ window.expromptum = window.xP = (function(undefined){
 					}
 				}else{
 					d = xP.parse_date(this.val());
-
-					current_value = this._current_day;
+					current_value = d[2];
 				}
-				//this._draft_state = d;
 			} else if (update_value){
 				this._draft_state = d;
 
@@ -3506,6 +3532,7 @@ window.expromptum = window.xP = (function(undefined){
 					current_value = this._current_day;
 				}
 			}
+			
 			var d_tmp, _min, _max;
 
 			if(this.min && typeof this.min == 'string'){
@@ -3585,7 +3612,7 @@ window.expromptum = window.xP = (function(undefined){
 			var $line = $line_pattern.clone();
 
 			for(var i = 0; i < 7; i++){
-				$(this.control_calendar_item_html)
+				$(this.control_calendar_daynames_item_html)
 					.html(this.locale.weekday[i].abbr)
 					.appendTo($line);
 			}
@@ -3701,8 +3728,10 @@ window.expromptum = window.xP = (function(undefined){
 		control_calendar_days_html: '<table class="days"><tbody></tbody></table>',
 
 		control_calendar_item_html: '<td class="d"></td>',
+		
+		control_calendar_daynames_item_html: '<th class="dn"></th>',
 
-		calendar_close_html: '<span class="close">x</span>',
+		calendar_close_html: '<span class="close">&times;</span>',
 
 		control_calendar_inc_html: '<span class="control_button control_button_inc">&rarr;</span>',
 
