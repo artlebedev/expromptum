@@ -346,8 +346,12 @@
 		clear: both;
 		margin: 4px 0 0;
 	}
+	.date_picker_control .calendar .year .title {
+		margin-right: 4px;
+	}
 	.date_picker_control .calendar .month .title {
-		min-width: 70px;
+		margin-right: 4px;
+		min-width: 5em;
 		display: inline-block;
 		text-align: center;
 	}
