@@ -2,7 +2,11 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
+<<<<<<< HEAD
 // Updated: 2018-01-12
+=======
+// Updated: 2017-11-28
+>>>>>>> 33dd0bf95a9f82c0180f9ec6776a0a312d07d343
 
 
 
@@ -3008,12 +3012,18 @@ window.expromptum = window.xP = (function(undefined){
 			this.last_build = [0,0,0];
 
 			this.change(function(){
-				if(that.val().length == 0){
+				var value = that.val();
+
+				if(!value || value.length == 0){
 					that.$element.removeClass(that.container_invalid_class);
 					return;
 				}
 
+<<<<<<< HEAD
 				var d = xP.parse_date(that.val(), this.locale);
+=======
+				var d = xP.parse_date(value);
+>>>>>>> 33dd0bf95a9f82c0180f9ec6776a0a312d07d343
 
 				if(
 					d[0] && d[1]
