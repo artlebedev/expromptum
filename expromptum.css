@@ -229,7 +229,7 @@
 	.selectus .select {
 		display: inline-block;
 		text-decoration: none;
-		min-width: 128px;
+		min-width: 8em;
 		position: relative;
 	}
 	.selectus .select:after {
@@ -347,7 +347,7 @@
 		margin: 4px 0 0;
 	}
 	.date_picker_control .calendar .month .title {
-		min-width: 70px;
+		min-width: 5em;
 		display: inline-block;
 		text-align: center;
 	}
@@ -366,6 +366,4 @@
 		opacity: 0.45;
 		cursor: default;
 	}
-	.datetime_picker .date_picker_control .calendar {
-		min-width: 230px;
-	}
+

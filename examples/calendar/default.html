@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xml:lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<title>expromptum &mdash; calculator</title>
@@ -14,10 +14,24 @@
 
 	<body>
 	
+		<form action="">
+		<div class="email">
+			email : <input name="email"/>
+		</div>
 		
-			<div class="email">
-				email : <input name="email"/>
-			</div>
+		<div>number locale through data : <input class="number" data-xp='{type: "number", min: 0, max: 1000000, step: 2, locale: "en-GB"}'/>
+		</div>
+		
+		
+		<div>
+		number locale through xml:lang : <input class="number" xml:lang="ru" data-xp='{type: "number", min: 0, max: 1000000, step: 0.5}'/>
+		</div>
+		
+		
+		<div>
+		number locale inherit: <input class="number" data-xp='{type: "number", min: 0, max: 1000000, step: 0.5}'/>
+		</div>
+			
 		<h3>old school</h3>
 			<div class="datemonth">
 				datemonth : <input name="date_example01"/>
@@ -57,7 +71,7 @@
 			
 			<p class="field datetime picker">
 
-				datetime: <input name="date_picker_example4" class="datetime picker" value="11:00" data-xp='{ "minute_round": 10}'/>
+				datetime: <input name="date_picker_example4" class="datetime picker" value="11:00" data-xp='{ "minute_round": 10, locale: "ru"}'/>
 			</p>
 
 			
@@ -95,6 +109,7 @@
 				<label for="s_checkbox4">Пункт 4<ins class="comment">Комментарий к пункту 4</ins></label>
 			</p>
 			
+		</form>
 			
 			<script>
 			xP.locale.secret_date = 'yyyy-mm-dd xxx';

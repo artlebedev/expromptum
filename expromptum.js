@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2017-11-15
+// Updated: 2018-01-12
 
 
 
@@ -308,13 +308,13 @@ window.expromptum = window.xP = (function(undefined){
 		if(!params){
 			params = {};
 		}
-		if(!params.months){
-			params.months = xP.locale.parse_date_months;
-		}
+
 		if(!params.millennium){
 			params.millennium = 2000;
 		}
 
+		
+		
 		var result = {};
 
 		if(!value){
@@ -350,15 +350,15 @@ window.expromptum = window.xP = (function(undefined){
 		if(params.month_from_left === undefined){
 			params.month_from_left = separator == '/';
 		}
-
 		for(var i = 0; i < parts.length; i++){
 			if(parts[i] > 31){
 				params.year_from_left = !i;
 
 				result.year = parts.splice(i--, 1)[0];
 			}else if(parts[i].match(/[^\d]/)){
-				month = params.months.indexOf(parts[i].toLowerCase()) % 12 + 1;
-
+				
+				month = xP.locale.parse_date_months.indexOf(parts[i].toLowerCase()) % 12 + 1;
+				
 				if(month > 0){
 					result.month = xP.leading_zero(month);
 				}
@@ -408,8 +408,177 @@ window.expromptum = window.xP = (function(undefined){
 /* Locale */
 
 	xP.locale = {
+		default: 'ru',
+		
 		init: function(){
-			var t = xP.locale.number, that = this;
+			
+			
+			this.set(document.documentElement.lang);
+			
+			var that = this;
+			
+		},
+		
+		parse_date_months: [],
+		
+		items : {
+			"ru" : {
+				abbr: 'ru',
+
+				number: {decimal: ',', grouping: ' '},
+
+				date_format: 'dd.mm.yy',
+
+				date_value_format: 'yyyy-mm-dd',
+
+				month: [
+					{abbr: 'янв', name: 'Январь',   name_genitive: 'января'},
+					{abbr: 'фев', name: 'Февраль',  name_genitive: 'февраля'},
+					{abbr: 'мар', name: 'Март',     name_genitive: 'марта'},
+					{abbr: 'апр', name: 'Апрель',   name_genitive: 'апреля'},
+					{abbr: 'май', name: 'Май',      name_genitive: 'мая'},
+					{abbr: 'июн', name: 'Июнь',     name_genitive: 'июня'},
+					{abbr: 'июл', name: 'Июль',     name_genitive: 'июля'},
+					{abbr: 'авг', name: 'Август',   name_genitive: 'августа'},
+					{abbr: 'сен', name: 'Сентябрь', name_genitive: 'сентября'},
+					{abbr: 'окт', name: 'Октябрь',  name_genitive: 'октября'},
+					{abbr: 'ноя', name: 'Ноябрь',   name_genitive: 'ноября'},
+					{abbr: 'дек', name: 'Декабрь',  name_genitive: 'декабря'}
+				],
+
+				first_day: 1,
+
+				weekday: [
+					{abbr: 'Пн', name: 'Понедельник'},
+					{abbr: 'Вт', name: 'Вторник'},
+					{abbr: 'Ср', name: 'Среда'},
+					{abbr: 'Чт', name: 'Четверг'},
+					{abbr: 'Пт', name: 'Пятница'},
+					{abbr: 'Сб', name: 'Суббота'},
+					{abbr: 'Вс', name: 'Воскресенье'}
+				],
+
+				prev_month: 'Предыдущий',
+				current_month: 'Текущий',
+
+				next_month: 'Следующий',
+
+				yesterday: 'Вчера',
+
+				today: 'Сегодня',
+				tomorrow: 'Завтра',
+
+				now: 'Сейчас',
+				close_popup:  'закрыть'		
+			},
+			"en-GB" : {
+				abbr: 'en',
+
+				number: {decimal: '.', grouping: ','},
+
+				month: [
+					{abbr: 'jan', name: 'January',   name_genitive: 'january'},
+					{abbr: 'feb', name: 'February',  name_genitive: 'february'},
+					{abbr: 'mar', name: 'March',     name_genitive: 'march'},
+					{abbr: 'apr', name: 'April',   name_genitive: 'april'},
+					{abbr: 'may', name: 'May',      name_genitive: 'may'},
+					{abbr: 'jun', name: 'June',     name_genitive: 'june'},
+					{abbr: 'jul', name: 'July',     name_genitive: 'july'},
+					{abbr: 'aug', name: 'August',   name_genitive: 'august'},
+					{abbr: 'sep', name: 'September', name_genitive: 'september'},
+					{abbr: 'oct', name: 'October',  name_genitive: 'october'},
+					{abbr: 'nov', name: 'November',   name_genitive: 'november'},
+					{abbr: 'dec', name: 'December',  name_genitive: 'december'}
+				],
+
+				weekday: [
+					{abbr: 'Mo', name: 'Monday'},
+					{abbr: 'Tu', name: 'Tuesday'},
+					{abbr: 'We', name: 'Wednesday'},
+					{abbr: 'Th', name: 'Thursday'},
+					{abbr: 'Fr', name: 'Friday'},
+					{abbr: 'Sa', name: 'Saturday'},
+					{abbr: 'Su', name: 'Sunday'}
+				],
+
+				prev_month: 'Previous',
+				current_month: 'Current',
+
+				next_month: 'Next',
+
+				yesterday: 'Yesterday',
+
+				today: 'Today',
+				tomorrow: 'Tomorrow',
+
+				now: 'Now',
+				close_popup:  'close'
+			}
+		},
+
+		destroy: function(){
+		},
+		
+		load_locale: function(locale){
+			var that = this;
+			for(var k in locale){
+				this[k] = locale[k];
+			}
+
+			if(xP.locale.parse_date_months.indexOf(that.month[0].name) == -1){
+				$.each(that.month, function(index, value){
+					xP.locale.parse_date_months.push(value.abbr);
+				});
+				$.each(that.month, function(index, value){
+					xP.locale.parse_date_months.push(value.name.toLowerCase());
+				});
+				$.each(that.month, function(index, value){
+					xP.locale.parse_date_months.push(value.name_genitive.toLowerCase());
+				});
+			}
+		},
+		
+		add: function(id, params, default_id){
+			var that = this;
+			this.items[id] = params;
+			$.each(this.items[default_id], function( key, value){
+				if(!that.items[id][key]){
+					that.items[id][key] = that.items[default_id][key];
+				}
+			})
+		},
+		
+		set: function(lang){
+			if(!lang){
+				lang = this.default;
+			}
+			lang = this.normalize_id(lang);
+			
+			if(this.items[lang]){
+				this.load_locale(this.items[lang]);
+			} else {
+				this.load_locale(this.items[this.default]);
+			}
+			
+		},
+		
+		get: function(lang){
+			if(!lang){
+				lang = this.default;
+			}
+			lang = this.normalize_id(lang) ;
+			
+			var return_locale;
+			
+			if(this.items[lang]){
+				return_locale =  this.items[lang];
+			} else {
+				return_locale =  this.items[this.default];
+			}
+			
+			
+			var t = return_locale.number;
+			
 
 			$.extend(
 				t,
@@ -425,73 +594,31 @@ window.expromptum = window.xP = (function(undefined){
 					}
 				}
 			);
-
-			$.each(that.month, function(index, value){
-				that.parse_date_months.push(value.abbr);
-			});
-			$.each(that.month, function(index, value){
-				that.parse_date_months.push(value.name.toLowerCase());
-			});
-			$.each(that.month, function(index, value){
-				that.parse_date_months.push(value.name_genitive.toLowerCase());
-			});
+			
+			
+			if(xP.locale.parse_date_months.indexOf(return_locale.month[0].name.toLowerCase()) == -1){
+				
+				$.each(return_locale.month, function(index, value){
+					xP.locale.parse_date_months.push(value.abbr);
+				});
+				$.each(return_locale.month, function(index, value){
+					xP.locale.parse_date_months.push(value.name.toLowerCase());
+				});
+				$.each(return_locale.month, function(index, value){
+					xP.locale.parse_date_months.push(value.name_genitive.toLowerCase());
+				});
+			}
+			
+			return return_locale;
 		},
-
-		destroy: function(){
-		},
-
-		// TODO: Надо сделать выбор.
-		abbr: 'ru',
-
-		number: {decimal: ',', grouping: ' '},
-
-		date_format: 'dd.mm.yy',
-
-		date_value_format: 'yyyy-mm-dd',
-
-		month: [
-			{abbr: 'янв', name: 'Январь',   name_genitive: 'января'},
-			{abbr: 'фев', name: 'Февраль',  name_genitive: 'февраля'},
-			{abbr: 'мар', name: 'Март',     name_genitive: 'марта'},
-			{abbr: 'апр', name: 'Апрель',   name_genitive: 'апреля'},
-			{abbr: 'мая', name: 'Май',      name_genitive: 'мая'},
-			{abbr: 'июн', name: 'Июнь',     name_genitive: 'июня'},
-			{abbr: 'июл', name: 'Июль',     name_genitive: 'июля'},
-			{abbr: 'авг', name: 'Август',   name_genitive: 'августа'},
-			{abbr: 'сен', name: 'Сентябрь', name_genitive: 'сентября'},
-			{abbr: 'окт', name: 'Октябрь',  name_genitive: 'октября'},
-			{abbr: 'ноя', name: 'Ноябрь',   name_genitive: 'ноября'},
-			{abbr: 'дек', name: 'Декабрь',  name_genitive: 'декабря'}
-		],
-
-		first_day: 1,
-
-		weekday: [
-			{abbr: 'Пн', name: 'Понедельник'},
-			{abbr: 'Вт', name: 'Вторник'},
-			{abbr: 'Ср', name: 'Среда'},
-			{abbr: 'Чт', name: 'Четверг'},
-			{abbr: 'Пт', name: 'Пятница'},
-			{abbr: 'Сб', name: 'Суббота'},
-			{abbr: 'Вс', name: 'Воскресенье'}
-		],
-
-		prev_month: 'Предыдущий',
-		current_month: 'Текущий',
-
-		next_month: 'Следующий',
-
-		yesterday: 'Вчера',
-
-		today: 'Сегодня',
-		tomorrow: 'Завтра',
-
-		now: 'Сейчас',
-		close_popup:  'закрыть',
-
-		parse_date_months: ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
-
-
+		
+		normalize_id: function(lang){
+			if(lang == 'en'){
+				return 'en-GB';
+			} else {
+				return lang;
+			}
+		}
 
 	};
 
@@ -760,7 +887,7 @@ window.expromptum = window.xP = (function(undefined){
 					}
 				});
 			}
-
+			
 			if(this._.parent && !(this instanceof xP.controls.form)){
 				this._.parent.children().each(function(){
 					var parent = this.$container[0];
@@ -796,6 +923,35 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			xP.dependencies.init(this);
+		},
+		
+		init_locale: function(params){	
+			if(params.locale){
+				this.locale = xP.locale.get(params.locale);
+			} else if(this.$element.attr('xml:lang')){
+				this.locale = xP.locale.get(this.$element.attr('xml:lang'));
+			} else {
+				
+				var parent4locale = this._.parent || this._.root;
+				
+				if(parent4locale ){
+					while(
+						!parent4locale.locale
+						&& parent4locale._.parent
+						&& parent4locale !== this._.root
+					){
+						parent4locale = parent4locale._.parent;
+					}
+				}
+				
+				if(parent4locale && parent4locale.locale){
+					this.locale = parent4locale.locale;
+				} else if($('html').attr('xml:lang')){
+					this.locale = xP.locale.get($('html').attr('xml:lang'));
+				} else {
+					this.locale = xP.locale.get();
+				}
+			}
 		},
 
 		remove: function(){
@@ -915,6 +1071,11 @@ window.expromptum = window.xP = (function(undefined){
 
 				return this;
 			}
+		},
+		
+		init: function(params){
+			xP.controls._item.base.init.apply(this, arguments);
+			this.init_locale(params);
 		}
 	}});
 
@@ -928,7 +1089,7 @@ window.expromptum = window.xP = (function(undefined){
 			this._.children = new xP.list();
 
 			xP.controls._parent.base.init.apply(this, arguments);
-
+			
 			this._.$pocus = this.$element;
 
 			this._.children_values = {};
@@ -1158,6 +1319,8 @@ window.expromptum = window.xP = (function(undefined){
 			//this.completed_on_changed = false;
 
 			xP.controls.form.base.init.apply(this, arguments);
+			
+			this.init_locale(params);
 
 			this._.root = this;
 
@@ -1298,7 +1461,7 @@ window.expromptum = window.xP = (function(undefined){
 				this.$label = null;
 			}
 
-			return xP.controls._labeled.base.destroy.apply(this, arguments);
+			return xP.controls._parent.base.destroy.apply(this, arguments);
 		}
 	}});
 
@@ -1324,6 +1487,11 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			return result;
+		},
+		
+		init: function(params){
+			xP.controls._labeled.base.init.apply(this, arguments);
+			this.init_locale(params);
 		}
 	}});
 
@@ -1333,6 +1501,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 			xP.controls.sheet.base.init.apply(this, arguments);
+			this.init_locale(params);
 
 			if(this.$label && this.$label[0]){
 				var parent = this.parent(), that = this;
@@ -2415,21 +2584,27 @@ window.expromptum = window.xP = (function(undefined){
 		max: Number.MAX_VALUE - 1,
 		locale: xP.locale,
 
+		
 		init: function(params){
+			
+			var that = this;
+			
+
+
+			this.valid = '[this].min <= [this] && [this] <= [this].max';
+			
+			xP.controls.number.base.init.apply(this, arguments);
+			this.init_locale(params);
+			
+			this.$element.wrap(this.element_wrap_html);
+
+			
 			this.allow_chars_pattern = new RegExp(
 				'^[-0-9'
 				+ this.locale.number.decimal
 				+ this.locale.number.grouping
 				+ ']$'
 			);
-
-			this.valid = '[this].min <= [this] && [this] <= [this].max';
-
-			xP.controls.number.base.init.apply(this, arguments);
-
-			this.$element.wrap(this.element_wrap_html);
-
-			var that = this;
 
 			$(this.control_button_dec_html)
 				.insertBefore(this.$element)
@@ -2468,6 +2643,8 @@ window.expromptum = window.xP = (function(undefined){
 			this.$element.blur(function(){
 				that.val(that.val());
 			});
+			
+			
 		},
 
 		element_wrap_html: '<ins class="number_control"/>',
@@ -2586,7 +2763,8 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 
 			xP.controls.datemonth.base.init.apply(this, arguments);
-
+			this.init_locale(params);
+			
 			this.$element.wrap(this.element_wrap_html);
 
 			this.$element.hide();
@@ -2766,6 +2944,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 			xP.controls.datetime.base.init.apply(this, arguments);
+			this.init_locale(params);
 
 			var html = this._number_begin_html + ', min: 0, max: 23" value="'
 					+ (this._.values[3] !== undefined ? this._.values[3] : '')
@@ -2804,7 +2983,8 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this;
 			
 			xP.controls.date_picker.base.init.apply(this, arguments);
-
+			this.init_locale(params);
+			
 			if(this.$element.is('.date, .date input')){
 				this.sub_type = 'date_picker';
 			}else if(this.$element.is('.datetime, .datetime input')){
@@ -2813,8 +2993,9 @@ window.expromptum = window.xP = (function(undefined){
 				this.sub_type = 'datemonth_picker';
 			}
 			
+			
 			if(that.val().length != 0){
-				that._set_value(xP.parse_date(that.val()), false);
+				that._set_value(xP.parse_date(that.val(), this.locale));
 			}
 
 			this.$wrapper = this.$element
@@ -2832,7 +3013,7 @@ window.expromptum = window.xP = (function(undefined){
 					return;
 				}
 
-				var d = xP.parse_date(that.val());
+				var d = xP.parse_date(that.val(), this.locale);
 
 				if(
 					d[0] && d[1]
@@ -3212,7 +3393,7 @@ window.expromptum = window.xP = (function(undefined){
 				
 				if(keyCode == 9 || keyCode == 13 || keyCode == 27){ /*tab  enter  escape*/
 					event.stopPropagation();
-					that._set_value(xP.parse_date(that.val()), true);
+					that._set_value(xP.parse_date(that.val(), this.locale));
 					that.close();
 				}else{
 					that.$element.focus()
@@ -3221,7 +3402,7 @@ window.expromptum = window.xP = (function(undefined){
 
 
 			
-			this.initial_date = xP.parse_date(this.val());
+			this.initial_date = xP.parse_date(this.val(), this.locale);
 			if(
 				!this.initial_date[0] && !this.initial_date[1] && !this.initial_date[2]
 			){
@@ -3262,7 +3443,7 @@ window.expromptum = window.xP = (function(undefined){
 					
 					that.$wrapper.removeClass('focused');
 
-					var entered_date = xP.parse_date(that.val())
+					var entered_date = xP.parse_date(that.val(), this.locale)
 
 					if(entered_date[0] && entered_date[1] && entered_date[2]){
 						that._set_value(entered_date, true);
@@ -3319,7 +3500,7 @@ window.expromptum = window.xP = (function(undefined){
 			var draft_state = new Date(d[0], d[1] * 1 - 1, d[2]), d_tmp, _min, _max;
 
 			if(this.min && typeof this.min == 'string'){
-				d_tmp = xP.parse_date(this.min);
+				d_tmp = xP.parse_date(this.min, this.locale);
 
 				_min = new Date(d_tmp[0], d_tmp[1] - 1, d_tmp[2]);
 			}else{
@@ -3327,7 +3508,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			if(this.max && typeof this.max == 'string'){
-				d_tmp = xP.parse_date(this.max);
+				d_tmp = xP.parse_date(this.max, this.locale);
 
 				_max = new Date(d_tmp[0], d_tmp[1] - 1, d_tmp[2]);
 			}else{
@@ -3401,7 +3582,7 @@ window.expromptum = window.xP = (function(undefined){
 			var draft_state = new Date(d[0], d[1] * 1 - 1, d[2]), d_tmp, _min, _max;
 
 			if(this.min && typeof this.min == 'string'){
-				d_tmp = xP.parse_date(this.min);
+				d_tmp = xP.parse_date(this.min, this.locale);
 
 				_min = new Date(d_tmp[0], d_tmp[1] - 1, d_tmp[2]);
 			}else{
@@ -3409,7 +3590,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			if(this.max && typeof this.max == 'string'){
-				d_tmp = xP.parse_date(this.max);
+				d_tmp = xP.parse_date(this.max, this.locale);
 
 				_max = new Date(d_tmp[0], d_tmp[1] - 1, d_tmp[2]);
 			}else{
@@ -3442,7 +3623,7 @@ window.expromptum = window.xP = (function(undefined){
 					? undefined
 					: this.$element.val();
 			}else{ // set value
-				var d = xP.parse_date(value);
+				var d = xP.parse_date(value, this.locale);
 
 				var result;
 
@@ -3519,7 +3700,7 @@ window.expromptum = window.xP = (function(undefined){
 						d = this.initial_date;
 					}
 				}else{
-					d = xP.parse_date(this.val());
+					d = xP.parse_date(this.val(), this.locale);
 					current_value = d[2];
 				}
 			} else if (update_value){
@@ -3536,7 +3717,7 @@ window.expromptum = window.xP = (function(undefined){
 			var d_tmp, _min, _max;
 
 			if(this.min && typeof this.min == 'string'){
-				d_tmp = xP.parse_date(this.min);
+				d_tmp = xP.parse_date(this.min, this.locale);
 
 				_min = new Date(d_tmp[0], d_tmp[1] - 1, d_tmp[2]);
 			}else{
@@ -3544,7 +3725,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			if(this.max && typeof this.max == 'string'){
-				d_tmp = xP.parse_date(this.max);
+				d_tmp = xP.parse_date(this.max, this.locale);
 				_max = new Date(d_tmp[0], d_tmp[1] - 1, d_tmp[2]);
 			}else{
 				_max = this.max;
@@ -3704,7 +3885,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		update: function(){
-			var d = xP.parse_date(this.val());
+			var d = xP.parse_date(this.val(), this.locale);
 
 			var current_value = d[2];
 
@@ -4029,9 +4210,12 @@ window.expromptum = window.xP = (function(undefined){
 			}else{
 				this.to = control;
 			}
-
+			
+			
 			xP.dependencies._item.base.init.apply(this, [params, control]);
 
+			
+			
 			var that = this,
 				root = control.parent && control.parent()
 					? control.root() : null;
