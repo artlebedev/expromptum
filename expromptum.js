@@ -2,11 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-<<<<<<< HEAD
 // Updated: 2018-01-12
-=======
-// Updated: 2017-11-28
->>>>>>> 33dd0bf95a9f82c0180f9ec6776a0a312d07d343
 
 
 
@@ -361,7 +357,7 @@ window.expromptum = window.xP = (function(undefined){
 				result.year = parts.splice(i--, 1)[0];
 			}else if(parts[i].match(/[^\d]/)){
 				
-				month = xP.locale.parse_date_months.indexOf(parts[i].toLowerCase()) % 12 + 1;
+				month = this.locale.parse_date_months.indexOf(parts[i].toLowerCase()) % 12 + 1;
 				
 				if(month > 0){
 					result.month = xP.leading_zero(month);
@@ -416,11 +412,8 @@ window.expromptum = window.xP = (function(undefined){
 		
 		init: function(){
 			
-			
 			this.set(document.documentElement.lang);
-			
 			var that = this;
-			
 		},
 		
 		parse_date_months: [],
@@ -525,6 +518,13 @@ window.expromptum = window.xP = (function(undefined){
 		
 		load_locale: function(locale){
 			var that = this;
+			
+			$.each(this.items[that.default], function( key, value){
+				if(!locale[key]){
+					locale[key] = that.items[that.default][key];
+				}
+			})
+			
 			for(var k in locale){
 				this[k] = locale[k];
 			}
@@ -567,6 +567,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 		
 		get: function(lang){
+			var that = this;
 			if(!lang){
 				lang = this.default;
 			}
@@ -612,6 +613,12 @@ window.expromptum = window.xP = (function(undefined){
 					xP.locale.parse_date_months.push(value.name_genitive.toLowerCase());
 				});
 			}
+			
+			$.each(this.items[that.default], function( key, value){
+				if(!return_locale[key]){
+					return_locale[key] = that.items[that.default][key];
+				}
+			})
 			
 			return return_locale;
 		},
@@ -949,6 +956,7 @@ window.expromptum = window.xP = (function(undefined){
 				}
 				
 				if(parent4locale && parent4locale.locale){
+					
 					this.locale = parent4locale.locale;
 				} else if($('html').attr('xml:lang')){
 					this.locale = xP.locale.get($('html').attr('xml:lang'));
@@ -2586,7 +2594,6 @@ window.expromptum = window.xP = (function(undefined){
 		min: 1 - Number.MAX_VALUE,
 		def: 0,
 		max: Number.MAX_VALUE - 1,
-		locale: xP.locale,
 
 		
 		init: function(params){
@@ -2601,7 +2608,6 @@ window.expromptum = window.xP = (function(undefined){
 			this.init_locale(params);
 			
 			this.$element.wrap(this.element_wrap_html);
-
 			
 			this.allow_chars_pattern = new RegExp(
 				'^[-0-9'
@@ -2736,6 +2742,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		_format: function(value){
 			var num = this.locale.number;
+			
 
 			value = (value + '').split('.');
 
@@ -2746,6 +2753,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		_unformat: function(value){
+			if(!value) return '';
 			var num = this.locale.number;
 
 			return value !== '' && value !== undefined
@@ -2762,8 +2770,6 @@ window.expromptum = window.xP = (function(undefined){
 	xP.controls.register({name: 'datemonth', base: '_field', prototype: {
 		element_selector: 'input.datemonth, .datemonth input',
 
-		locale: xP.locale,
-
 		init: function(params){
 
 			xP.controls.datemonth.base.init.apply(this, arguments);
@@ -2778,7 +2784,7 @@ window.expromptum = window.xP = (function(undefined){
 			if(this._.values.length < 2){
 				this._.values = ['','','','',''];
 			}
-
+			
 			var html = '',
 				format = this.locale.date_format.split(this._split_pattern);
 
@@ -2981,8 +2987,6 @@ window.expromptum = window.xP = (function(undefined){
 		min: new Date(1000,0,1),
 		max: new Date(9999,0,1),
 
-		locale: xP.locale,
-
 		init: function(params){
 			var that = this;
 			
@@ -3019,11 +3023,7 @@ window.expromptum = window.xP = (function(undefined){
 					return;
 				}
 
-<<<<<<< HEAD
 				var d = xP.parse_date(that.val(), this.locale);
-=======
-				var d = xP.parse_date(value);
->>>>>>> 33dd0bf95a9f82c0180f9ec6776a0a312d07d343
 
 				if(
 					d[0] && d[1]
@@ -3638,9 +3638,9 @@ window.expromptum = window.xP = (function(undefined){
 				var result;
 
 				if(this.sub_type != 'datemonth_picker'){
-					result = xP.locale.date_format.replace('dd', xP.leading_zero(d[2]));
+					result = this.locale.date_format.replace('dd', xP.leading_zero(d[2]));
 				}else{
-					result = xP.locale.date_format.replace('dd.', '');
+					result = this.locale.date_format.replace('dd.', '');
 				}
 
 				result = result.replace('mm', xP.leading_zero(d[1]));
@@ -3654,7 +3654,7 @@ window.expromptum = window.xP = (function(undefined){
 				if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
 					switch (this.sub_type){
 						case 'datetime_picker': 
-							var secret_result = xP.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
+							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
 
 							secret_result = secret_result.replace('mm', d[1]);
 
@@ -3672,7 +3672,7 @@ window.expromptum = window.xP = (function(undefined){
 
 							break;
 						default:
-							var secret_result = xP.locale.date_value_format.replace('yyyy', d[0]);
+							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]);
 
 							secret_result = secret_result.replace('mm', d[1]);
 
