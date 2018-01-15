@@ -1057,7 +1057,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 * * *
 
-### <a href="#controls.datemonth_picker">Поле для года и месяца с календарем</a>
+### <a href="#controls.datemonth_picker" name="controls.datemonth_picker">Поле для года и месяца с календарем</a>
 
 - Тип `date_picker`
 - Базовый тип [`date`](#controls.date)
@@ -1067,7 +1067,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 * * *
 
-### <a href="#controls.date_picker">Поле для даты с календарем</a>
+### <a href="#controls.date_picker" name="controls.date_picker">Поле для даты с календарем</a>
 
 - Тип `date_picker`
 - Базовый тип [`date`](#controls.date)
@@ -1077,7 +1077,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 * * *
 
-### <a href="#controls.datetime_picker">Поле для даты и времени с календарем</a>
+### <a href="#controls.datetime_picker" name="controls.datetime_picker">Поле для даты и времени с календарем</a>
 
 - Тип `date_picker`
 - Базовый тип [`date`](#controls.date)
