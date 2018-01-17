@@ -71,7 +71,7 @@
 			
 			<p class="field datetime picker">
 
-				datetime: <input name="date_picker_example4" class="datetime picker" value="11:00" data-xp='{ "minute_round": 10, locale: "ru"}'/>
+				datetime: <input name="date_picker_example4"  xml:lang="es" class="datetime picker" value="11:00" data-xp='{ "minute_round": 10}'/>
 			</p>
 
 			
@@ -112,10 +112,26 @@
 		</form>
 			
 			<script>
-			xP.locale.secret_date = 'yyyy-mm-dd xxx';
-			expromptum();
-			
 
+			
+			var es_locate = {
+						abbr: 'es',
+						prev_month: 'Anterior',
+						current_month: 'Corriente',
+						next_month: 'Siguiente',
+						yesterday: 'Ayer',
+						today: 'Hoy',
+						tomorrow: 'mañana',
+						now: 'Ahora',
+						close_popup:  'cerca'
+					}
+			xP.locale.add(
+				'es' /*id*/,
+				es_locate,
+				'en-GB' /*default_id - откуда брать недостающие параметры*/
+			);
+			
+			expromptum();
 		</script>
 	</body>
 </html>
