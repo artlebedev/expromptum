@@ -56,6 +56,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 
 
 <div><a href="#controls.form">Форма</a></div>
+
 ```html
 <form data-xp="
 	type: 'form',
@@ -67,17 +68,20 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```
 
 <div><a href="#controls.fields">Группа полей, листы</a></div>
+
 ```html
 <div class="fields" data-xp="type: 'fields'"></div>
 ```
 
 <div><a href="#controls.foldable">Сворачиваемая панель</a></div>
+
 ```html
 <strong for="foldable_1">Panel 1</strong>
 <div class="foldable" id="foldable_1" data-xp="type: 'foldable', unfolded: true"></div>
 ```
 
 <div><a href="#controls.sheet">Лист</a></div>
+
 ```html
 <div class="sheets" data-xp="type: 'fields'">
 	<strong for="sheet_1">Sheet 1</strong>
@@ -91,6 +95,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```
 
 <div><a href="#controls.html">HTML</a></div>
+
 ```html
 <span class="xp_html" data-xp="type: 'html', computed: '[name=some]' + '!'"></span>
 ```
@@ -100,6 +105,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 #### Кнопки
 
 <div><a href="#controls.button">Кнопка</a></div>
+
 ```html
 <input type="button" value="Button" data-xp="type: 'button'"/>
 
@@ -109,6 +115,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```
 
 <div><a href="#controls.submit">Кнопка отправки</a></div>
+
 ```html
 <input type="submit" data-xp="type: 'submit'"/>
 ```
@@ -117,31 +124,37 @@ Expromptum — библиотека JavaScript, предназначенная �
 #### Поля для ввода
 
 <div><a href="#controls.string">Строковое поле</a></div>
+
 ```html
 <input data-xp="type: 'string'"/>
 ```
 
 <div><a href="#controls.text">Текстовое поле</a></div>
+
 ```html
 <textarea data-xp="type: 'text'"></textarea>
 ```
 
 <div><a href="#controls.hidden">Скрытое поле</a></div>
+
 ```html
 <input type="hidden" data-xp="type: 'hidden'"/>
 ```
 
 <div><a href="#controls.file">Файловое поле</a></div>
+
 ```html
 <input type="file" data-xp="type: 'file'"/>
 ```
 
 <div><a href="#controls.password">Поле для пароля</a></div>
+
 ```html
 <input type="password" data-xp="type: 'password'"/>
 ```
 
 <div><a href="#controls.number">Поле для числа</a></div>
+
 ```html
 <input class="number" data-xp="
 	type: 'number',
@@ -153,26 +166,31 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```
 
 <div><a href="#controls.datemonth">Поле для года и месяца</a></div>
+
 ```html
 <input class="datemonth" data-xp="type: 'datemonth'"/>
 ```
 
 <div><a href="#controls.date">Поле для даты</a></div>
+
 ```html
 <input class="date" data-xp="type: 'date'"/>
 ```
 
 <div><a href="#controls.datetime">Поле для даты и времени</a></div>
+
 ```html
 <input class="datetime" data-xp="type: 'datetime'"/>
 ```
 
 <div><a href="#controls.email">Поле для эл. почты</a></div>
+
 ```html
 <input class="email" data-xp="type: 'email'"/>
 ```
 
 <div><a href="#controls.phone">Поле для телефона</a></div>
+
 ```html
 <input class="phone" data-xp="type: 'phone'"/>
 ```
@@ -180,16 +198,19 @@ Expromptum — библиотека JavaScript, предназначенная �
 #### Календарь
 
 <div><a href="#controls.datemonth_picker">Поле для года и месяца с календарем</a></div>
+
 ```html
 <input class="datemonth picker" data-xp="type: 'date_picker'"/>
 ```
 
 <div><a href="#controls.date_picker">Поле для даты с календарем</a></div>
+
 ```html
 <input class="date  picker" data-xp="type: 'date_picker'"/>
 ```
 
 <div><a href="#controls.datetime_picker">Поле для даты и времени с календарем</a></div>
+
 ```html
 <input class="datetime picker" data-xp="type: 'date_picker'"/>
 ```
@@ -198,17 +219,20 @@ Expromptum — библиотека JavaScript, предназначенная �
 #### Выбор значений
 
 <div><a href="#controls.select">Выпадающий список</a></div>
+
 ```html
 <select data-xp="type: 'select', hide_disabled_option: false">...</select>
 ```
 
 <div><a href="#controls.combobox">Комбобокс</a></div>
+
 ```html
 <input class="combobox" list="combobox_1" data-xp="type: 'combobox'"/>
 <select id="combobox_1">...</select>
 ```
 
 <div><a href="#controls.options">Группа переключателей</a></div>
+
 ```html
 <div class="options" data-xp="type: 'options'">
 	<input type="radio"/>
@@ -221,6 +245,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 ```
 
 <div><a href="#controls.selectus">Выпадающий список из переключателей</a></div>
+
 ```html
 <div class="selectus" data-xp="type: 'selectus'">
 	<input type="radio" id="r1"/>
@@ -243,33 +268,39 @@ Expromptum — библиотека JavaScript, предназначенная �
 *Для получения значений контролов в выражениях используются CSS-селекторы по атрибутам (например, `[name=some]`) и `[this]` для данного контрола.*
 
 <div><a href="#dependencies.classed">Управление атрибутом класса</a></div>
+
 ```html
 <input data-xp="classed: {on: 'логическое выражение', do: 'имя класса'}"/>
 ```
 
 <div><a href="#dependencies.computed">Вычисляемое значение</a></div>
+
 ```html
 <input data-xp="computed: 'выражение'"/>
 <input data-xp="computed: {on: 'выражение', do: 'имя параметра'}"/>
 ```
 
 <div><a href="#dependencies.enabled">Доступность</a></div>
+
 ```html
 <input data-xp="enabled: 'логическое выражение'"/>
 ```
 
 <div><a href="#dependencies.enabled_on_completed">Доступность при полном заполнении</a></div>
+
 ```html
 <input data-xp="enabled_on_completed: true"/>
 ```
 
 <div><a href="#dependencies.required">Обязательность заполнения</a></div>
+
 ```html
 <input data-xp="required: true"/>
 <input data-xp="required: 'логическое выражение'"/>
 ```
 
 <div><a href="#dependencies.valid">Соответствие выражению</a></div>
+
 ```html
 <input data-xp="valid: 'логическое выражение'"/>
 ```
@@ -1026,7 +1057,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 * * *
 
-### <a href="#controls.datemonth_picker">Поле для года и месяца с календарем</a>
+### <a href="#controls.datemonth_picker" name="controls.datemonth_picker">Поле для года и месяца с календарем</a>
 
 - Тип `date_picker`
 - Базовый тип [`date`](#controls.date)
@@ -1036,7 +1067,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 * * *
 
-### <a href="#controls.date_picker">Поле для даты с календарем</a>
+### <a href="#controls.date_picker" name="controls.date_picker">Поле для даты с календарем</a>
 
 - Тип `date_picker`
 - Базовый тип [`date`](#controls.date)
@@ -1046,7 +1077,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 * * *
 
-### <a href="#controls.datetime_picker">Поле для даты и времени с календарем</a>
+### <a href="#controls.datetime_picker" name="controls.datetime_picker">Поле для даты и времени с календарем</a>
 
 - Тип `date_picker`
 - Базовый тип [`date`](#controls.date)
