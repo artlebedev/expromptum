@@ -2723,8 +2723,11 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		_unformat: function(value){
+			var num = this.locale ? this.locale.number : null;
+
+			if(!num) return value;
+
 			if(!value) return '';
-			var num = this.locale.number;
 
 			return value !== '' && value !== undefined
 					? ((value + '')
