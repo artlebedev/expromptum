@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2018-01-12
+// Updated: 2018-01-19
 
 
 
@@ -286,14 +286,13 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.offset_by_viewport =  function($element, $relative){
-		
 		$element.css({'top':'100%'});
+
 		var position = $element.offset(),
 			element_height = $element.height(),
 			window_bottom_pos = window.scrollY + $(window).height(),
 			element_bottom_pos = position.top + element_height;
 
-			
 		if(window_bottom_pos < element_bottom_pos){
 			$element.css({'top': -1 * ($element.outerHeight(true)) + 'px' });
 		}
@@ -313,8 +312,6 @@ window.expromptum = window.xP = (function(undefined){
 			params.millennium = 2000;
 		}
 
-		
-		
 		var result = {};
 
 		if(!value){
@@ -356,9 +353,8 @@ window.expromptum = window.xP = (function(undefined){
 
 				result.year = parts.splice(i--, 1)[0];
 			}else if(parts[i].match(/[^\d]/)){
-				
 				month = this.locale.parse_date_months.indexOf(parts[i].toLowerCase()) % 12 + 1;
-				
+
 				if(month > 0){
 					result.month = xP.leading_zero(month);
 				}
@@ -409,15 +405,13 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.locale = {
 		default: 'ru',
-		
+
 		init: function(){
-			
 			this.set(document.documentElement.lang);
-			var that = this;
 		},
-		
+
 		parse_date_months: [],
-		
+
 		items : {
 			"ru" : {
 				abbr: 'ru',
@@ -466,7 +460,7 @@ window.expromptum = window.xP = (function(undefined){
 				tomorrow: 'Завтра',
 
 				now: 'Сейчас',
-				close_popup:  'закрыть'		
+				close_popup:  'закрыть'
 			},
 			"en-GB" : {
 				abbr: 'en',
@@ -515,20 +509,18 @@ window.expromptum = window.xP = (function(undefined){
 
 		destroy: function(){
 		},
-		
+
 		load_locale: function(locale){
 			var that = this;
-			
+
 			$.each(this.items[that.default], function( key, value){
 				if(!locale[key]){
 					locale[key] = that.items[that.default][key];
 				}
-			})
-			
+			});
 			for(var k in locale){
 				this[k] = locale[k];
 			}
-
 			if(xP.locale.parse_date_months.indexOf(that.month[0].name) == -1){
 				$.each(that.month, function(index, value){
 					xP.locale.parse_date_months.push(value.abbr);
@@ -541,49 +533,48 @@ window.expromptum = window.xP = (function(undefined){
 				});
 			}
 		},
-		
+
 		add: function(id, params, default_id){
 			var that = this;
+
 			this.items[id] = params;
+
 			$.each(this.items[default_id], function( key, value){
 				if(!that.items[id][key]){
 					that.items[id][key] = that.items[default_id][key];
 				}
-			})
+			});
 		},
-		
+
 		set: function(lang){
 			if(!lang){
 				lang = this.default;
 			}
 			lang = this.normalize_id(lang);
-			
+
 			if(this.items[lang]){
 				this.load_locale(this.items[lang]);
-			} else {
+			}else{
 				this.load_locale(this.items[this.default]);
 			}
-			
 		},
-		
+
 		get: function(lang){
 			var that = this;
 			if(!lang){
 				lang = this.default;
 			}
-			lang = this.normalize_id(lang) ;
-			
+			lang = this.normalize_id(lang);
+
 			var return_locale;
-			
+
 			if(this.items[lang]){
 				return_locale =  this.items[lang];
-			} else {
+			}else{
 				return_locale =  this.items[this.default];
 			}
-			
-			
+
 			var t = return_locale.number;
-			
 
 			$.extend(
 				t,
@@ -599,10 +590,7 @@ window.expromptum = window.xP = (function(undefined){
 					}
 				}
 			);
-			
-			
 			if(xP.locale.parse_date_months.indexOf(return_locale.month[0].name.toLowerCase()) == -1){
-				
 				$.each(return_locale.month, function(index, value){
 					xP.locale.parse_date_months.push(value.abbr);
 				});
@@ -613,28 +601,24 @@ window.expromptum = window.xP = (function(undefined){
 					xP.locale.parse_date_months.push(value.name_genitive.toLowerCase());
 				});
 			}
-			
 			$.each(this.items[that.default], function( key, value){
 				if(!return_locale[key]){
 					return_locale[key] = that.items[that.default][key];
 				}
-			})
-			
+			});
 			return return_locale;
 		},
-		
+
 		normalize_id: function(lang){
 			if(lang == 'en'){
 				return 'en-GB';
-			} else {
+			}else{
 				return lang;
 			}
 		}
-
 	};
 
 	xP.locale.init();
-
 
 
 /* Base */
@@ -710,7 +694,6 @@ window.expromptum = window.xP = (function(undefined){
 			return this._[name];
 		}
 	}});
-
 
 
 /* Controls */
@@ -898,7 +881,6 @@ window.expromptum = window.xP = (function(undefined){
 					}
 				});
 			}
-			
 			if(this._.parent && !(this instanceof xP.controls.form)){
 				this._.parent.children().each(function(){
 					var parent = this.$container[0];
@@ -935,17 +917,16 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.dependencies.init(this);
 		},
-		
-		init_locale: function(params){	
+
+		init_locale: function(params){
 			if(params.locale){
 				this.locale = xP.locale.get(params.locale);
-			} else if(this.$element.attr('xml:lang')){
+			}else if(this.$element.attr('xml:lang')){
 				this.locale = xP.locale.get(this.$element.attr('xml:lang'));
-			} else {
-				
+			}else{
 				var parent4locale = this._.parent || this._.root;
-				
-				if(parent4locale ){
+
+				if(parent4locale){
 					while(
 						!parent4locale.locale
 						&& parent4locale._.parent
@@ -954,13 +935,11 @@ window.expromptum = window.xP = (function(undefined){
 						parent4locale = parent4locale._.parent;
 					}
 				}
-				
 				if(parent4locale && parent4locale.locale){
-					
 					this.locale = parent4locale.locale;
-				} else if($('html').attr('xml:lang')){
+				}else if($('html').attr('xml:lang')){
 					this.locale = xP.locale.get($('html').attr('xml:lang'));
-				} else {
+				}else{
 					this.locale = xP.locale.get();
 				}
 			}
@@ -975,7 +954,6 @@ window.expromptum = window.xP = (function(undefined){
 							destroy_with_children(this);
 						});
 					}
-
 					parent.destroy();
 				};
 
@@ -1073,6 +1051,12 @@ window.expromptum = window.xP = (function(undefined){
 	xP.controls.register({name: 'html', base: '_item', prototype: {
 		element_selector: '.xp_html',
 
+		init: function(params){
+			xP.controls.html.base.init.apply(this, arguments);
+
+			this.init_locale(params);
+		},
+
 		val: function(value){
 			if(!arguments.length){
 				return this.disabled ? undefined : this.$element.html();
@@ -1083,11 +1067,6 @@ window.expromptum = window.xP = (function(undefined){
 
 				return this;
 			}
-		},
-		
-		init: function(params){
-			xP.controls._item.base.init.apply(this, arguments);
-			this.init_locale(params);
 		}
 	}});
 
@@ -1101,7 +1080,7 @@ window.expromptum = window.xP = (function(undefined){
 			this._.children = new xP.list();
 
 			xP.controls._parent.base.init.apply(this, arguments);
-			
+
 			this._.$pocus = this.$element;
 
 			this._.children_values = {};
@@ -1331,7 +1310,7 @@ window.expromptum = window.xP = (function(undefined){
 			//this.completed_on_changed = false;
 
 			xP.controls.form.base.init.apply(this, arguments);
-			
+
 			this.init_locale(params);
 
 			this._.root = this;
@@ -1481,6 +1460,12 @@ window.expromptum = window.xP = (function(undefined){
 	xP.controls.register({name: 'fields', base: '_labeled', prototype: {
 		element_selector: 'fieldset, .fields, .sheets',
 
+		init: function(params){
+			xP.controls.fields.base.init.apply(this, arguments);
+
+			this.init_locale(params);
+		},
+
 		count: function(){
 			if(this.disabled || !this.children().length){
 				return undefined;
@@ -1499,11 +1484,6 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			return result;
-		},
-		
-		init: function(params){
-			xP.controls._labeled.base.init.apply(this, arguments);
-			this.init_locale(params);
 		}
 	}});
 
@@ -1513,6 +1493,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 			xP.controls.sheet.base.init.apply(this, arguments);
+
 			this.init_locale(params);
 
 			if(this.$label && this.$label[0]){
@@ -2061,7 +2042,6 @@ window.expromptum = window.xP = (function(undefined){
 
 						that.find_option();
 					}
-					
 				});
 			});
 
@@ -2078,7 +2058,6 @@ window.expromptum = window.xP = (function(undefined){
 					.wrapAll('<div class="' + this.selectors_class + '"></div>')
 					.parents('.' + this.selectors_class);
 			}
-			
 			this.close();
 
 			this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>')
@@ -2135,14 +2114,13 @@ window.expromptum = window.xP = (function(undefined){
 				return false;
 			});
 		},
-		
+
 		change: function(handler, remove){
 			xP.controls.select.base.change.apply(this, arguments);
-			
+
 			if(typeof this.$selectors != 'undefined'){
 				xP.offset_by_viewport(this.$selectors, this.$element);
 			}
-			
 			return this;
 		},
 
@@ -2157,7 +2135,6 @@ window.expromptum = window.xP = (function(undefined){
 			xP.controls.opened = this;
 
 			var that = this;
-
 
 			this.$selectors.removeClass('hidden');
 
@@ -2277,7 +2254,6 @@ window.expromptum = window.xP = (function(undefined){
 
 			return xP.controls._option.base.destroy.apply(this, arguments);
 		},
-
 
 		append: function(params){
 			if($.type(params) !== 'array'){
@@ -2595,20 +2571,17 @@ window.expromptum = window.xP = (function(undefined){
 		def: 0,
 		max: Number.MAX_VALUE - 1,
 
-		
 		init: function(params){
-			
 			var that = this;
-			
-
 
 			this.valid = '[this].min <= [this] && [this] <= [this].max';
-			
+
 			xP.controls.number.base.init.apply(this, arguments);
+
 			this.init_locale(params);
-			
+
 			this.$element.wrap(this.element_wrap_html);
-			
+
 			this.allow_chars_pattern = new RegExp(
 				'^[-0-9'
 				+ this.locale.number.decimal
@@ -2653,8 +2626,6 @@ window.expromptum = window.xP = (function(undefined){
 			this.$element.blur(function(){
 				that.val(that.val());
 			});
-			
-			
 		},
 
 		element_wrap_html: '<ins class="number_control"/>',
@@ -2742,7 +2713,6 @@ window.expromptum = window.xP = (function(undefined){
 
 		_format: function(value){
 			var num = this.locale.number;
-			
 
 			value = (value + '').split('.');
 
@@ -2773,8 +2743,9 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 
 			xP.controls.datemonth.base.init.apply(this, arguments);
+
 			this.init_locale(params);
-			
+
 			this.$element.wrap(this.element_wrap_html);
 
 			this.$element.hide();
@@ -2784,7 +2755,6 @@ window.expromptum = window.xP = (function(undefined){
 			if(this._.values.length < 2){
 				this._.values = ['','','','',''];
 			}
-			
 			var html = '',
 				format = this.locale.date_format.split(this._split_pattern);
 
@@ -2825,7 +2795,6 @@ window.expromptum = window.xP = (function(undefined){
 				$pseudo.filter('.month'),
 				$pseudo.filter('.day')]
 			);
-
 
 			var that = this;
 
@@ -2954,6 +2923,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 			xP.controls.datetime.base.init.apply(this, arguments);
+
 			this.init_locale(params);
 
 			var html = this._number_begin_html + ', min: 0, max: 23" value="'
@@ -2989,10 +2959,11 @@ window.expromptum = window.xP = (function(undefined){
 
 		init: function(params){
 			var that = this;
-			
+
 			xP.controls.date_picker.base.init.apply(this, arguments);
+
 			this.init_locale(params);
-			
+
 			if(this.$element.is('.date, .date input')){
 				this.sub_type = 'date_picker';
 			}else if(this.$element.is('.datetime, .datetime input')){
@@ -3000,16 +2971,13 @@ window.expromptum = window.xP = (function(undefined){
 			}else{
 				this.sub_type = 'datemonth_picker';
 			}
-			
-			
+
 			if(that.val().length != 0){
 				that._set_value(xP.parse_date(that.val(), this.locale));
 			}
 
 			this.$wrapper = this.$element
 				.wrap(this.element_wrap_html).parent().addClass(this.sub_type);
-
-			
 
 			this._draft_state = [];
 
@@ -3050,7 +3018,7 @@ window.expromptum = window.xP = (function(undefined){
 			this.$calendar_year = $(this.control_calendar_year_html);
 
 			this.$calendar_time = $('<span class="time"></span>');
-			
+
 			this.$calendar_hour = $('<span class="hour"></span>');
 
 			this.$calendar_hour_select = $('<select></select>');
@@ -3062,14 +3030,14 @@ window.expromptum = window.xP = (function(undefined){
 			this.$control_calendar_now = $(this.control_calendar_now_html);
 
 			switch (this.sub_type){
-				case 'datetime_picker': 
+				case 'datetime_picker':
 					this.$control_calendar_now.html(this.locale.now);
 					break;
-				case 'date_picker': 
-					this.$control_calendar_now.html(this.locale.today)
+				case 'date_picker':
+					this.$control_calendar_now.html(this.locale.today);
 					break;
-				case 'datemonth_picker': 
-					this.$control_calendar_now.html(this.locale.current_month)
+				case 'datemonth_picker':
+					this.$control_calendar_now.html(this.locale.current_month);
 					break;
 			}
 
@@ -3183,9 +3151,9 @@ window.expromptum = window.xP = (function(undefined){
 					e.stopPropagation();
 					that._draft_state[3] = that._draft_state[3] + 1;
 					if(that._draft_state[3] > 23 || !that._draft_state[3]){ that._draft_state[3] = 0;}
-					that.$calendar_hour_select.val(that._draft_state[3])
+					that.$calendar_hour_select.val(that._draft_state[3]);
 					if(that.$calendar_minute_select.val() == ''){
-						that.$calendar_minute_select.val(0)
+						that.$calendar_minute_select.val(0);
 						that._draft_state[4] = 0;
 					}
 					that._set_value(that._draft_state, false);
@@ -3198,7 +3166,7 @@ window.expromptum = window.xP = (function(undefined){
 				that._draft_state[3] = $(this).val() * 1;
 				that._set_value(that._draft_state, false);
 				if(that.$calendar_minute_select.val() == ''){
-					that.$calendar_minute_select.val(0).change()
+					that.$calendar_minute_select.val(0).change();
 				}
 			});
 
@@ -3210,11 +3178,11 @@ window.expromptum = window.xP = (function(undefined){
 
 					if(that.$calendar_minute_select.val() != ''){
 						that._draft_state[4] = that._draft_state[4] - 1 * that.minute_round;
-					} else {
+					}else{
 						that._draft_state[4] = 60 - that.minute_round;
 					}
 					if(that._draft_state[4] < 0){ that._draft_state[4] = 60 - that.minute_round;}
-					that.$calendar_minute_select.val(that._draft_state[4])
+					that.$calendar_minute_select.val(that._draft_state[4]);
 					that._set_value(that._draft_state, false);
 
 					return false;
@@ -3226,7 +3194,7 @@ window.expromptum = window.xP = (function(undefined){
 				minutes_options += '<option value="' + i + '">' + xP.leading_zero(i) + '</option>';
 			}
 
-			this.$calendar_minute_select.html(minutes_options)
+			this.$calendar_minute_select.html(minutes_options);
 
 			this.$calendar_minute.append(this.$calendar_minute_select);
 
@@ -3236,12 +3204,12 @@ window.expromptum = window.xP = (function(undefined){
 					e.stopPropagation();
 					if(that.$calendar_minute_select.val() != ''){
 						that._draft_state[4] = that._draft_state[4] + 1 * that.minute_round;
-					} else {
+					}else{
 						that._draft_state[4] = 0;
 					}
 					if(that._draft_state[4] > 60 - that.minute_round){ that._draft_state[4] = 0;}
 
-					that.$calendar_minute_select.val(that._draft_state[4])
+					that.$calendar_minute_select.val(that._draft_state[4]);
 					that._set_value(that._draft_state, false);
 
 					return false;
@@ -3253,15 +3221,14 @@ window.expromptum = window.xP = (function(undefined){
 				that._draft_state[4] = $(this).val() * 1;
 
 				that._set_value(that._draft_state, false);
-			})
+			});
 
 			$(this.$calendar_close).click(function(){
 				that.close();
-			})
-			
+			});
 			this.$calendar_time
 					.append(this.$calendar_hour)
-					.append(this.$calendar_minute)
+					.append(this.$calendar_minute);
 
 			if(this.sub_type != 'datetime_picker'){
 				this.$calendar_close = null;
@@ -3274,7 +3241,6 @@ window.expromptum = window.xP = (function(undefined){
 
 				this.$calendar_days = null;
 			}
-			
 
 			this.$control_calendar
 					= $(this.control_calendar_html)
@@ -3313,8 +3279,8 @@ window.expromptum = window.xP = (function(undefined){
 				}
 
 				that.$control_calendar.find('.selected').removeClass('selected');
-				$(this).addClass('selected')
-				
+				$(this).addClass('selected');
+
 				var new_day = parseInt($(this).html(), 10),
 					year = parseInt(that.$control_calendar.find('.year .title').data('val'), 10),
 					month = parseInt(that.$control_calendar.find('.month .title').data('val'), 10);
@@ -3399,20 +3365,19 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			this.$element.on('keydown', function(event){
-				var keyCode = event.keyCode || event.which; 
-				
+				var keyCode = event.keyCode || event.which;
+
 				if(keyCode == 9 || keyCode == 13 || keyCode == 27){ /*tab  enter  escape*/
 					event.stopPropagation();
 					that._set_value(xP.parse_date(that.val(), this.locale));
 					that.close();
 				}else{
-					that.$element.focus()
+					that.$element.focus();
 				}
 			});
 
-
-			
 			this.initial_date = xP.parse_date(this.val(), this.locale);
+
 			if(
 				!this.initial_date[0] && !this.initial_date[1] && !this.initial_date[2]
 			){
@@ -3421,7 +3386,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.build();
 		},
-		
+
 		open: function(){
 			var that = this;
 			if(xP.controls.opened){
@@ -3430,10 +3395,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.controls.opened = this;
 
-			
-
 			that.$control_calendar.show();
-			xP.offset_by_viewport(that.$control_calendar, that.$element)
+			xP.offset_by_viewport(that.$control_calendar, that.$element);
 
 			return this;
 		},
@@ -3441,19 +3404,18 @@ window.expromptum = window.xP = (function(undefined){
 		close: function(){
 			var that = this;
 			var keyCode = event.keyCode || event.which;
-			
+
 			if(keyCode == 3) return this;
-			
+
 			if(
 				( !$(event.target).parents('.calendar').length )
 				|| (that.$calendar_close && that.$calendar_close.is(event.target))
 			){
-				
 				if(that.$element && (!that.$element.is(':focus') || (keyCode == 9 || keyCode == 13 || keyCode == 27) )){
-					
+
 					that.$wrapper.removeClass('focused');
 
-					var entered_date = xP.parse_date(that.val(), this.locale)
+					var entered_date = xP.parse_date(that.val(), this.locale);
 
 					if(entered_date[0] && entered_date[1] && entered_date[2]){
 						that._set_value(entered_date, true);
@@ -3467,10 +3429,9 @@ window.expromptum = window.xP = (function(undefined){
 				}
 			}
 
-			
 			return this;
 		},
-		
+
 		_set_value: function(d, closePopup){
 			var that = this;
 			var valid = true;
@@ -3571,14 +3532,14 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			switch (this.sub_type){
-				case 'datetime_picker': 
+				case 'datetime_picker':
 					if(date_tmp && typeof d[3] != 'undefined' && typeof d[4] != 'undefined'){
 						this.$secret.val(date_tmp + ' ' + d[3] + ':' + d[4]);
 					}else{
 						this.$secret.val(date_tmp);
 					}
 					break;
-				case 'date_picker': 
+				case 'date_picker':
 					if(date_tmp){
 						this.$secret.val(date_tmp);
 					}
@@ -3653,7 +3614,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
 					switch (this.sub_type){
-						case 'datetime_picker': 
+						case 'datetime_picker':
 							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
 
 							secret_result = secret_result.replace('mm', d[1]);
@@ -3663,7 +3624,7 @@ window.expromptum = window.xP = (function(undefined){
 							if(!isNaN(d[3]) && !isNaN(d[4]) ){
 								secret_result = secret_result.replace('HH', d[3]);
 								secret_result = secret_result.replace('MM', d[4]);
-							} else {
+							}else{
 								secret_result = secret_result.replace('HH', '');
 								secret_result = secret_result.replace('MM', '');
 							}
@@ -3702,18 +3663,17 @@ window.expromptum = window.xP = (function(undefined){
 				today = new Date();
 
 			if(d === undefined){
-				
 				if(this.val().length == 0){
 					if(!this.initial_date){
 						d = this.get_now_array();
-					} else {
+					}else{
 						d = this.initial_date;
 					}
 				}else{
 					d = xP.parse_date(this.val(), this.locale);
 					current_value = d[2];
 				}
-			} else if (update_value){
+			}else if(update_value){
 				this._draft_state = d;
 
 				if(
@@ -3723,7 +3683,6 @@ window.expromptum = window.xP = (function(undefined){
 					current_value = this._current_day;
 				}
 			}
-			
 			var d_tmp, _min, _max;
 
 			if(this.min && typeof this.min == 'string'){
@@ -3745,7 +3704,7 @@ window.expromptum = window.xP = (function(undefined){
 				// no month value, replace with current
 				if(this.last_build[1]){
 					d[1] = this.last_build[1];
-				} else {
+				}else{
 					d[1] = today.getMonth() + 1;
 				}
 			}else{
@@ -3756,7 +3715,7 @@ window.expromptum = window.xP = (function(undefined){
 				// no year value, replace with today
 				if(this.last_build[0]){
 					d[0] = this.last_build[0];
-				} else {
+				}else{
 					d[0] = today.getFullYear();
 				}
 			}else{
@@ -3778,7 +3737,7 @@ window.expromptum = window.xP = (function(undefined){
 				if((_min && _min > tmp_date) || (_max && tmp_date > _max)){
 					this.$calendar_year_title.addClass('invalid');
 					this.$calendar_month_title.addClass('invalid');
-				} else {
+				}else{
 					this.$calendar_year_title.removeClass('invalid');
 					this.$calendar_month_title.removeClass('invalid');
 				}
@@ -3919,7 +3878,7 @@ window.expromptum = window.xP = (function(undefined){
 		control_calendar_days_html: '<table class="days"><tbody></tbody></table>',
 
 		control_calendar_item_html: '<td class="d"></td>',
-		
+
 		control_calendar_daynames_item_html: '<th class="dn"></th>',
 
 		calendar_close_html: '<span class="close">&times;</span>',
@@ -4142,7 +4101,6 @@ window.expromptum = window.xP = (function(undefined){
 	}});
 
 
-
 /* Dependencies */
 
 	var xP_dependencies_registered = [], xP_dependencies_on = {};
@@ -4220,66 +4178,62 @@ window.expromptum = window.xP = (function(undefined){
 			}else{
 				this.to = control;
 			}
-			
-			
 			xP.dependencies._item.base.init.apply(this, [params, control]);
 
-			
-			
 			var that = this,
 				root = control.parent && control.parent()
 					? control.root() : null;
 
 			var parse_controls = function(param, values){
-					if($.type(param) !== 'array'){
-						param = [param];
-					}
+				if($.type(param) !== 'array'){
+					param = [param];
+				}
 
-					var result = new xP.list(), c, i, l;
-					for(i = 0, l = param.length; i < l; i++){
-						if($.type(param[i]) === 'string'){
-							c = xP(param[i]);
-							if(!c.length){
-								xP.debug(
-									'', 'error',
-									param[i] + ' in dependence not found',
-									that
-								);
-							}else{
-								result.append(c, root);
-							}
+				var result = new xP.list(), c, i, l;
+				for(i = 0, l = param.length; i < l; i++){
+					if($.type(param[i]) === 'string'){
+						c = xP(param[i]);
+						if(!c.length){
+							xP.debug(
+								'', 'error',
+								param[i] + ' in dependence not found',
+								that
+							);
 						}else{
-							result.append(param[i]);
+							result.append(c, root);
 						}
+					}else{
+						result.append(param[i]);
 					}
+				}
 
-					if(values !== undefined){
-						result.filter(function(){
-							if(!this.$element.is('[value]')){
-								return true;
-							}else{
-								var i, l = values.length;
-								for(i = 0; i < l; i++){
-									if($.type(values[i]) === 'regexp'){
-										if(
-											this.$element.val()
-												.match(values[i])
-										){
-											return true;
-										}
-									}else{
-										if(this.$element.val() == values[i]){
-											return true;
-										}
+				if(values !== undefined){
+					result.filter(function(){
+						if(!this.$element.is('[value]')){
+							return true;
+						}else{
+							var i, l = values.length;
+							for(i = 0; i < l; i++){
+								if($.type(values[i]) === 'regexp'){
+									if(
+										this.$element.val()
+											.match(values[i])
+									){
+										return true;
+									}
+								}else{
+									if(this.$element.val() == values[i]){
+										return true;
 									}
 								}
 							}
-							return false;
-						});
-					}
+						}
+						return false;
+					});
+				}
 
-					return result;
-				};
+				return result;
+			};
 
 			if(this.values !== undefined && $.type(this.values) !== 'array'){
 				this.values = [this.values];
@@ -4288,7 +4242,6 @@ window.expromptum = window.xP = (function(undefined){
 			this.to = parse_controls(this.to, this.values);
 
 			this.from = parse_controls(this.from);
-
 
 			if($.type(this.on) === 'string'){
 				this.on = this.on.replace(
@@ -4392,7 +4345,7 @@ window.expromptum = window.xP = (function(undefined){
 
 							control._param(dependence_init_inquiry, null);
 						}, 0)
-					)
+					);
 				}
 			});
 
