@@ -3020,6 +3020,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				if(!value || value.length == 0){
 					that.$element.removeClass(that.container_invalid_class);
+					that.$secret.val('');
 					return;
 				}
 
@@ -3036,6 +3037,8 @@ window.expromptum = window.xP = (function(undefined){
 					that._current_year = d[0];
 
 					that.build(d, false);
+				} else {
+					that.$secret.val('');
 				}
 			});
 
