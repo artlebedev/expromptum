@@ -2972,6 +2972,7 @@ window.expromptum = window.xP = (function(undefined){
 				that._set_value(xP.parse_date(that.val(), this.locale));
 			}
 
+			
 			this.$wrapper = this.$element
 				.wrap(this.element_wrap_html).parent().addClass(this.sub_type);
 
@@ -2979,6 +2980,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.last_build = [0,0,0];
 
+			
+			
 			this.change(function(){
 				var value = that.val();
 
@@ -2991,8 +2994,8 @@ window.expromptum = window.xP = (function(undefined){
 				var d = xP.parse_date(that.val(), this.locale);
 
 				if(
-					d[0] && d[1]
-					&& (d[2] && this.sub_type == 'date_picker' || this.sub_type == 'datemonth_picker')
+					!isNaN(d[0]) && !isNaN(d[1])
+					&& (!isNaN(d[2]) && this.sub_type == 'date_picker' || this.sub_type == 'datemonth_picker')
 				){
 					that._current_day = d[2];
 
@@ -3000,6 +3003,19 @@ window.expromptum = window.xP = (function(undefined){
 
 					that._current_year = d[0];
 
+					that.build(d, false);
+				} else if (
+							this.sub_type == 'datetime_picker'
+							&& !isNaN(d[0])
+							&& !isNaN(d[1])
+							&& !isNaN(d[2])
+							&& !isNaN(d[3])
+							&& !isNaN(d[4])
+					) {
+					that._current_day = d[2];
+					that._current_month = d[1];
+					that._current_year = d[0];
+					
 					that.build(d, false);
 				} else {
 					that.$secret.val('');
@@ -3363,7 +3379,7 @@ window.expromptum = window.xP = (function(undefined){
 				that.open();
 			});
 
-			this.$element.on('keydown', function(event){
+			this.$element.on('keyup', function(event){
 				var keyCode = event.keyCode || event.which;
 
 				if(keyCode == 9 || keyCode == 13 || keyCode == 27){ /*tab  enter  escape*/
@@ -3458,7 +3474,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				result = result.replace('yy', d[0]);
 
-				if(typeof d[3] != 'undefined' && typeof d[4] != 'undefined'){
+				if(!isNaN(d[3]) && !isNaN(d[4])){
 
 					result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
 
@@ -3532,7 +3548,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			switch (this.sub_type){
 				case 'datetime_picker':
-					if(date_tmp && typeof d[3] != 'undefined' && typeof d[4] != 'undefined'){
+					if(date_tmp && !isNaN(d[3]) && !isNaN(d[4])){
 						this.$secret.val(date_tmp + ' ' + d[3] + ':' + d[4]);
 					}else{
 						this.$secret.val(date_tmp);
@@ -3607,7 +3623,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				result = result.replace('yy', d[0]);
 
-				if(this.sub_type == 'datetime_picker' && typeof d[3] != 'undefined' && typeof d[4] != 'undefined'){
+				if(this.sub_type == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
 					result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
 				}
 
@@ -3833,7 +3849,7 @@ window.expromptum = window.xP = (function(undefined){
 				this._draft_state[3] = d[3];
 			}
 
-			if(typeof d[4] != 'undefined'){
+			if(!isNaN(d[4])){
 				this.$calendar_minute_select.val(Math.ceil(d[4] / this.minute_round) * this.minute_round);
 				this._draft_state[4] = d[4];
 			}
