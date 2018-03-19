@@ -241,14 +241,14 @@ window.expromptum = window.xP = (function(undefined){
 		return value.replace(xP.taint_regexp_pattern, '\\');
 	};
 
-	xP.taint_regexp_pattern = /(?=[\\\^\$\.\[\]\|\(\)\?\*\+\{\}])/g;
+	xP.taint_regexp_pattern = /(?=[\\^$.[\]|()?*+{}])/g;
 
 	xP.taint_css = function(value){
 		return value.replace(xP.taint_css_pattern, '\\');
 	};
 
 	xP.taint_css_pattern
-		= /(?=[\\\^\$\.\[\]\|\(\)\?\*\+\{\}\:\<\>\@\/\~\&\=])/g;
+		= /(?=[\\^$.[\]|()?*+{}:<>@/~&=])/g;
 
 	(function(){
 		var e = Element.prototype,
@@ -301,8 +301,8 @@ window.expromptum = window.xP = (function(undefined){
 
 	xP.parse_date = function(value, params){
 		var parse_date_time_pattern = /^(.*?)[\sT]*(\d\d?:\d\d?(?::\d\d?(?:[.:]\d\d*)?)?)(?:(?:\s*GMT)?([-+][:\d]+)?)?(.*)$/,
-			parse_date_split_pattern = /[-.,\/\s]+/,
-			parse_date_separator_pattern = /^\s*[^-.\/\s]+([-.\/])/;
+			parse_date_split_pattern = /[-.,/\s]+/,
+			parse_date_separator_pattern = /^\s*[^-./\s]+([-./])/;
 
 		if(!params){
 			params = {};
@@ -738,7 +738,7 @@ window.expromptum = window.xP = (function(undefined){
 						|| $element.data('expromptum');
 
 					if($.type(params) === 'string'){
-						if(!params.match(/^^\s*\{/)){
+						if(!params.match(/^^\s*{/)){
 							params = '{' + params + '}';
 						}
 
@@ -746,7 +746,7 @@ window.expromptum = window.xP = (function(undefined){
 							xP_controls_params[params] = eval(
 								'(function(){return '
 								+ params
-									.replace(/([\{,])\s*do\s*:/g, '$1\'do\':')
+									.replace(/([{,])\s*do\s*:/g, '$1\'do\':')
 								+ '})'
 							);
 						}
@@ -2832,7 +2832,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		_month_name: 'name',
 
-		_split_pattern: /[-\s:.\/\\]/,
+		_split_pattern: /[-\s:./\\]/,
 
 		_spliters: ['-', ''],
 
@@ -4260,7 +4260,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			if($.type(this.on) === 'string'){
 				this.on = this.on.replace(
-					/((?:\[(?:[^\[\]]+=(?:[^\[\]]|\[[^\[\]]*\])+|this|self)\])+)(\.?)/g,
+					/((?:\[(?:[^[\]]+=(?:[^[\]]|\[[^[\]]*])+|this|self)])+)(\.?)/g,
 					function(){
 						var control;
 
@@ -4550,7 +4550,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 			if(
 				$.type(params.on) === 'string'
-				&& !params.on.match(/\[(?:this|self)\]/)
+				&& !params.on.match(/\[(?:this|self)]/)
 			){
 				params.on = '(' + params.on + ') && ![this] && [this] !== 0';
 			}
