@@ -98,6 +98,7 @@ __webpack_require__(1)
 __webpack_require__(2)
 __webpack_require__(3)
 // require('./controls')
+__webpack_require__(4)
 __webpack_require__(5)
 __webpack_require__(6)
 __webpack_require__(7)
@@ -146,7 +147,6 @@ __webpack_require__(49)
 __webpack_require__(50)
 __webpack_require__(51)
 __webpack_require__(52)
-__webpack_require__(53)
 
 $(document).on('mouseup.expromptum_controls_opened', function(ev) {
     if(xP.controls.opened) {
@@ -1150,8 +1150,7 @@ xP.base = xP.register({
 
 
 /***/ }),
-/* 4 */,
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -1404,7 +1403,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -1436,7 +1435,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -1680,7 +1679,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -1826,7 +1825,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -1866,7 +1865,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -1906,7 +1905,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2002,7 +2001,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2084,7 +2083,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2195,7 +2194,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2208,7 +2207,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2221,7 +2220,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2234,7 +2233,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2287,7 +2286,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2310,7 +2309,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2493,7 +2492,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2506,7 +2505,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2726,7 +2725,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2910,7 +2909,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2982,7 +2981,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -2995,7 +2994,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3009,7 +3008,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3023,7 +3022,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3084,7 +3083,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3139,7 +3138,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3328,7 +3327,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3513,7 +3512,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3530,7 +3529,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -3573,7 +3572,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -4586,7 +4585,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -4764,7 +4763,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -4810,7 +4809,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -4823,7 +4822,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports) {
 
 /* Dependencies */
@@ -5125,7 +5124,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5155,7 +5154,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5183,7 +5182,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5227,7 +5226,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports) {
 
 //TODO: Надо бы сделать ее рабочей и для sheet-ов (для кнопок next и prev).
@@ -5261,7 +5260,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5312,7 +5311,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5365,7 +5364,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5430,7 +5429,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports) {
 
 xP.dependencies.register({
@@ -5477,7 +5476,7 @@ xP.dependencies.register({
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5510,7 +5509,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5543,7 +5542,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5576,7 +5575,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5609,7 +5608,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5641,7 +5640,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5673,7 +5672,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports) {
 
 xP.controls.register({
@@ -5705,7 +5704,7 @@ xP.controls.register({
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /* Repeats */
