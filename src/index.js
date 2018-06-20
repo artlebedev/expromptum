@@ -7,7 +7,7 @@
 require('./xp')
 require('./locale')
 require('./base')
-// require('./controls')
+require('./controls')
 require('./_item')
 require('./html')
 require('./_parent')

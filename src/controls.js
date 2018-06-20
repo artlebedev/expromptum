@@ -1,6 +1,8 @@
 /* Controls */
 
-var xP_controls_registered = [], xP_controls_params = {};
+var xP_controls_params = {};
+
+xP._controls_registered = []
 
 xP.controls = {
     register : function(params) {
@@ -25,7 +27,7 @@ xP.controls = {
         );
 
         if(params.prototype && params.prototype.element_selector) {
-            xP_controls_registered.push(name);
+            xP._controls_registered.push(name);
         }
     },
 
@@ -33,7 +35,8 @@ xP.controls = {
         var result = new xP.list(), that = this;
 
         $elements.each(function() {
-            var $element = $(this), control = that.link($element);
+            var $element = $(this),
+                control = that.link($element);
 
             if(!control) {
                 var params = $element.data('xp')
@@ -65,18 +68,11 @@ xP.controls = {
                 }
 
                 if(!params.type) {
-                    var i = xP_controls_registered.length;
+                    var i = xP._controls_registered.length;
 
                     while(i--) {
-                        if(
-                            xP.css_selector_match(
-                                $element,
-
-                                xP.controls[xP_controls_registered[i]]
-                                    .prototype.element_selector
-                            )
-                        ) {
-                            params.type = xP_controls_registered[i];
+                        if($element[0].matches(xP.controls[xP._controls_registered[i]].prototype.element_selector)) {
+                            params.type = xP._controls_registered[i];
 
                             break;
                         }

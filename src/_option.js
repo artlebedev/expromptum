@@ -150,7 +150,7 @@ xP.controls.register({
                 if(!disabled) {
                     this._.group.enabled_options.append(this);
                 }
-                else if(this._.group.enabled_options.index(this) == -1) {
+                else if(this._.group.enabled_options.indexOf(this) == -1) {
                     this.disable(true);
                 }
 

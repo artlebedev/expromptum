@@ -123,7 +123,7 @@ xP.controls.register({
 
                         if(!options[selected] || options[selected].disabled) {
                             that._.element.selectedIndex =
-                                that._.all_options.index(
+                                that._.all_options.indexOf(
                                     that._.enabled_options.first()
                                 );
                         }

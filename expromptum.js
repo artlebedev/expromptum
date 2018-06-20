@@ -97,7 +97,7 @@
 __webpack_require__(1)
 __webpack_require__(2)
 __webpack_require__(3)
-// require('./controls')
+__webpack_require__(53)
 __webpack_require__(4)
 __webpack_require__(5)
 __webpack_require__(6)
@@ -163,533 +163,264 @@ xP.root = new xP.controls.fields({ $element : $('html') });
 
 /* Core */
 
-var xP = window.expromptum = window.xP = function(params, parent) {
+window.xP = window.expromptum = function(params, parent) {
     // TODO: Добавить третий параметр в котором можно передавать data-xp.
     if(!params) {
-        params = '[data-xp], [data-expromptum]';
-        for(var i = 0, l = xP_controls_registered.length; i < l; i++) {
-            params += ','
-                + xP.controls[xP_controls_registered[i]]
-                    .prototype.element_selector;
+        params = '[data-xp], [data-expromptum]'
+        for(const control of xP._controls_registered) {
+            params += ',' + xP.controls[control].prototype.element_selector
         }
     }
-
-    if(
-        // CSS selector.
-        $.type(params) === 'string'
-        // DOM element.
-        || params && (
-            params.nodeType
-            // DOM collection.
-            || params[0] && params[0].nodeType
-        )
-    ) {
-        params = $(
-            params,
-            parent
-                ? (
-                    parent instanceof xP.controls._item
-                        ? parent.$container
-                        : parent
-                )
-                : null
-        );
+    // CSS selector.
+    // DOM element.
+    // DOM collection.
+    if(typeof params === 'string' || params && (params.nodeType || params[0] && params[0].nodeType)) {
+        const context = parent instanceof xP.controls._item?
+            parent.$container :
+            parent || null
+        params = $(params, context)
     }
-
     if(params instanceof jQuery) {
-        return xP.controls.init(params);
+        return xP.controls.init(params)
     }
-    else if(params instanceof Object && parent) {
-        return xP.controls.create(params, parent);
+    if(params instanceof Object && parent) {
+        return xP.controls.create(params, parent)
         // Create by params.
     }
-    else {
-        xP.debug('', 'error', 'unknown params', params);
-
-        return new xP.list();
-    }
-};
+    xP.debug('', 'error', 'unknown params', params)
+    return new xP.list
+}
 
 
 /* Tools */
 
 xP.register = function(params) {
-    var prototype = params.prototype || {},
-        expromptum = prototype.init
-            ? function() {
-                this._ = {};
-                prototype.init.apply(this, arguments);
-            }
-            : null,
-        base = params.base;
-
+    const { prototype = {}, base } = params
+    let expromptum = prototype.init?
+        function(...args) {
+            this._ = {}
+            prototype.init.apply(this, args)
+        } :
+        null
     // For console.
-    prototype.toString = function() {
-        return params.name
-    };
-
+    prototype.toString = () => params.name
     if(base) {
         if(!expromptum) {
-            expromptum = base.prototype.init
-                ? function() {
-                    this._ = {};
-                    base.prototype.init.apply(this, arguments);
+            expromptum = base.prototype.init?
+                function(...args) {
+                    this._ = {}
+                    base.prototype.init.apply(this, args)
+                } :
+                function() {
+                    this._ = {}
                 }
-                : function() {
-                    this._ = {};
-                };
         }
-
-        var f = function() {
-        };
-
-        f.prototype = base.prototype;
-
-        expromptum.prototype = new f();
-
-        expromptum.prototype.constructor = expromptum;
-
-        expromptum.base = base.prototype;
+        const f = function() {}
+        f.prototype = base.prototype
+        expromptum.prototype = new f()
+        expromptum.prototype.constructor = expromptum
+        expromptum.base = base.prototype
     }
     else if(!expromptum) {
-        expromptum = function() {
-        };
+        expromptum = function() {}
     }
-
-    $.extend(expromptum.prototype, prototype);
-
-    return expromptum;
-};
+    Object.assign(expromptum.prototype, prototype)
+    return expromptum
+}
 
 xP.list = function(arr) {
-    var result = $.type(arr) === 'array'? arr : (arr? [arr] : []);
+    const result = Array.isArray(arr)? arr : (arr? [arr] : [])
 
     result.append = function(obj) {
-        if(!obj) {
-            return this;
-        }
-
-        if($.type(obj) === 'array') {
-            for(var i = 0, l = obj.length; i < l; i++) {
-                this.append(obj[i]);
+        if(!obj) return this
+        if(Array.isArray(obj)) {
+            for(const item of obj) {
+                this.append(item)
             }
-
-            return this;
+            return this
         }
-
-        if(this.index(obj) === -1) {
-            this.push(obj);
+        if(this.indexOf(obj) === -1) {
+            this.push(obj)
         }
-
-        return this;
-    };
+        return this
+    }
 
     result.remove = function(obj) {
-        if($.type(obj) === 'array') {
-            var i = obj.length;
-
+        if(Array.isArray(obj)) {
+            let i = obj.length
             while(i--) {
-                this.remove(obj[i]);
+                this.remove(obj[i])
             }
-
-            return this;
+            return this
         }
-
-        var i = this.index(obj);
-
+        const i = this.indexOf(obj)
         if(i > -1) {
-            this.splice(i, 1);
+            this.splice(i, 1)
         }
-
-        return this;
-    };
+        return this
+    }
 
     result.filter = function(handler) {
-        return this.each(handler, true);
-    };
+        return this.each(handler, true)
+    }
 
     result.each = function(handler, _filter) {
-        var i = 0, l = this.length, current, result;
-
+        let i = 0, l = this.length, current, result
         while(i < l) {
-            current = this[i];
-
-            result = handler.call(current, i);
-
+            current = this[i]
+            result = handler.call(current, i)
             if(result === false) {
                 if(_filter) {
-                    this.splice(i, 1);
+                    this.splice(i, 1)
                 }
-                else {
-                    break;
-                }
+                else break
             }
-
             if(this[i] === current) {
-                i++;
+                i++
             }
-            else {
-                l = this.length;
-            }
+            else l = this.length
         }
-
-        return this;
-    };
+        return this
+    }
 
     result.first = function(handler) {
-        return this.eq(0, handler);
-    };
+        return this.eq(0, handler)
+    }
 
     result.last = function(handler) {
-        return this.eq(this.length - 1, handler);
-    };
+        return this.eq(this.length - 1, handler)
+    }
 
     result.eq = function(i, handler) {
         if(!this.length) {
-            return null;
+            return null
         }
-
         if(handler) {
-            handler.call(this[i % this.length]);
+            handler.call(this[i % this.length])
         }
-
-        return this[i % this.length];
-    };
-
-    result.index = function(obj) {
-        var i = this.length;
-
-        while(i--) {
-            if(obj === this[i]) {
-                return i;
-            }
-        }
-
-        return -1;
-    };
-
-    return result;
-};
-
-xP.debug = function() {
-    if(location.href.indexOf('xP=' + arguments[0]) > 0 || location.href.indexOf('xP=debug') > 0) {
-        for(var i = 1, l = arguments.length, args = ['xP']; i < l; i++) {
-            if(arguments[i] && arguments[i].$element) {
-                args.push(arguments[i].name || arguments[i].$element[0].tagName);
-            }
-            else {
-                args.push(arguments[i]);
-            }
-        }
-        console.log.apply(console, args);
-
-        return true;
+        return this[i % this.length]
     }
-    else {
-        return false;
+
+    return result
+}
+
+xP.debug = function(...args) {
+    if(location.href.indexOf('xP=' + args[0]) > 0 || location.href.indexOf('xP=debug') > 0) {
+        const newArgs = ['xP']
+        for(const arg of args) {
+            if(arg && arg.$element) {
+                newArgs.push(arg.name || arg.$element[0].tagName)
+            }
+            else newArgs.push(arg)
+        }
+        console.log.apply(console, newArgs)
+        return true
     }
-};
+    return false
+}
 
 xP.after = function(handler, i) {
-    if(i) {
-        return setTimeout(function() {
-            xP.after(handler, --i);
-        }, 0);
-    }
-    else {
-        return setTimeout(function() {
-            handler()
-        }, 0);
-    }
-};
+    return setTimeout(() => i? xP.after(handler, --i) : handler())
+}
 
 xP.taint_regexp = function(value) {
-    return value.replace(xP.taint_regexp_pattern, '\\');
-};
+    return value.replace(xP.taint_regexp_pattern, '\\')
+}
 
-xP.taint_regexp_pattern = /(?=[\\^$.[\]|()?*+{}])/g;
+xP.taint_regexp_pattern = /(?=[\\^$.[\]|()?*+{}])/g
 
 xP.taint_css = function(value) {
-    return value.replace(xP.taint_css_pattern, '\\');
-};
+    return value.replace(xP.taint_css_pattern, '\\')
+}
 
-xP.taint_css_pattern
-    = /(?=[\\^$.[\]|()?*+{}:<>@/~&=])/g;
-
-(function() {
-    var e = Element.prototype,
-        match = (
-            e.matches
-            || e.matchesSelector
-            || e.msMatchesSelector
-            || e.mozMatchesSelector
-            || e.webkitMatchesSelector
-            || e.oMatchesSelector
-        );
-    if(match) {
-        xP.css_selector_match = function($element, selector) {
-            return match.call($element[0], selector);
-        };
-    }
-    else {
-        xP.css_selector_match = function($element, selector) {
-            return $element.is(selector);
-        };
-    }
-})();
-
+xP.taint_css_pattern = /(?=[\\^$.[\]|()?*+{}:<>@/~&=])/g
 
 xP.leading_zero = function(digit) {
-    if(typeof digit != 'undefined') {
-        if(digit >= 10) {
-            return digit;
-        }
-        else {
-            return '0' + digit;
-        }
-    }
-    else {
-        return;
-    }
-};
+    if(typeof digit === 'undefined') return
+    return digit < 10? '0' + digit : digit
+}
 
-
-xP.offset_by_viewport = function($element, $relative) {
-    $element.css({ 'top' : '100%' });
-
-    var position = $element.offset(),
-        element_height = $element.height(),
-        window_bottom_pos = window.scrollY + $(window).height(),
-        element_bottom_pos = position.top + element_height;
-
+xP.offset_by_viewport = function($element) {
+    $element.css({ top : '100%' })
+    const position = $element.offset()
+    const element_height = $element.height()
+    const window_bottom_pos = window.scrollY + $(window).height()
+    const element_bottom_pos = position.top + element_height
     if(window_bottom_pos < element_bottom_pos) {
-        $element.css({ 'top' : -1 * ($element.outerHeight(true)) + 'px' });
+        $element.css({ top : -1 * ($element.outerHeight(true)) + 'px' })
     }
-};
+}
 
+const parse_date_time_pattern = /^(.*?)[\sT]*(\d\d?:\d\d?(?::\d\d?(?:[.:]\d\d*)?)?)(?:(?:\s*GMT)?([-+][:\d]+)?)?(.*)$/
+const parse_date_split_pattern = /[-.,/\s]+/
+const parse_date_separator_pattern = /^\s*[^-./\s]+([-./])/
 
-xP.parse_date = function(value, params) {
-    var parse_date_time_pattern = /^(.*?)[\sT]*(\d\d?:\d\d?(?::\d\d?(?:[.:]\d\d*)?)?)(?:(?:\s*GMT)?([-+][:\d]+)?)?(.*)$/,
-        parse_date_split_pattern = /[-.,/\s]+/,
-        parse_date_separator_pattern = /^\s*[^-./\s]+([-./])/;
-
-    if(!params) {
-        params = {};
-    }
-
+xP.parse_date = function(value = '', params = {}) {
+    const result = {}
     if(!params.millennium) {
-        params.millennium = 2000;
+        params.millennium = 2000
     }
-
-    var result = {};
-
-    if(!value) {
-        value = '';
-    }
-
-    value = value.replace(
-        parse_date_time_pattern,
-        function(str, date1, time, gmt, date2) {
-            result.time = time;
-            var timex = time.split(':');
-
-            result.hour = timex[0];
-
-            result.minute = timex[1];
-
-            result.gmt = gmt;
-
-            return date1 + date2;
-        }
-    );
-
-    var parts = value.split(parse_date_split_pattern),
-        separator,
-        t = value.replace(
-            parse_date_separator_pattern,
-            function(str, s1) {
-                separator = s1;
-            }
-        );
-
+    value = value.replace(parse_date_time_pattern, function(str, date1, time, gmt, date2) {
+        const timex = time.split(':')
+        result.time = time
+        result.hour = timex[0]
+        result.minute = timex[1]
+        result.gmt = gmt
+        return date1 + date2
+    })
+    const parts = value.split(parse_date_split_pattern)
     if(params.year_from_left === undefined) {
-        params.year_from_left = separator == '-';
+        params.year_from_left = false
     }
     if(params.month_from_left === undefined) {
-        params.month_from_left = separator == '/';
+        params.month_from_left = false
     }
-    for(var i = 0; i < parts.length; i++) {
+    for(let i = 0; i < parts.length; i++) {
         if(parts[i] > 31) {
-            params.year_from_left = !i;
-
-            result.year = parts.splice(i--, 1)[0];
+            params.year_from_left = !i
+            result.year = parts.splice(i--, 1)[0]
         }
         else if(parts[i].match(/[^\d]/)) {
-            month = this.locale.parse_date_months.indexOf(parts[i].toLowerCase()) % 12 + 1;
-
+            const month = this.locale.parse_date_months.indexOf(parts[i].toLowerCase()) % 12 + 1
             if(month > 0) {
-                result.month = xP.leading_zero(month);
+                result.month = xP.leading_zero(month)
             }
-            parts.splice(i--, 1);
+            parts.splice(i--, 1)
         }
     }
-
     if(!result.year && parts.length) {
         if(params.year_from_left) {
-            result.year = parts.shift();
+            result.year = parts.shift()
         }
-        else if(parts.length == 3 - !!result.month * 1) {
-            //result.year = parts.pop();
-        }
+        /*else if(parts.length == 3 - !!result.month * 1) {
+            result.year = parts.pop()
+        }*/
     }
     if(!result.month && parts.length) {
-        if(
-            parts[0] < 13
-            && (
-                params.year_from_left
-                || params.month_from_left
-                || parts[parts.length - 1] > 12
-                || (result.year && parts.length == 1)
-            )
-        ) {
-            result.month = parts.shift();
+        if(parts[0] < 13 && (params.year_from_left
+            || params.month_from_left
+            || parts[parts.length - 1] > 12
+            || (result.year && parts.length === 1))) {
+            result.month = parts.shift()
         }
         else if(parts.length > 1 && parts[parts.length - 1] < 13) {
-            result.month = parts.pop();
+            result.month = parts.pop()
         }
     }
     if(!result.day && parts.length && parts[0] && !(result.year && !result.month)) {
-        result.day = parts[0];
+        result.day = parts[0]
     }
     if(result.year && result.year < 100) {
-        result.year = result.year * 1 + params.millennium;
+        result.year = Number(result.year) + params.millennium
     }
-
     return [
-        (typeof result.year != 'undefined'? result.year * 1 : undefined),
-        (typeof result.month != 'undefined'? result.month * 1 : undefined),
-        (typeof result.day != 'undefined'? result.day * 1 : undefined),
-        (typeof result.hour != 'undefined'? result.hour * 1 : undefined),
-        (typeof result.minute != 'undefined'? result.minute * 1 : undefined)
-    ];
-};
-
-/* Controls */
-
-var xP_controls_registered = [], xP_controls_params = {};
-
-xP.controls = {
-    register : function(params) {
-        var name = params.name;
-
-        if(!params.prototype) {
-            params.prototype = {};
-        }
-
-        params.prototype.type = name;
-
-        this[params.name] = xP.register(
-            $.extend(
-                params,
-                {
-                    name : 'expromptum.controls.' + name,
-                    base : $.type(params.base) === 'string'
-                        ? this[params.base]
-                        : params.base
-                }
-            )
-        );
-
-        if(params.prototype && params.prototype.element_selector) {
-            xP_controls_registered.push(name);
-        }
-    },
-
-    init : function($elements) {
-        var result = new xP.list(), that = this;
-
-        $elements.each(function() {
-            var $element = $(this), control = that.link($element);
-
-            if(!control) {
-                var params = $element.data('xp')
-                    || $element.data('expromptum');
-
-                if($.type(params) === 'string') {
-                    if(!params.match(/^^\s*{/)) {
-                        params = '{' + params + '}';
-                    }
-
-                    if(!xP_controls_params[params]) {
-                        xP_controls_params[params] = eval(
-                            '(function(){return '
-                            + params
-                            .replace(/([{,])\s*do\s*:/g, '$1\'do\':')
-                            + '})'
-                        );
-                    }
-
-                    params = xP_controls_params[params]();
-                }
-
-                $element
-                    .removeAttr('data-xp')
-                    .removeAttr('data-expromptum');
-
-                if(!params) {
-                    params = {};
-                }
-
-                if(!params.type) {
-                    var i = xP_controls_registered.length;
-
-                    while(i--) {
-                        if(
-                            xP.css_selector_match(
-                                $element,
-
-                                xP.controls[xP_controls_registered[i]]
-                                    .prototype.element_selector
-                            )
-                        ) {
-                            params.type = xP_controls_registered[i];
-
-                            break;
-                        }
-                    }
-                }
-
-                if(
-                    xP.controls[params.type]
-                    && xP.controls[params.type].base
-                ) {
-                    params.$element = $element;
-
-                    control = new xP.controls[params.type](params);
-                }
-            }
-
-            if(control) {
-                result.append(control);
-            }
-        });
-
-        return result;
-    },
-
-    link : function($element, control) {
-        if(control) {
-            $element.data('expromptum.control', control);
-
-            if($element[0]) {
-                $element[0].expromptum = control;
-            }
-        }
-        else {
-            return $element.data('expromptum.control');
-        }
-    }
-};
+        (typeof result.year !== 'undefined'? Number(result.year) : undefined),
+        (typeof result.month !== 'undefined'? Number(result.month) : undefined),
+        (typeof result.day !== 'undefined'? Number(result.day) : undefined),
+        (typeof result.hour !== 'undefined'? Number(result.hour) : undefined),
+        (typeof result.minute !== 'undefined'? Number(result.minute) : undefined)
+    ]
+}
 
 
 /***/ }),
@@ -2437,7 +2168,7 @@ xP.controls.register({
 
                         if(!options[selected] || options[selected].disabled) {
                             that._.element.selectedIndex =
-                                that._.all_options.index(
+                                that._.all_options.indexOf(
                                     that._.enabled_options.first()
                                 );
                         }
@@ -2880,7 +2611,7 @@ xP.controls.register({
                 if(!disabled) {
                     this._.group.enabled_options.append(this);
                 }
-                else if(this._.group.enabled_options.index(this) == -1) {
+                else if(this._.group.enabled_options.indexOf(this) == -1) {
                     this.disable(true);
                 }
 
@@ -5005,7 +4736,7 @@ xP.dependencies.register({
 
                         that.from.append(control);
 
-                        var id = that.from.index(control[0]);
+                        var id = that.from.indexOf(control[0]);
 
                         if(id < 0) {
                             // TODO: Может стоит отменить зависимость?
@@ -6337,6 +6068,124 @@ var repeat_init_new_control = function(
     },
 
     repeat_new_control_count = 0;
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+/* Controls */
+
+var xP_controls_params = {};
+
+xP._controls_registered = []
+
+xP.controls = {
+    register : function(params) {
+        var name = params.name;
+
+        if(!params.prototype) {
+            params.prototype = {};
+        }
+
+        params.prototype.type = name;
+
+        this[params.name] = xP.register(
+            $.extend(
+                params,
+                {
+                    name : 'expromptum.controls.' + name,
+                    base : $.type(params.base) === 'string'
+                        ? this[params.base]
+                        : params.base
+                }
+            )
+        );
+
+        if(params.prototype && params.prototype.element_selector) {
+            xP._controls_registered.push(name);
+        }
+    },
+
+    init : function($elements) {
+        var result = new xP.list(), that = this;
+
+        $elements.each(function() {
+            var $element = $(this),
+                control = that.link($element);
+
+            if(!control) {
+                var params = $element.data('xp')
+                    || $element.data('expromptum');
+
+                if($.type(params) === 'string') {
+                    if(!params.match(/^^\s*{/)) {
+                        params = '{' + params + '}';
+                    }
+
+                    if(!xP_controls_params[params]) {
+                        xP_controls_params[params] = eval(
+                            '(function(){return '
+                            + params
+                            .replace(/([{,])\s*do\s*:/g, '$1\'do\':')
+                            + '})'
+                        );
+                    }
+
+                    params = xP_controls_params[params]();
+                }
+
+                $element
+                    .removeAttr('data-xp')
+                    .removeAttr('data-expromptum');
+
+                if(!params) {
+                    params = {};
+                }
+
+                if(!params.type) {
+                    var i = xP._controls_registered.length;
+
+                    while(i--) {
+                        if($element[0].matches(xP.controls[xP._controls_registered[i]].prototype.element_selector)) {
+                            params.type = xP._controls_registered[i];
+
+                            break;
+                        }
+                    }
+                }
+
+                if(
+                    xP.controls[params.type]
+                    && xP.controls[params.type].base
+                ) {
+                    params.$element = $element;
+
+                    control = new xP.controls[params.type](params);
+                }
+            }
+
+            if(control) {
+                result.append(control);
+            }
+        });
+
+        return result;
+    },
+
+    link : function($element, control) {
+        if(control) {
+            $element.data('expromptum.control', control);
+
+            if($element[0]) {
+                $element[0].expromptum = control;
+            }
+        }
+        else {
+            return $element.data('expromptum.control');
+        }
+    }
+};
 
 
 /***/ })

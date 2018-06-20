@@ -178,7 +178,7 @@ xP.dependencies.register({
 
                         that.from.append(control);
 
-                        var id = that.from.index(control[0]);
+                        var id = that.from.indexOf(control[0]);
 
                         if(id < 0) {
                             // TODO: Может стоит отменить зависимость?
