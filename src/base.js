@@ -4,77 +4,59 @@ xP.base = xP.register({
     name : 'xP.base',
     prototype : {
 
-        init : function(params) {
-            this._.on_destroy = new xP.list();
-            this._.on_change = new xP.list();
-
-            $.extend(this, params);
+        init(params) {
+            this._.on_destroy = new xP.list
+            this._.on_change = new xP.list
+            Object.assign(this, params)
         },
 
-        destroy : function(handler, remove) {
+        destroy(handler, remove) {
             if(!arguments.length) {
-                clearTimeout(this._.change_inquiry);
-
-                var that = this;
-
+                clearTimeout(this._.change_inquiry)
+                const that = this
                 this._.on_destroy.each(function() {
-                    this.call(that);
-                });
+                    this.call(that)
+                })
             }
-            else {
-                if(remove) {
-                    this._.on_destroy.remove(handler);
-                }
-                else {
-                    this._.on_destroy.append(handler);
-                }
+            else if(remove) {
+                this._.on_destroy.remove(handler)
             }
-
-            return this;
+            else this._.on_destroy.append(handler)
+            return this
         },
 
-        change : function(handler, remove) {
+        change(handler, remove) {
             if(!arguments.length) {
                 if(!this._.change_inquiry) {
-                    clearTimeout(this._.change_inquiry);
-
-                    var that = this;
-
-                    that._.change_inquiry = xP.after(function() {
-                        that._.change_inquiry = null;
-
+                    clearTimeout(this._.change_inquiry)
+                    const that = this
+                    that._.change_inquiry = xP.after(() => {
+                        that._.change_inquiry = null
                         that._.on_change.each(function() {
-                            this.call(that);
-                        });
-                    });
+                            this.call(that)
+                        })
+                    })
                 }
             }
-            else {
-                if(remove) {
-                    this._.on_change.remove(handler);
-                }
-                else {
-                    this._.on_change.append(handler);
-                }
+            else if(remove) {
+                this._.on_change.remove(handler)
             }
-
-            return this;
+            else this._.on_change.append(handler)
+            return this
         },
 
-        param : function(name, value) {
+        param(name, value) {
             if(arguments.length === 2) {
-                this[name] = value;
+                this[name] = value
             }
-
-            return this[name];
+            return this[name]
         },
 
-        _param : function(name, value) {
+        _param(name, value) {
             if(arguments.length === 2) {
-                this._[name] = value;
+                this._[name] = value
             }
-
-            return this._[name];
+            return this._[name]
         }
     }
-});
+})

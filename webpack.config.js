@@ -1,4 +1,4 @@
-var path = require('path')
+const path = require('path')
 
 module.exports = [
     {
@@ -21,6 +21,3 @@ if(process.env.NODE_ENV === 'production') {
         }
     })
 }
-
-
-
