@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2018-05-15
+// Updated: 2018-08-13
 
 
 
@@ -2381,17 +2381,33 @@ window.expromptum = window.xP = (function(undefined){
 	xP.controls.register({name: 'radio', base: '_option', prototype: {
 		element_selector: '[type=radio]',
 
-		disable: function(disabled){
+		disable: function(disabled, dependence){
 			disabled = !arguments.length || disabled;
+
+			var that = this;
+
+			if(dependence){
+				if(this.selected && !this._.group.previous_selected){
+					this._.group.previous_selected = this;
+				}
+
+				clearTimeout(this._.group.select_option);
+
+				this._.group.select_option = xP.after(function(){
+					if(that._.group.previous_selected){
+						if(!that._.group.previous_selected.disabled){
+							that._.group.previous_selected.select();
+						}
+						that._.group.previous_selected = null;
+					}
+				}, 1);
+			}
 
 			if(this.disabled !== disabled){
 				xP.controls.radio.base.disable.apply(this, arguments);
 
 				if(disabled){
 					if(this.selected){
-						var that = this;
-
-						//xP.after(function(){
 						this._.group.siblings.each(function(){
 							if(!this.disabled && this !== that){
 								this.select();
@@ -2399,7 +2415,6 @@ window.expromptum = window.xP = (function(undefined){
 								return false;
 							}
 						});
-						//});
 					}
 				}else if(
 					this._.group.selected
@@ -2427,9 +2442,7 @@ window.expromptum = window.xP = (function(undefined){
 					this._.group.selected = this;
 
 					if(that_selected){
-						//xP.after(function(){
 						that_selected.select(false);
-						//});
 					}
 				}
 				xP.controls.radio.base.select.apply(this, arguments);
@@ -4459,7 +4472,7 @@ window.expromptum = window.xP = (function(undefined){
 					});
 				};
 
-			var that = this, enable;
+			var that = this;
 
 			this.to.each(function(){
 				this.disable(!that.result, that);
