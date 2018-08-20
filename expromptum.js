@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2018-08-15
+// Updated: 2018-08-20
 
 
 
@@ -4439,7 +4439,7 @@ window.expromptum = window.xP = (function(undefined){
 		process: function(){
 			xP.debug('computed', 'computed', this.to.first(), {dependence: this});
 
-			xP.dependencies.classed.base.process.apply(this);
+			xP.dependencies.computed.base.process.apply(this);
 
 			var that = this;
 
@@ -4784,7 +4784,7 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: '.repeat_prev_button',
 
 		init: function(params){
-			xP.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_prev_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
@@ -4808,7 +4808,7 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: '.repeat_next_button',
 
 		init: function(params){
-			xP.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_next_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
@@ -4832,7 +4832,7 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: '.repeat_last_button',
 
 		init: function(params){
-			xP.controls.repeat_first_button.base.init.apply(this, arguments);
+			xP.controls.repeat_last_button.base.init.apply(this, arguments);
 
 			var parent = this.parent(), repeat = parent.repeat;
 
