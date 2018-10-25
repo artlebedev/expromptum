@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2018-10-24
+// Updated: 2018-10-25
 
 
 
@@ -1136,30 +1136,33 @@ window.expromptum = window.xP = (function(undefined){
 				return this._.children_values;
 			}else{
 				if(this.repeat){
-
-					if($.type(value) !== 'array'){
-						value = [value];
-					}
-
-					var siblings = this.repeat.children(),
-						l = value.length,
-						sibling;
-
-					while(siblings.length > l){
-						this.repeat.remove(siblings[siblings.length - 1]);
-					}
-
-					for(var i = 0; i < l; i++){
-						sibling = siblings[i];
-						if(!sibling){
-							sibling = this.repeat.append(siblings[i - 1]);
+					var that = this;
+					xP.after(function(){
+						if($.type(value) !== 'array'){
+							value = [value];
 						}
-						sibling._set_vals(
-							value[i],
-							_suffix + this.repeat.name_suffix_before
-								+ i + this.repeat.name_suffix_after
-						);
-					}
+
+						var siblings = that.repeat.children(),
+							l = value.length,
+							sibling;
+
+						while(siblings.length > l){
+							that.repeat.remove(siblings[siblings.length - 1]);
+						}
+
+						for(var i = 0; i < l; i++){
+							sibling = siblings[i];
+							if(!sibling){
+								sibling = that.repeat.append(siblings[i - 1]);
+							}
+							sibling._set_vals(
+								value[i],
+								_suffix + that.repeat.name_suffix_before
+									+ i + that.repeat.name_suffix_after
+							);
+						}
+					}, 4);
+					// TODO: Ох уж эти мне таймауты. Нужно с ними разбираться.
 				}else{
 					this._set_vals(value, '');
 				}
@@ -1170,19 +1173,16 @@ window.expromptum = window.xP = (function(undefined){
 
 		_set_vals: function(value, suffix){
 			var that = this;
-			xP.after(function(){
-				$.each(value, function(name, value){
-					var controls = that._find_by_name(name)
-							|| that._find_by_name(name + suffix);
+			$.each(value, function(name, value){
+				var controls = that._find_by_name(name)
+						|| that._find_by_name(name + suffix);
 
-					if(controls){
-						for(var i = 0, l = controls.length; i < l; i++){
-							controls[i].val(value, suffix);
-						}
+				if(controls){
+					for(var i = 0, l = controls.length; i < l; i++){
+						controls[i].val(value, suffix);
 					}
-				});
-			}, 4);
-			// TODO: Ох уж эти мне таймауты. Нужно с ними разбираться.
+				}
+			});
 		},
 
 		change: function(handler, remove){
