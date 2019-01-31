@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2018-10-25
+// Updated: 2019-01-31
 
 
 
@@ -1431,6 +1431,13 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			xP.controls._labeled.base.init.apply(this, arguments);
 
+			this.find_label();
+
+			xP.controls.link(this.$label, this);
+		},
+
+		find_label: function(){
+
 			var id = this.$element.attr('id');
 
 			if(!this.$label){
@@ -1446,7 +1453,6 @@ window.expromptum = window.xP = (function(undefined){
 					this.$label = $(s);
 				}
 			}
-			xP.controls.link(this.$label, this);
 		},
 
 		destroy: function(handler, remove){
@@ -4125,7 +4131,11 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.controls.register({name: 'hidden', base: '_field', prototype: {
-		element_selector: 'input[type=hidden]'
+		element_selector: 'input[type=hidden]',
+
+		find_label: function(){
+			this.$label = $();
+		}
 	}});
 
 
