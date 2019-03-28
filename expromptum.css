@@ -1,32 +1,79 @@
+:root {
+	--background: #fff;
+	--color: #000;
+	--input_color: var(--color);
+	--input_border: 1px solid #999;
+	--input_hover_border_color: #f96;
+	--input_background: var(--background);
+	--input_focus_border_color: #f96;
+	--input_margin: 0 4px 2px 0;
+	--input_padding_vertical: 3px;
+	--input_padding_horizontal: 3px;
+	--button_background: #ddd;
+	--button_color: var(--color);
+	--button_padding: 3px 8px;
+	--button_hover_background: #fda;
+	--button_hover_color: var(--color);
+	--button_selected_background: #fc9;
+	--button_selected_color: var(--color);
+	--tab_selected_background: #ddd;
+	--tab_selected_color: var(--color);
+	--frame_border: 1px solid #ccc;
+	--frame_padding: 10px;
+}
+
+
 /* Common */
 	input[type=radio], input[type=checkbox] {
 		vertical-align: middle;
 	}
 
-	textarea,
-	input,
-	select,
+	html input[type=submit]:hover,
+	html input[type=button]:hover,
+	html button:hover,
+	html .button:hover,
+	html .control_button:hover,
+	html .selectus .selectors label:hover,
+	html .date_picker_control .d:hover {
+		background: var(--button_hover_background);
+		border-color: var(--button_hover_background);
+		color: var(--button_hover_color);
+	}
+
+	textarea, html .disabled textarea, html textarea.disabled,
+	input, html .disabled input, html input.disabled,
+	select, html .disabled select, html select.disabled,
 	button,
 	.button,
 	.control_button,
-	.selectus .select,
+	.selectus .select, html .disabled .selectus .select, html .selectus .select.disabled,
 	.selectus .select .selected,
 	.selectus .selectors,
 	.date_picker_control .calendar {
-		border: 1px solid #ccc;
-		padding: 3px;
+		border: 1px solid #000;
+		border: var(--input_border);
+		padding: var(--input_padding_vertical) var(--input_padding_horizontal);
 		min-height: 1.6em;
 		line-height: 1.2;
-		font-size: 100%;
-		margin: 0 4px 2px 0;
+		margin: var(--input_margin);
 		background: #fff;
+		background: var(--input_background);
 		box-sizing: border-box;
+		color: #000;
+		color: var(--input_color)
 	}
 	input[type=file] {
-		background: inherit;
+		background: var(--background);
 	}
 	textarea {
 		font-size: 120%;
+	}
+
+	textarea:hover,
+	input:hover,
+	select:hover,
+	.selectus .select:hover {
+		border-color: var(--input_hover_border_color);
 	}
 
 	textarea:focus,
@@ -35,7 +82,7 @@
 	button:focus,
 	.button:focus,
 	.control_button:focus {
-		border-color: #f96;
+		border-color: var(--input_focus_border_color);
 		box-shadow: none;
 		outline: 0;
 	}
@@ -52,48 +99,33 @@
 		vertical-align: middle;
 	}
 
-	select {
-		padding-top: 2px;
-		padding-bottom: 2px;
+	select, html .disabled select, html select.disabled {
+		padding-top: calc(var(--input_padding_vertical) - 1px);
+		padding-bottom: calc(var(--input_padding_vertical) - 1px);
+		max-width: 100%;
 	}
 
-	input[type=submit],
-	.disabled input[type=submit]:hover,
-	input[type=button],
-	.disabled input[type=button]:hover,
-	button,
-	button:hover.disabled,
-	.button,
+	input[type=submit], html .disabled input[type=submit], html input[type=submit].disabled,
+	input[type=button], html .disabled input[type=button], html input[type=button].disabled,
+	button, html .disabled button, html button.disabled,
+	.button, html .disabled .button, html .button.disabled,
 	.button:link,
 	.button:visited,
-	.disabled .button:hover,
-	.control_button,
-	.disabled :hover.control_button {
+	.control_button, html .disabled .control_button, html .control_button.disabled {
 		background: #ccc;
+		background: var(--button_background);
 		border-color: #ccc;
+		border-color: var(--button_background);
+		color: #000;
+		color: var(--button_color);
 		cursor: pointer;
 		text-align: center;
 		display: inline-block;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
+		padding: var(--button_padding);
+		margin: var(--input_margin);
 		zoom: 1;
-	}
-	input[type=submit],
-	input[type=button],
-	button,
-	.button {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-
-	input[type=submit]:hover,
-	input[type=button]:hover,
-	button:hover,
-	html .button:hover,
-	.control_button:hover,
-	.date_picker_control .d:hover {
-		background: #fc9;
-		border-color: #fc9;
 	}
 
 	textarea, input[type=text] {
@@ -138,23 +170,24 @@
 
 /* Dependencies */
 	.invalid > .fields_label, .fields_label.invalid,
-	.field.invalid input, .field.invalid textarea, input.invalid, textarea.invalid {
+	.field.invalid input, .field.invalid textarea, .field.invalid select,
+	input.invalid, textarea.invalid, select.invalid {
 		color: red;
 	}
 	.valid > .fields_label, .fields_label.valid,
-	.field.valid input, .field.valid textarea, input.valid, textarea.valid {
+	.field.valid input, .field.valid textarea, .field.valid select,
+	input.valid, textarea.valid, select.valid {
 		color: green;
 	}
 	.required > .fields_label, .fields_label.required,
 	.field.required label, label.required {
 		font-weight: bold;
 	}
-	.disabled,
-	:hover.disabled {
+	html .disabled {
 		opacity: 0.45;
-		cursor: default;
+		cursor: default ! important;
 	}
-	.disabled .disabled {
+	html .disabled .disabled {
 		opacity: 1;
 	}
 
@@ -174,15 +207,19 @@
 		display: inline-block;
 		padding: 2px 10px;
 		margin: 0 0 10px;
+		cursor: pointer;
 	}
 	.selected.tab {
-		background: #eec;
+		cursor: default;
+		background: #ccc;
+		background: var(--tab_selected_background);
+		color: var(--tab_selected_color);
 	}
 
 	.sheet {
 		margin: 0 0 30px;
-		padding: 10px;
-		border: 1px solid #ddb;
+		padding: var(--frame_padding);
+		border: var(--frame_border);
 	}
 
 /* Password */
@@ -281,7 +318,7 @@
 	}
 	.selectus .selectors .option {
 		display: block;
-		border: 1px solid #fff;
+		border: 1px solid var(--input_background);
 	}
 	.selectus .selectors input {
 		position: absolute;
@@ -293,10 +330,12 @@
 		padding: 4px;
 	}
 	.selectus .selectors .focus {
-		border: 1px solid #f96;
+		border: 1px solid var(--input_focus_border_color);
 	}
 	.selectus .selectors .selected {
 		background: #ccc;
+		background: var(--button_selected_background);
+		color: var(--button_selected_color);
 	}
 
 /* Date Picker */
@@ -321,7 +360,9 @@
 		opacity: 0.6;
 	}
 	.date_picker_control .selected {
-		background: #6cf;
+		background: #ccc;
+		background: var(--button_selected_background);
+		color: var(--button_selected_color);
 	}
 	.date_picker_control .calendar .days .d,
 	.date_picker_control .calendar .days .dn {
