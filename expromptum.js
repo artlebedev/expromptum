@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2019-06-20
+// Updated: 2019-07-12
 
 
 
@@ -5216,8 +5216,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			$container.find('input, textarea, select')
-				.add($container.filter('input, textarea, select'))
+			$container.find('input[type!=radio], textarea, select')
+				.add($container.filter('input[type!=radio], textarea, select'))
 				.not(function(){
 					var reset = xP(this).first().reset_on_repeat;
 					return that.reset && reset === false
