@@ -1998,35 +1998,21 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.controls.register({name: 'options', base: 'fields', prototype: {
-		element_selector: '.options'
-	}});
-
-
-	xP.controls.register({name: 'selectus', base: 'options', prototype: {
-		element_selector: '.selectus',
+		element_selector: '.options',
+		selectors_class: 'selectors',
 
 		init: function(params){
-			this.find_text = '';
-
-			xP.controls.selectus.base.init.apply(this, arguments);
+			xP.controls.options.base.init.apply(this, arguments);
 
 			var that = this;
 			xP.after(function(){that.after_init()});
 		},
 
 		after_init: function(){
-			// TODO: Добавить поддержку append
 			var $options = this.$element.find('[type=radio], [type=checkbox]'),
 				that = this;
 
 			this.$selectors = this.$container.find('.' + this.selectors_class);
-
-			this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
-
-			this.select_html = new xP.controls.html({
-					$element: this.$select,
-					type: 'html'
-				});
 
 			this.options_init($options);
 
@@ -2043,6 +2029,40 @@ window.expromptum = window.xP = (function(undefined){
 					.wrapAll('<div class="' + this.selectors_class + '"></div>')
 					.parents('.' + this.selectors_class);
 			}
+		},
+
+		options_init: function($options){
+			if(!(this.options instanceof xP.list)){
+				this.options = new xP.list();
+			}
+
+			this.options.append(xP($options));
+		}
+	}});
+
+
+	xP.controls.register({name: 'selectus', base: 'options', prototype: {
+		element_selector: '.selectus',
+
+		init: function(params){
+			this.find_text = '';
+
+			xP.controls.selectus.base.init.apply(this, arguments);
+		},
+
+		after_init: function(){
+			var that = this;
+			// TODO: Добавить поддержку append
+
+			this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
+
+			this.select_html = new xP.controls.html({
+					$element: this.$select,
+					type: 'html'
+				});
+
+			xP.controls.selectus.base.after_init.apply(this, arguments);
+
 			this.close();
 
 			this.$select.insertBefore(this.$selectors);
@@ -2081,11 +2101,11 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			if(!(this.options instanceof xP.list)){
-				this.options = new xP.list();
-			}
+			xP.controls.selectus.base.options_init.apply(this, arguments);
 
-			this.options.append(xP($options).each(function(i){
+			var options = xP($options);
+
+			options.each(function(i){
 				var option = this;
 
 				this.label_text = this.$label.text().toLowerCase();
@@ -2115,12 +2135,12 @@ window.expromptum = window.xP = (function(undefined){
 						that.find_option();
 					}
 				});
-			}));
+			});
 
 			if(this.options.length){
 				new xP.dependencies.computed(
 					{
-						from: this.options,
+						from: options,
 						on: function(){
 							var html = '';
 
@@ -2139,7 +2159,6 @@ window.expromptum = window.xP = (function(undefined){
 			}
 		},
 
-		selectors_class: 'selectors',
 		select_class: 'select',
 
 		open: function(){
