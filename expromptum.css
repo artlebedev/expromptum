@@ -2,7 +2,8 @@
 	--background: #fff;
 	--color: #000;
 	--input_color: var(--color);
-	--input_border: 1px solid #999;
+	--input_border_width: 1px;
+	--input_border: var(--input_border_width) solid #999;
 	--input_hover_border_color: #f96;
 	--input_background: var(--background);
 	--input_focus_border_color: #f96;
@@ -50,23 +51,56 @@
 	.selectus .select .selected,
 	.selectus .selectors,
 	.date_picker_control .calendar {
-		border: 1px solid #000;
+		-ms-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		border: 1px solid #999;
 		border: var(--input_border);
+		padding: 2px;
 		padding: var(--input_padding_vertical) var(--input_padding_horizontal);
-		min-height: 1.6em;
-		line-height: 1.2;
 		margin: var(--input_margin);
+		line-height: 1.33;
 		background: #fff;
 		background: var(--input_background);
-		box-sizing: border-box;
 		color: #000;
-		color: var(--input_color)
+		color: var(--input_color);
+		font-family: inherit;
+		font-size: 100%;
+	}
+	input,
+	select,
+	input[type=submit],
+	input[type=button],
+	button,
+	.button,
+	.control_button {
+		height: calc(
+			1.33em
+			+ 2 * (var(--input_border_width) + var(--input_padding_vertical))
+		);
+	}
+	.selectus .select {
+		min-height: calc(
+			1.33em
+			+ 2 * (var(--input_border_width) + var(--input_padding_vertical))
+		);
+	}
+	select {
+		max-width: 100%;
+	}
+	input[type=submit],
+	input[type=button],
+	button,
+	.button,
+	.control_button {
+		min-width: calc(
+			1.33em
+			+ 2 * (var(--input_border_width) + var(--input_padding_vertical))
+		);
 	}
 	input[type=file] {
 		background: var(--background);
-	}
-	textarea {
-		font-size: 120%;
 	}
 
 	textarea:hover,
@@ -97,12 +131,6 @@
 		border: none ! important;
 		min-height: auto ! important;
 		vertical-align: middle;
-	}
-
-	select, html .disabled select, html select.disabled {
-		padding-top: calc(var(--input_padding_vertical) - 1px);
-		padding-bottom: calc(var(--input_padding_vertical) - 1px);
-		max-width: 100%;
 	}
 
 	input[type=submit], html .disabled input[type=submit], html input[type=submit].disabled,
@@ -237,7 +265,8 @@
 	}
 	.datetime .hours, .datetime .minutes {
 		width: 2em;
-		margin: 0 2px;
+		margin-right: 2px;
+		margin-left: 2px;
 	}
 	.datetime .hours {
 		text-align: right;
