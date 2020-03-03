@@ -257,7 +257,6 @@
 /* Selectus */
 	.selectus {
 		position: relative;
-		display: inline-block;
 		vertical-align: top;
 	}
 	.selectus .field_control {
@@ -283,6 +282,7 @@
 		height: 1px;
 		width: 1px;
 		display: inline-block;
+		margin-left: -1px;
 	}
 	.selectus .select .selected {
 		display: inline-block;
