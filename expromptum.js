@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2019-07-12
+// Updated: 2020-11-19
 
 
 
@@ -2062,10 +2062,14 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this;
 			// TODO: Добавить поддержку append
 
-			this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
+			this.$select = this.$container.find('.' + this.select_class);
+
+			if(!this.$select[0]){
+				this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
+			}
 
 			this.select_html = new xP.controls.html({
-					$element: this.$select,
+					$element: $('<ins/>').appendTo(this.$select),
 					type: 'html'
 				});
 
@@ -2084,7 +2088,13 @@ window.expromptum = window.xP = (function(undefined){
 						|| ev.keyCode === 40
 					)
 				){
-					if(that.$selectors.hasClass('hidden')){
+					if(
+						that.$selectors.hasClass('hidden')
+						&& !(
+							ev.target
+							&& ev.target.className == 'unselect'
+						)
+					){
 						that.open();
 
 						return false;
@@ -2154,9 +2164,14 @@ window.expromptum = window.xP = (function(undefined){
 
 							that.options.first()._.group.siblings.each(function(){
 								if(this.selected && !this.disabled){
+									var id = this.$element.attr('id');
+									if(!id){
+										id = 'xP' + (Math.random() + '').substr(2, 8);
+										this.$element.attr('id', id);
+									}
 									html += '<ins class="selected">'
 										+ this.label_html
-										+ '</ins>';
+										+ '<label for="' + id + '" class="unselect"></label></ins>';
 								}
 							});
 							return html;
@@ -2180,6 +2195,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.$selectors.removeClass('hidden');
 
+			xP.offset_by_viewport(this.$selectors, this.$element)
+
 			var first_option = this.options.first();
 
 			if(first_option){
@@ -2189,8 +2206,6 @@ window.expromptum = window.xP = (function(undefined){
 					first_option.$element.focus();
 				}
 			}
-
-			xP.offset_by_viewport(this.$selectors, this.$element)
 			return this;
 		},
 
