@@ -286,15 +286,23 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.offset_by_viewport =  function($element, $relative){
-		$element.css({'top':'100%'});
 
-		var position = $element.offset(),
-			element_height = $element.height(),
-			window_bottom_pos = window.scrollY + $(window).height(),
-			element_bottom_pos = position.top + element_height;
+		$element.removeClass('atop').css({'top': '100%', 'left': 0, 'bottom': 'auto', 'right': 'auto'});
 
-		if(window_bottom_pos < element_bottom_pos){
-			$element.css({'top': -1 * ($element.outerHeight(true)) + 'px' });
+		var offset = $element.offset();
+
+		if(
+			$(window).scrollTop() + $(window).height() < offset.top + $element.outerHeight()
+			&& offset.top - $element.outerHeight() >= 0
+		){
+			$element.css({'top': 'auto', 'bottom': '100%' }).addClass('atop');
+		}
+		if($(window).scrollLeft() + $(window).width() < offset.left + $element.outerWidth()){
+			var left = $element.outerWidth(true) - $relative.width();
+			if(offset.left - left < 0){
+				left = offset.left;
+			}
+			$element.css({'left': -1 * left + 'px' });
 		}
 	};
 
