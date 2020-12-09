@@ -2174,6 +2174,8 @@ window.expromptum = window.xP = (function(undefined){
 										+ '<label for="' + id + '" class="unselect"></label></ins>';
 								}
 							});
+							that.$container.toggleClass('unselected', html == '');
+
 							xP.after(function(){
 								xP.offset_by_viewport(that.$selectors, that.$element);
 							});
@@ -2196,6 +2198,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
+			this.$container.addClass('focus');
 			this.$selectors.removeClass('hidden');
 
 			xP.offset_by_viewport(this.$selectors, this.$element);
@@ -2215,6 +2218,7 @@ window.expromptum = window.xP = (function(undefined){
 		close: function(){
 			xP.controls.opened = null;
 
+			this.$container.removeClass('focus');
 			this.$selectors.addClass('hidden');
 
 			this.find_text = '';
