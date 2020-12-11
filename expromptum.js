@@ -468,7 +468,15 @@ window.expromptum = window.xP = (function(undefined){
 				tomorrow: 'Завтра',
 
 				now: 'Сейчас',
-				close_popup:  'закрыть'
+				close_popup:  'закрыть',
+
+				file_size: [
+					'Б',
+					'КБ',
+					'МБ',
+					'ГБ',
+					'ТБ'
+				]
 			},
 			"en-GB" : {
 				abbr: 'en',
@@ -511,7 +519,15 @@ window.expromptum = window.xP = (function(undefined){
 				tomorrow: 'Tomorrow',
 
 				now: 'Now',
-				close_popup:  'close'
+				close_popup:  'close',
+
+				file_size: [
+					'B',
+					'KB',
+					'MB',
+					'GB',
+					'TB'
+				]
 			}
 		},
 
@@ -1773,7 +1789,48 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.controls.register({name: 'file', base: '_field', prototype: {
-		element_selector: '[type=file]'
+		element_selector: '[type=file]',
+
+		init: function(params){
+			xP.controls.file.base.init.apply(this, arguments);
+
+			this.init_locale(params);
+
+			this.$selected = this.$container.find('.' + this.selected_class);
+
+			if(!this.$selected[0]){
+				this.$selected = $('<ins class="' + this.selected_class + '" tabindex="0"></ins>').insertAfter(this.$element);
+			}
+
+			var that = this;
+
+			this.$element.change(function(){
+				var html = '';
+
+				if(this.files){
+					for(var i = 0, ii, size; i < this.files.length; i++){
+						ii = 0;
+						size = this.files[i].size;
+						while(size > 1023){
+							size = size / 1024;
+							ii++;
+						}
+						console.log(size)
+						html += '<ins class="file '
+							+ this.files[i].type.replace('/', ' ')
+							+ '"><ins class="name">'
+							+ this.files[i].name
+							+ '</ins> <ins class="size">'
+							+ Math.round(size)
+							+ ' ' + that.locale.file_size[ii]
+							+ '</ins></ins>';
+					}
+				}
+				that.$selected.html(html);
+			});
+		},
+
+		selected_class: 'selected'
 	}});
 
 

@@ -441,3 +441,22 @@
 		cursor: default;
 	}
 
+/* Files */
+
+	input[type=file] ~ .selected {
+		display: block;
+		text-decoration: none;
+	}
+	input[type=file] ~ .selected ins {
+		text-decoration: none;
+	}
+	input[type=file] ~ .selected .file {
+		display: block;
+		margin: 0 0 .5em;
+	}
+	input[type=file] ~ .selected .file .name {
+		margin-right: .4em;
+	}
+	input[type=file] ~ .selected .file .size {
+		opacity: .5;
+	}
