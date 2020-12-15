@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2020-12-11
+// Updated: 2020-12-15
 
 
 
@@ -292,8 +292,9 @@ window.expromptum = window.xP = (function(undefined){
 		var offset = $element.offset();
 
 		if(
-			$(window).scrollTop() + $(window).height() < offset.top + $element.outerHeight()
-			&& offset.top - $element.outerHeight() >= 0
+			$(window).scrollTop() < offset.top - $element.outerHeight()
+			&& $(window).height() > $element.outerHeight()
+			&& offset.top - $element.outerHeight() > 50
 		){
 			$element.css({'top': 'auto', 'bottom': '100%' }).addClass('atop');
 		}
