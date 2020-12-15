@@ -292,7 +292,7 @@ window.expromptum = window.xP = (function(undefined){
 		var offset = $element.offset();
 
 		if(
-			$(window).scrollTop() < offset.top - $element.outerHeight()
+			$(window).scrollTop() + $(window).height() < offset.top + $element.outerHeight()
 			&& $(window).height() > $element.outerHeight()
 			&& offset.top - $element.outerHeight() > 50
 		){
