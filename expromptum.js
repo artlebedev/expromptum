@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2021-01-15
+// Updated: 2021-01-26
 
 
 
@@ -411,18 +411,20 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.init =  {
+		count: null,
+
 		after: function(handler){
 			var that = this;
 			this.interval = setInterval(function(){
 				if(
 					that.count === 0
 					|| (
-						this.last_added
-						&& new Date() - this.last_added > 30000
+						that.last_added
+						&& new Date() - that.last_added > 30000
 					)
 				){
 					clearInterval(that.interval);
-					that.count = this.last_added = null;
+					that.count = that.last_added = null;
 					handler();
 				}
 			}, 300);
