@@ -1,274 +1,299 @@
 :root {
-	--background: #fff;
-	--color: #000;
-	--input_color: var(--color);
-	--input_border_width: 1px;
-	--input_border: var(--input_border_width) solid #999;
-	--input_hover_border_color: #f96;
-	--input_background: var(--background);
-	--input_focus_border_color: #f96;
-	--input_margin: 0 4px 2px 0;
-	--input_padding_vertical: 3px;
-	--input_padding_horizontal: 3px;
 	--button_background: #ddd;
-	--button_color: var(--color);
-	--button_padding: 3px 8px;
+	--button_border: var(--button_border_width) solid var(--button_border_color);
+	--button_border_color: var(--button_background);
+	--button_border_radius: var(--input_border_radius);
+	--button_border_width: var(--input_border_width);
+	--button_box_shadow: none;
+	--button_color: #000;
+	--button_font_family: var(--input_font_family);
+	--button_font_size: var(--input_font_size);
+	--button_line_height: var(--input_line_height);
+	--button_margin: 0 4px 2px 0;
+	--button_outline: var(--input_outline);
+	--button_padding: var(--button_padding_v) var(--button_padding_h);
+	--button_padding_h: 1em;
+	--button_padding_v: var(--input_padding_v);
+	--button_transition: none;
+
+	--button_focus_background: #f96;
+	--button_focus_border: var(--button_focus_border_width) solid var(--button_focus_border_color);
+	--button_focus_border_color: var(--button_focus_background);
+	--button_focus_border_radius: var(--button_border_radius);
+	--button_focus_border_width: var(--button_border_width);
+	--button_focus_box_shadow: var(--button_box_shadow);
+	--button_focus_color: var(--button_color);
+	--button_focus_font_family: var(--button_font_family);
+	--button_focus_font_size: var(--button_font_size);
+	--button_focus_line_height: var(--button_line_height);
+	--button_focus_margin: var(--button_margin);
+	--button_focus_outline: var(--button_outline);
+	--button_focus_padding: var(--button_padding);
+	--button_focus_transition: none;
+
 	--button_hover_background: #fda;
-	--button_hover_color: var(--color);
-	--button_selected_background: #fc9;
-	--button_selected_color: var(--color);
-	--tab_selected_background: #ddd;
-	--tab_selected_color: var(--color);
-	--frame_border: 1px solid #ccc;
-	--frame_padding: 10px;
+	--button_hover_border: var(--button_hover_border_width) solid var(--button_hover_border_color);
+	--button_hover_border_color: var(--button_hover_background);
+	--button_hover_border_radius: var(--button_border_radius);
+	--button_hover_border_width: var(--button_border_width);
+	--button_hover_box_shadow: var(--button_box_shadow);
+	--button_hover_color: var(--button_color);
+	--button_hover_font_family: var(--button_font_family);
+	--button_hover_font_size: var(--button_font_size);
+	--button_hover_line_height: var(--button_line_height);
+	--button_hover_margin: var(--button_margin);
+	--button_hover_outline: var(--button_outline);
+	--button_hover_padding: var(--button_padding);
+	--button_hover_transition: none;
+
+	--input_background: #fff;
+	--input_border: var(--input_border_width) solid var(--input_border_color);
+	--input_border_color: #999;
+	--input_border_radius: 0;
+	--input_border_width: 1px;
+	--input_box_shadow: none;
+	--input_color: #000;
+	--input_font_family: sans-serif;
+	--input_font_size: 100%;
+	--input_line_height: 1.7;
+	--input_margin: 0 4px 2px 0;
+	--input_outline: none;
+	--input_padding: var(--input_padding_v) var(--input_padding_h);
+	--input_padding_h: 3px;
+	--input_padding_v: 3px;
+	--input_transition: none;
+
+	--input_focus_background: var(--input_background);
+	--input_focus_border: var(--input_focus_border_width) solid var(--input_focus_border_color);
+	--input_focus_border_color: #f96;
+	--input_focus_border_radius: var(--input_border_radius);
+	--input_focus_border_width: var(--input_border_width);
+	--input_focus_box_shadow: var(--input_box_shadow);
+	--input_focus_color: var(--input_color);
+	--input_focus_font_family: var(--input_font_family);
+	--input_focus_font_size: var(--input_font_size);
+	--input_focus_line_height: var(--input_line_height);
+	--input_focus_margin: var(--input_margin);
+	--input_focus_outline: var(--input_outline);
+	--input_focus_padding: var(--input_padding);
+	--input_focus_transition: none;
+
+	--input_hover_background: var(--input_background);
+	--input_hover_border: var(--input_hover_border_width) solid var(--input_hover_border_color);
+	--input_hover_border_color: #000;
+	--input_hover_border_radius: var(--input_border_radius);
+	--input_hover_border_width: var(--input_border_width);
+	--input_hover_box_shadow: var(--input_box_shadow);
+	--input_hover_color: var(--input_color);
+	--input_hover_font_family: var(--input_font_family);
+	--input_hover_font_size: var(--input_font_size);
+	--input_hover_line_height: var(--input_line_height);
+	--input_hover_margin: var(--input_margin);
+	--input_hover_outline: var(--input_outline);
+	--input_hover_padding: var(--input_padding);
+	--input_hover_transition: none;
+
+	--suggest_background: #fff;
+	--suggest_border: 1px solid #ccc;
+	--suggest_color: #000;
+	--suggest_selected_background: #fc9;
+	--suggest_selected_color: #000;
 }
 
 
 /* Common */
-	input[type=radio], input[type=checkbox] {
+
+	html .selectus .select,
+	html .button,
+	html .control_button,
+	html button,
+	html textarea,
+	html select,
+	html .input,
+	html input {
+		box-sizing: border-box;
+		display: inline-block;
+		min-height: calc(
+			var(--button_line_height) * 1em
+			+ 2 * (var(--input_border_width) + var(--input_padding_v))
+		);
 		vertical-align: middle;
 	}
+
+
+/* Inputs */
+
+	html .selectus .select:hover,
+	html textarea:hover,
+	html select:hover,
+	html .input:hover,
+	html input:hover {
+		background: var(--input_hover_background);
+		border: var(--input_hover_border);
+		border-radius: var(--input_hover_border_radius);
+		box-shadow: var(--input_hover_box_shadow);
+		color: var(--input_hover_color);
+		font-family: var(--input_hover_font_family);
+		font-size: var(--input_hover_font_size);
+		line-height: var(--input_hover_line_height);
+		margin: var(--input_hover_margin);
+		outline: var(--input_hover_outline);
+		padding: var(--input_hover_padding);
+		transition: var(--input_hover_transition);
+	}
+
+	html .selectus .select:focus,
+	html textarea:focus,
+	html select:focus,
+	html .input:focus,
+	html input:focus {
+		background: var(--input_focus_background);
+		border: var(--input_focus_border);
+		border-radius: var(--input_focus_border_radius);
+		box-shadow: var(--input_focus_box_shadow);
+		color: var(--input_focus_color);
+		font-family: var(--input_focus_font_family);
+		font-size: var(--input_focus_font_size);
+		line-height: var(--input_focus_line_height);
+		margin: var(--input_focus_margin);
+		outline: var(--input_focus_outline);
+		padding: var(--input_focus_padding);
+		transition: var(--input_focus_transition);
+	}
+
+	html .selectus .select, html .disabled .selectus .select, html .disabled.selectus .select,
+	html textarea, html .disabled textarea, html textarea.disabled,
+	html select, html .disabled select, html select.disabled,
+	html .input, html .disabled .input, html .disabled.input,
+	html .disabled input, html input.disabled,
+	html input {
+		background: var(--input_background);
+		border: 1px solid;
+		border: var(--input_border);
+		border-radius: var(--input_border_radius);
+		box-shadow: var(--input_box_shadow);
+		color: var(--input_color);
+		font-family: var(--input_font_family);
+		font-size: var(--input_font_size);
+		line-height: var(--input_line_height);
+		margin: var(--input_margin);
+		padding: 4px;
+		padding: var(--input_padding);
+		outline: var(--input_outline);
+		transition: var(--input_transition);
+	}
+
+
+/* Buttons */
 
 	html input[type=submit]:hover,
 	html input[type=button]:hover,
-	html button:hover,
-	html .button:hover,
 	html .control_button:hover,
-	html .selectus .selectors label:hover,
-	html .date_picker_control .d:hover {
+	html .button:hover,
+	html button:hover {
 		background: var(--button_hover_background);
-		border-color: var(--button_hover_background);
+		border: var(--button_hover_border);
+		border-radius: var(--button_hover_border_radius);
+		box-shadow: var(--button_hover_box_shadow);
 		color: var(--button_hover_color);
+		font-family: var(--button_hover_font_family);
+		font-size: var(--button_hover_font_size);
+		line-height: var(--button_hover_line_height);
+		margin: var(--button_hover_margin);
+		outline: var(--button_hover_outline);
+		padding: var(--button_hover_padding);
+		transition: var(--button_hover_transition);
 	}
 
-	textarea, html .disabled textarea, html textarea.disabled,
-	input, html .disabled input, html input.disabled,
-	select, html .disabled select, html select.disabled,
-	button,
-	.button,
-	.control_button,
-	.selectus .select, html .disabled .selectus .select, html .selectus .select.disabled,
-	.selectus .select .selected,
-	.selectus .selectors,
-	.date_picker_control .calendar {
-		-ms-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-		border: 1px solid #999;
-		border: var(--input_border);
-		padding: 2px;
-		padding: var(--input_padding_vertical) var(--input_padding_horizontal);
-		margin: var(--input_margin);
-		line-height: 1.33;
-		background: #fff;
-		background: var(--input_background);
-		color: #000;
-		color: var(--input_color);
-		font-family: inherit;
-		font-size: 100%;
-	}
-	input,
-	select,
-	input[type=submit],
-	input[type=button],
-	button,
-	.button,
-	.control_button {
-		height: calc(
-			1.33em
-			+ 2 * (var(--input_border_width) + var(--input_padding_vertical))
-		);
-	}
-	.selectus .select {
-		min-height: calc(
-			1.33em
-			+ 2 * (var(--input_border_width) + var(--input_padding_vertical))
-		);
-	}
-	select {
-		max-width: 100%;
-	}
-	input[type=submit],
-	input[type=button],
-	button,
-	.button,
-	.control_button {
-		min-width: calc(
-			1.33em
-			+ 2 * (var(--input_border_width) + var(--input_padding_vertical))
-		);
-	}
-	input[type=file] {
-		background: var(--background);
+	html input[type=submit]:focus,
+	html input[type=button]:focus,
+	html .control_button:focus,
+	html .button:focus,
+	html button:focus {
+		background: var(--button_focus_background);
+		border: var(--button_focus_border);
+		border-radius: var(--button_focus_border_radius);
+		box-shadow: var(--button_focus_box_shadow);
+		color: var(--button_focus_color);
+		font-family: var(--button_focus_font_family);
+		font-size: var(--button_focus_font_size);
+		line-height: var(--button_focus_line_height);
+		margin: var(--button_focus_margin);
+		outline: var(--button_focus_outline);
+		padding: var(--button_focus_padding);
+		transition: var(--button_focus_transition);
 	}
 
-	textarea:hover,
-	input:hover,
-	select:hover,
-	.selectus .select:hover {
-		border-color: var(--input_hover_border_color);
-	}
-
-	textarea:focus,
-	input:focus,
-	select:focus,
-	button:focus,
-	.button:focus,
-	.control_button:focus {
-		border-color: var(--input_focus_border_color);
-		box-shadow: none;
-		outline: 0;
-	}
-
-	input[type=file] {
-		border: none ! important;
-	}
-
-	input[type=radio],
-	input[type=checkbox],
-	input[type=file] {
-		border: none ! important;
-		min-height: auto ! important;
-		vertical-align: middle;
-	}
-
-	input[type=submit], html .disabled input[type=submit], html input[type=submit].disabled,
-	input[type=button], html .disabled input[type=button], html input[type=button].disabled,
-	button, html .disabled button, html button.disabled,
-	.button, html .disabled .button, html .button.disabled,
-	.button:link,
-	.button:visited,
-	.control_button, html .disabled .control_button, html .control_button.disabled {
-		background: #ccc;
+	html input[type=submit], html .disabled input[type=submit], html input[type=submit].disabled,
+	html input[type=button], html .disabled input[type=button], html input[type=button].disabled,
+	html .control_button, html .disabled .control_button, html .control_button.disabled,
+	html .button, html .disabled .button, html .button.disabled,
+	html .disabled button, html button.disabled,
+	html button {
 		background: var(--button_background);
-		border-color: #ccc;
-		border-color: var(--button_background);
-		color: #000;
+		border: var(--button_border);
+		border-radius: var(--button_border_radius);
+		box-shadow: var(--button_box_shadow);
 		color: var(--button_color);
-		cursor: pointer;
-		text-align: center;
-		display: inline-block;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
+		font-family: var(--button_font_family);
+		font-size: var(--button_font_size);
+		line-height: var(--button_line_height);
+		margin: var(--button_margin);
+		min-width: calc(
+			var(--button_line_height) * 1em
+			+ 2 * (var(--button_border_width) + var(--button_padding_v))
+		);
 		padding: var(--button_padding);
-		margin: var(--input_margin);
-		zoom: 1;
+		outline: var(--button_outline);
+		text-align: center;
+		transition: var(--button_transition);
 	}
 
-	textarea, input[type=text] {
-		width: 100%;
-	}
 
-	[readonly],
-	[readonly]:focus {
-		background: inherit;
-	}
+/* Control buttons */
 
-/* Layout */
-	.fields.unselected,
-	.sheet.unselected {
-		display: none;
+	html .control_button:focus,
+	html .control_button:hover,
+	html .control_button {
+		padding-left: calc(var(--button_padding_h) / 2);
+		padding-right: calc(var(--button_padding_h) / 2);
 	}
-	.fields_em {
-		padding: 0;
-		margin: 0 0 2em;
-	}
-	.fields_label {
-		margin: 0 0 1em;
-		padding: 5px 10px;
-		background: #eee;
-	}
-
-	.field {
-		padding: 0;
-		margin: 0 0 20px;
-	}
-	.field_label {
-		margin: 0 0 5px;
-	}
-	.field_control {
-		margin: 0;
-		padding: 0;
-	}
-
-	.option label {
-		margin-right: 1em;
-	}
-
-/* Dependencies */
-	.invalid > .fields_label, .fields_label.invalid,
-	.field.invalid input, .field.invalid textarea, .field.invalid select,
-	input.invalid, textarea.invalid, select.invalid {
-		color: red;
-	}
-	.valid > .fields_label, .fields_label.valid,
-	.field.valid input, .field.valid textarea, .field.valid select,
-	input.valid, textarea.valid, select.valid {
-		color: green;
-	}
-	.required > .fields_label, .fields_label.required,
-	.field.required label, label.required {
-		font-weight: bold;
-	}
-	html .disabled {
-		opacity: 0.45;
-		cursor: default ! important;
-	}
-	html .disabled .disabled {
-		opacity: 1;
-	}
-
-/* Control button */
-	.control_button_dropdown:before {
+	html .control_button_dropdown:before {
 		content: '\25bc';
 	}
-	.control_button_inc:before {
+	html .control_button_inc:before {
 		content: '+';
 	}
-	.control_button_dec:before {
+	html .control_button_dec:before {
 		content: '\2212';
 	}
 
-/* Tabs sheets*/
-	.tab {
-		display: inline-block;
-		padding: 2px 10px;
-		margin: 0 0 10px;
-		cursor: pointer;
-	}
-	.selected.tab {
-		cursor: default;
-		background: #ccc;
-		background: var(--tab_selected_background);
-		color: var(--tab_selected_color);
-	}
-
-	.sheet {
-		margin: 0 0 30px;
-		padding: var(--frame_padding);
-		border: var(--frame_border);
-	}
 
 /* Password */
-	.control_button_password:before {
+
+	html .control_button_password:before {
 		content: '\a9';
 	}
-	.control_button_password_view:before {
+	html .control_button_password_view:before {
 		opacity: 0.5;
 	}
 
+
 /* Datetime */
+
 	.date_control {
 		white-space: nowrap;
 		text-decoration: none;
 	}
-	.datetime .hours, .datetime .minutes {
-		width: 2em;
+	.date_control .year {
+		width: calc(var(--input_padding_h) * 2 + var(--input_border_width) * 2 + 2.5em);
+	}
+	.date_control .day, .date_control .hours, .date_control .minutes {
+		width: calc(var(--input_padding_h) * 2 + var(--input_border_width) * 2 + 1.5em);
 		margin-right: 2px;
 		margin-left: 2px;
 	}
-	.datetime .hours {
+	.date_control .day, .date_control .hours {
 		text-align: right;
 	}
 	.time_spliter:before {
@@ -278,20 +303,22 @@
 		display: none;
 	}
 
+
 /* Number */
 	.number .field_control input {
 		width: 10em;
 	}
 
+
 /* Selectus */
 	.selectus {
 		position: relative;
-		vertical-align: top;
+		display: inline-block;
 	}
 	.selectus .field_control {
 		position: relative;
 	}
-	.selectus .select {
+	html .selectus .select {
 		display: inline-block;
 		text-decoration: none;
 		min-width: 8em;
@@ -299,12 +326,12 @@
 	}
 	.selectus .select:after {
 		content: '\25bc';
-		line-height: inherit;
 		font-size: 9px;
 		position: absolute;
-		right: 5px;
+		right: var(--input_padding_h);
 		bottom: 50%;
-		margin-bottom: -5px;
+		line-height: 1;
+		margin-bottom: -4px;
 	}
 	.selectus .select:before {
 		content: '';
@@ -321,19 +348,28 @@
 		border: none;
 		padding: 0;
 	}
+	html .selectus.checkbox .select {
+		padding: calc(var(--input_padding_v) / 2) calc(var(--input_padding_h) / 2) 0;
+	}
+	.selectus.checkbox .select .selected {
+		padding: calc(var(--input_padding_v) / 2 - var(--input_border_width)) 1em;
+		border: var(--input_border_width) solid #ccc;
+		margin: 0 1em calc(var(--input_padding_v) / 2) 0;
+	}
 	.selectus .selectors.hidden {
 		display: block;
 		max-height: 0;
 		margin-left: -10000px;
-		/*transition: max-height 0.3s ease, margin-left 0s 0.3s;*/
 	}
 	.selectus .selectors:not(.hidden) {
 		height: auto;
 		max-height: 10em;
 		margin-left: 0;
-		/*transition: max-height 0.3s ease, margin-left 0s;*/
 	}
 	.selectus .selectors {
+		background: var(--suggest_background);
+		border: var(--suggest_border);
+		color: var(--suggest_color);
 		top: 100%;
 		left: 0;
 		position: absolute;
@@ -341,7 +377,6 @@
 		padding: 0;
 		overflow: auto;
 		overflow-y: scroll;
-		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 		z-index: 888;
 	}
@@ -362,10 +397,10 @@
 		border: 1px solid var(--input_focus_border_color);
 	}
 	.selectus .selectors .selected {
-		background: #ccc;
-		background: var(--button_selected_background);
-		color: var(--button_selected_color);
+		background: var(--suggest_selected_background);
+		color: var(--suggest_selected_color);
 	}
+
 
 /* Date Picker */
 
@@ -373,31 +408,36 @@
 		display: inline-block;
 		position: relative;
 	}
+	.date_picker_control input {
+		width: calc(var(--input_padding_h) * 2 + var(--input_border_width) * 2 + 8em);
+	}
 	.date_picker_control.focused {
 		z-index: 1000;
 	}
 	.date_picker_control .calendar {
+		background: var(--suggest_background);
+		border: var(--suggest_border);
+		color: var(--suggest_color);
 		position: absolute;
 	}
 	.date_picker_control .calendar .close {
+		cursor: pointer;
 		position: absolute;
 		right: 5px;
-		cursor: pointer;
 	}
 	.date_picker_control .calendar .days .prev,
 	.date_picker_control .calendar .days .next {
 		opacity: 0.6;
 	}
 	.date_picker_control .selected {
-		background: #ccc;
-		background: var(--button_selected_background);
-		color: var(--button_selected_color);
+		background: var(--suggest_selected_background);
+		color: var(--suggest_selected_color);
 	}
 	.date_picker_control .calendar .days .d,
 	.date_picker_control .calendar .days .dn {
+		cursor: pointer;
 		padding: 4px 8px;
 		text-align: right;
-		cursor: pointer;
 	}
 	.date_picker_control .calendar .days .dn {
 		cursor: default;
@@ -407,22 +447,22 @@
 		content: '';
 	}
 	.date_picker_control .calendar .days .invalid {
+		cursor: default;
 		background: #ccc;
 		opacity: 0.45;
-		cursor: default;
 	}
 	.date_picker_control .calendar .control_button_now {
-		display: block;
 		clear: both;
+		display: block;
 		margin: 4px 0 0;
 	}
 	.date_picker_control .calendar .year .title {
 		margin-right: 4px;
 	}
 	.date_picker_control .calendar .month .title {
+		display: inline-block;
 		margin-right: 4px;
 		min-width: 5em;
-		display: inline-block;
 		text-align: center;
 	}
 	.date_picker_control .calendar .time {
@@ -441,9 +481,10 @@
 		cursor: default;
 	}
 
+
 /* Files */
 
-	input[type=file] ~ .selected {
+	.field input[type=file] ~ .selected {
 		display: block;
 		text-decoration: none;
 	}
@@ -459,4 +500,29 @@
 	}
 	input[type=file] ~ .selected .file .size {
 		opacity: .5;
+	}
+
+
+/* Dependencies */
+
+	.invalid > .fields_label, .fields_label.invalid,
+	.field.invalid input, .field.invalid textarea, .field.invalid select,
+	input.invalid, textarea.invalid, select.invalid {
+		color: red;
+	}
+	.valid > .fields_label, .fields_label.valid,
+	.field.valid input, .field.valid textarea, .field.valid select,
+	input.valid, textarea.valid, select.valid {
+		color: green;
+	}
+	.required > .fields_label, .fields_label.required,
+	.field.required label, label.required {
+		font-weight: bold;
+	}
+	.disabled {
+		cursor: default ! important;
+		opacity: 0.45;
+	}
+	.disabled .disabled {
+		opacity: 1;
 	}
