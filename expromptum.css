@@ -252,6 +252,7 @@
 
 /* Control buttons */
 
+	html .disabled .control_button, html .control_button.disabled,
 	html .control_button:focus,
 	html .control_button:hover,
 	html .control_button {
