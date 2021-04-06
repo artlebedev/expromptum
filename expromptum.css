@@ -247,6 +247,7 @@
 		outline: var(--button_outline);
 		text-align: center;
 		transition: var(--button_transition);
+		cursor: pointer;
 	}
 
 
