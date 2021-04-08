@@ -14,7 +14,7 @@
 	--button_padding: var(--button_padding_v) var(--button_padding_h);
 	--button_padding_h: 1em;
 	--button_padding_v: var(--input_padding_v);
-	--button_transition: none;
+	--button_transition: var(--input_transition);
 
 	--button_focus_background: #f96;
 	--button_focus_border: var(--button_focus_border_width) solid var(--button_focus_border_color);
@@ -29,7 +29,7 @@
 	--button_focus_margin: var(--button_margin);
 	--button_focus_outline: var(--button_outline);
 	--button_focus_padding: var(--button_padding);
-	--button_focus_transition: none;
+	--button_focus_transition: var(--button_transition);
 
 	--button_hover_background: #fda;
 	--button_hover_border: var(--button_hover_border_width) solid var(--button_hover_border_color);
@@ -44,7 +44,7 @@
 	--button_hover_margin: var(--button_margin);
 	--button_hover_outline: var(--button_outline);
 	--button_hover_padding: var(--button_padding);
-	--button_hover_transition: none;
+	--button_hover_transition: var(--button_transition);
 
 	--input_background: #fff;
 	--input_border: var(--input_border_width) solid var(--input_border_color);
@@ -61,7 +61,7 @@
 	--input_padding: var(--input_padding_v) var(--input_padding_h);
 	--input_padding_h: 3px;
 	--input_padding_v: 3px;
-	--input_transition: none;
+	--input_transition: 0.2s ease;
 
 	--input_focus_background: var(--input_background);
 	--input_focus_border: var(--input_focus_border_width) solid var(--input_focus_border_color);
@@ -76,7 +76,7 @@
 	--input_focus_margin: var(--input_margin);
 	--input_focus_outline: var(--input_outline);
 	--input_focus_padding: var(--input_padding);
-	--input_focus_transition: none;
+	--input_focus_transition: var(--input_transition);
 
 	--input_hover_background: var(--input_background);
 	--input_hover_border: var(--input_hover_border_width) solid var(--input_hover_border_color);
@@ -91,7 +91,7 @@
 	--input_hover_margin: var(--input_margin);
 	--input_hover_outline: var(--input_outline);
 	--input_hover_padding: var(--input_padding);
-	--input_hover_transition: none;
+	--input_hover_transition: var(--input_transition);
 
 	--suggest_background: #fff;
 	--suggest_border: 1px solid #ccc;
@@ -181,6 +181,16 @@
 		padding: var(--input_padding);
 		outline: var(--input_outline);
 		transition: var(--input_transition);
+	}
+
+
+/* Selectors */
+
+	input[type=checkbox] + label,
+	input[type=radio] + label,
+	.option label,
+	select {
+		cursor: pointer;
 	}
 
 
@@ -325,6 +335,7 @@
 		text-decoration: none;
 		min-width: 8em;
 		position: relative;
+		cursor: pointer;
 	}
 	.selectus .select:after {
 		content: '\25bc';
@@ -349,14 +360,29 @@
 		min-height: auto;
 		border: none;
 		padding: 0;
+		position: relative;
 	}
 	html .selectus.checkbox .select {
 		padding: calc(var(--input_padding_v) / 2) calc(var(--input_padding_h) / 2) 0;
 	}
 	.selectus.checkbox .select .selected {
 		padding: calc(var(--input_padding_v) / 2 - var(--input_border_width)) 1em;
+		padding-right: 2em;
 		border: var(--input_border_width) solid #ccc;
 		margin: 0 1em calc(var(--input_padding_v) / 2) 0;
+	}
+	.selectus.checkbox .select .selected .unselect:before {
+		content: '×';
+		font-size: 145%;
+		position: absolute;
+		top: -0.25em;
+		right: 0.25em;
+		cursor: pointer;
+		opacity: 0.4;
+		transition: var(--button_transition);
+	}
+	.selectus.checkbox .select .selected .unselect:hover:before {
+		opacity: 1;
 	}
 	.selectus .selectors.hidden {
 		display: block;
@@ -521,8 +547,11 @@
 	.field.required label, label.required {
 		font-weight: bold;
 	}
+	.disabled *,
 	.disabled {
 		cursor: default ! important;
+	}
+	.disabled {
 		opacity: 0.45;
 	}
 	.disabled .disabled {
