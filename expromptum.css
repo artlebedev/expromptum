@@ -192,6 +192,9 @@
 	select {
 		cursor: pointer;
 	}
+	select {
+		max-width: 100%;
+	}
 
 
 /* Buttons */
