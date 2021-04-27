@@ -50,7 +50,7 @@
 	--input_border: var(--input_border_width) solid var(--input_border_color);
 	--input_border_color: #999;
 	--input_border_radius: 0;
-	--input_border_width: 1px;
+	--input_border_width: 1.02px;
 	--input_box_shadow: none;
 	--input_color: #000;
 	--input_font_family: sans-serif;
