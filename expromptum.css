@@ -447,6 +447,7 @@
 	}
 	.date_picker_control .calendar {
 		background: var(--suggest_background);
+		padding: .5em;
 		border: var(--suggest_border);
 		color: var(--suggest_color);
 		position: absolute;
@@ -467,7 +468,7 @@
 	.date_picker_control .calendar .days .d,
 	.date_picker_control .calendar .days .dn {
 		cursor: pointer;
-		padding: 4px 8px;
+		padding: var(--input_padding);
 		text-align: right;
 	}
 	.date_picker_control .calendar .days .dn {
