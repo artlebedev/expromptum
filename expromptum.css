@@ -1,4 +1,4 @@
-:root {
+body {
 	--button_background: #ddd;
 	--button_border: var(--button_border_width) solid var(--button_border_color);
 	--button_border_color: var(--button_background);
@@ -93,11 +93,11 @@
 	--input_hover_padding: var(--input_padding);
 	--input_hover_transition: var(--input_transition);
 
-	--suggest_background: #fff;
-	--suggest_border: 1px solid #ccc;
-	--suggest_color: #000;
-	--suggest_selected_background: #fc9;
-	--suggest_selected_color: #000;
+	--suggest_background: var(--input_background);
+	--suggest_border: var(--input_border);
+	--suggest_color: var(--input_color);
+	--suggest_selected_background: var(--button_hover_background);
+	--suggest_selected_color: var(--button_hover_color);
 }
 
 
@@ -371,7 +371,7 @@
 	.selectus.checkbox .select .selected {
 		padding: calc(var(--input_padding_v) / 2 - var(--input_border_width)) 1em;
 		padding-right: 2em;
-		border: var(--input_border_width) solid #ccc;
+		border: var(--input_border);
 		margin: 0 1em calc(var(--input_padding_v) / 2) 0;
 	}
 	.selectus.checkbox .select .selected .unselect:before {
