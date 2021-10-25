@@ -103,10 +103,36 @@ body {
 
 /* Common */
 
-	html .selectus .select,
 	html .button,
 	html .control_button,
+	html input[type=submit],
+	html input[type=button],
 	html button,
+	html .selectus .select,
+	html textarea,
+	html select,
+	html .input,
+	html input {
+		box-sizing: border-box;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	html .button,
+	html .control_button,
+	html input[type=submit],
+	html input[type=button],
+	html button {
+		box-sizing: border-box;
+		display: inline-block;
+		min-height: calc(
+			var(--button_line_height) * 1em
+			+ 2 * (var(--button_border_width) + var(--button_padding_v))
+		);
+		vertical-align: middle;
+	}
+
+	html .selectus .select,
 	html textarea,
 	html select,
 	html .input,
@@ -114,7 +140,7 @@ body {
 		box-sizing: border-box;
 		display: inline-block;
 		min-height: calc(
-			var(--button_line_height) * 1em
+			var(--input_line_height) * 1em
 			+ 2 * (var(--input_border_width) + var(--input_padding_v))
 		);
 		vertical-align: middle;
