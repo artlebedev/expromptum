@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2021-06-09
+// Updated: 2021-10-29
 
 
 
@@ -2768,6 +2768,7 @@ window.expromptum = window.xP = (function(undefined){
 		min: 1 - Number.MAX_VALUE,
 		def: 0,
 		max: Number.MAX_VALUE - 1,
+		allow_chars_pattern: /^[-0-9.,\s]$/,
 
 		init: function(params){
 			var that = this;
@@ -2779,13 +2780,6 @@ window.expromptum = window.xP = (function(undefined){
 			this.init_locale(params);
 
 			this.$element.wrap(this.element_wrap_html);
-
-			this.allow_chars_pattern = new RegExp(
-				'^[-0-9'
-				+ this.locale.number.decimal
-				+ this.locale.number.grouping
-				+ ']$'
-			);
 
 			$(this.control_button_dec_html)
 				.insertBefore(this.$element)
