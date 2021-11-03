@@ -356,12 +356,14 @@ body {
 
 
 /* Number */
+
 	.number .field_control input {
 		width: 10em;
 	}
 
 
 /* Suggests */
+
 	.with_suggest {
 		display: inline-block;
 		position: relative;
@@ -369,7 +371,7 @@ body {
 	.with_suggest.focus {
 		z-index: 888;
 	}
-	.suggest {
+	html .with_suggest .suggest {
 		background: var(--input_focus_background);
 		border: var(--input_focus_border);
 		border-radius: var(--input_focus_border_radius);
@@ -408,6 +410,7 @@ body {
 
 
 /* Selectus */
+
 	html .selectus .select {
 		display: inline-block;
 		text-decoration: none;
@@ -463,6 +466,15 @@ body {
 		opacity: 1;
 	}
 	.selectus .selectors {
+		height: 0;
+		padding: 0;
+		border: none;
+		outline: none;
+		box-shadow: none;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+	.selectus .focus .selectors {
 		max-height: 10em;
 		min-width: 280px;
 		overflow: auto;
