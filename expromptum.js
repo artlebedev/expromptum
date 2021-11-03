@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2021-10-29
+// Updated: 2021-11-03
 
 
 
@@ -444,7 +444,7 @@ window.expromptum = window.xP = (function(undefined){
 /* Locale */
 
 	xP.locale = {
-		default: 'ru',
+		'default': 'ru',
 
 		init: function(){
 			this.set(document.documentElement.lang);
@@ -569,9 +569,9 @@ window.expromptum = window.xP = (function(undefined){
 		load_locale: function(locale){
 			var that = this;
 
-			$.each(this.items[that.default], function( key, value){
+			$.each(this.items[that['default']], function( key, value){
 				if(!locale[key]){
-					locale[key] = that.items[that.default][key];
+					locale[key] = that.items[that['default']][key];
 				}
 			});
 			for(var k in locale){
@@ -604,21 +604,21 @@ window.expromptum = window.xP = (function(undefined){
 
 		set: function(lang){
 			if(!lang){
-				lang = this.default;
+				lang = this['default'];
 			}
 			lang = this.normalize_id(lang);
 
 			if(this.items[lang]){
 				this.load_locale(this.items[lang]);
 			}else{
-				this.load_locale(this.items[this.default]);
+				this.load_locale(this.items[that['default']]);
 			}
 		},
 
 		get: function(lang){
 			var that = this;
 			if(!lang){
-				lang = this.default;
+				lang = that['default'];
 			}
 			lang = this.normalize_id(lang);
 
@@ -627,7 +627,7 @@ window.expromptum = window.xP = (function(undefined){
 			if(this.items[lang]){
 				return_locale =  this.items[lang];
 			}else{
-				return_locale =  this.items[this.default];
+				return_locale =  this.items[that['default']];
 			}
 
 			var t = return_locale.number;
@@ -657,9 +657,9 @@ window.expromptum = window.xP = (function(undefined){
 					xP.locale.parse_date_months.push(value.name_genitive.toLowerCase());
 				});
 			}
-			$.each(this.items[that.default], function( key, value){
+			$.each(this.items[that['default']], function( key, value){
 				if(!return_locale[key]){
-					return_locale[key] = that.items[that.default][key];
+					return_locale[key] = that.items[that['default']][key];
 				}
 			});
 			return return_locale;
@@ -2192,6 +2192,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.controls.selectus.base.after_init.apply(this, arguments);
 
+			this.$wrapper = this.$selectors.addClass(this.selectors_wrap_class).wrap(this.element_wrap_html).parent();
+
 			this.close();
 
 			this.$select.insertBefore(this.$selectors);
@@ -2306,6 +2308,10 @@ window.expromptum = window.xP = (function(undefined){
 
 		select_class: 'select',
 
+		element_wrap_html: '<ins class="selectus_control with_suggest"/>',
+
+		selectors_wrap_class: 'suggest',
+
 		open: function(){
 			if(xP.controls.opened){
 				xP.controls.opened.close();
@@ -2315,7 +2321,8 @@ window.expromptum = window.xP = (function(undefined){
 
 			var that = this;
 
-			this.$container.addClass('focus');
+			this.$wrapper.addClass('focus');
+
 			this.$selectors.removeClass('hidden');
 
 			xP.offset_by_viewport(this.$selectors, this.$element);
@@ -2335,7 +2342,8 @@ window.expromptum = window.xP = (function(undefined){
 		close: function(){
 			xP.controls.opened = null;
 
-			this.$container.removeClass('focus');
+			this.$wrapper.removeClass('focus');
+
 			this.$selectors.addClass('hidden');
 
 			this.find_text = '';
@@ -3464,8 +3472,7 @@ window.expromptum = window.xP = (function(undefined){
 					.append(this.$calendar_days_title)
 					.append(this.$calendar_days)
 					.append(this.$calendar_time)
-					.insertAfter(this.$element)
-					.hide();
+					.insertAfter(this.$element);
 
 			this.$control_calendar.append(this.$control_calendar_now);
 
@@ -3485,7 +3492,7 @@ window.expromptum = window.xP = (function(undefined){
 				);
 			});
 
-			this.$control_calendar.on('click', 'td.current', function(e){
+			this.$control_calendar.on('click', 'td.option', function(e){
 				e.stopPropagation();
 
 				if($(this).hasClass('invalid')){
@@ -3571,8 +3578,6 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			this.$element.focus(function(){
-				that.$wrapper.addClass('focused');
-
 				that.build();
 
 				that.open();
@@ -3603,13 +3608,16 @@ window.expromptum = window.xP = (function(undefined){
 
 		open: function(){
 			var that = this;
+
 			if(xP.controls.opened){
 				xP.controls.opened.close();
 			}
-
 			xP.controls.opened = this;
 
-			that.$control_calendar.show();
+			that.$wrapper.addClass('focus');
+
+			that.$control_calendar.removeClass('hidden');
+
 			xP.offset_by_viewport(that.$control_calendar, that.$element);
 
 			return this;
@@ -3627,7 +3635,6 @@ window.expromptum = window.xP = (function(undefined){
 			){
 				if(that.$element && (!that.$element.is(':focus') || (keyCode == 9 || keyCode == 13 || keyCode == 27) )){
 
-					that.$wrapper.removeClass('focused');
 
 					var entered_date = xP.parse_date(that.val(), this.locale);
 
@@ -3639,7 +3646,9 @@ window.expromptum = window.xP = (function(undefined){
 
 					xP.controls.opened = null;
 
-					that.$control_calendar.hide();
+					that.$wrapper.removeClass('focus');
+
+					that.$control_calendar.addClass('hidden');
 				}
 			}
 
@@ -3716,9 +3725,10 @@ window.expromptum = window.xP = (function(undefined){
 
 			if(!((_min <= draft_state || !_min) && (draft_state <= _max || !_max))){
 				if(closePopup){
-					this.$wrapper.removeClass('focused');
 
-					this.$control_calendar.hide();
+					that.$wrapper.removeClass('focus');
+
+					that.$control_calendar.addClass('hidden');
 				}
 				return false;
 			}
@@ -3730,9 +3740,9 @@ window.expromptum = window.xP = (function(undefined){
 			this.val(result);
 
 			if(closePopup){
-				this.$wrapper.removeClass('focused');
+				that.$wrapper.removeClass('focus');
 
-				this.$control_calendar.hide();
+				that.$control_calendar.addClass('hidden');
 			}
 
 			return false;
@@ -3988,7 +3998,7 @@ window.expromptum = window.xP = (function(undefined){
 			for(var i = 0; i < first_day; i++){
 				week_shift++;
 
-				var class_name = 'prev';
+				var class_name = 'prev disabled';
 
 				var td_date = new Date(d[0], d[1] - 2, prev_days - first_day + i + 1);
 
@@ -4003,7 +4013,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			for(var i = 0; i < cur_days; i++){
 
-				var class_name = 'current';
+				var class_name = 'option';
 
 				var td_date = new Date(d[0], d[1] - 1, i + 1);
 
@@ -4024,7 +4034,7 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			for(var k = 0, ken = 42 - week_shift - cur_days; k < ken; k++){
-				var class_name = 'next';
+				var class_name = 'next disabled';
 
 				var td_date = new Date(d[0], d[1], k + 1);
 
@@ -4072,16 +4082,16 @@ window.expromptum = window.xP = (function(undefined){
 
 			var current_value = d[2];
 
-			this.$calendar_container_inner.find('.d.current')
+			this.$calendar_container_inner.find('.d.option')
 				.removeClass('selected')
 				.eq(current_value - 1).addClass('selected');
 
 			this.change();
 		},
 
-		element_wrap_html:  '<ins class="date_picker_control"></ins>',
+		element_wrap_html:  '<ins class="date_picker_control with_suggest"></ins>',
 
-		control_calendar_html: '<div class="calendar"></div>',
+		control_calendar_html: '<div class="calendar suggest"></div>',
 
 		control_calendar_title_html: '<span class="title"></span>',
 

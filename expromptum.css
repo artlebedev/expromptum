@@ -6,6 +6,7 @@ body {
 	--button_border_width: var(--input_border_width);
 	--button_box_shadow: none;
 	--button_color: #000;
+	--button_filter: var(--input_filter);
 	--button_font_family: var(--input_font_family);
 	--button_font_size: var(--input_font_size);
 	--button_line_height: var(--input_line_height);
@@ -23,6 +24,7 @@ body {
 	--button_focus_border_width: var(--button_border_width);
 	--button_focus_box_shadow: var(--button_box_shadow);
 	--button_focus_color: var(--button_color);
+	--button_focus_filter: var(--button_filter);
 	--button_focus_font_family: var(--button_font_family);
 	--button_focus_font_size: var(--button_font_size);
 	--button_focus_line_height: var(--button_line_height);
@@ -38,6 +40,7 @@ body {
 	--button_hover_border_width: var(--button_border_width);
 	--button_hover_box_shadow: var(--button_box_shadow);
 	--button_hover_color: var(--button_color);
+	--button_hover_filter: var(--button_filter);
 	--button_hover_font_family: var(--button_font_family);
 	--button_hover_font_size: var(--button_font_size);
 	--button_hover_line_height: var(--button_line_height);
@@ -46,6 +49,7 @@ body {
 	--button_hover_padding: var(--button_padding);
 	--button_hover_transition: var(--button_transition);
 
+
 	--input_background: #fff;
 	--input_border: var(--input_border_width) solid var(--input_border_color);
 	--input_border_color: #999;
@@ -53,8 +57,9 @@ body {
 	--input_border_width: 1.02px;
 	--input_box_shadow: none;
 	--input_color: #000;
+	--input_filter: none;
 	--input_font_family: sans-serif;
-	--input_font_size: 100%;
+	--input_font_size: 1rem;
 	--input_line_height: 1.7;
 	--input_margin: 0 4px 2px 0;
 	--input_outline: none;
@@ -70,6 +75,7 @@ body {
 	--input_focus_border_width: var(--input_border_width);
 	--input_focus_box_shadow: var(--input_box_shadow);
 	--input_focus_color: var(--input_color);
+	--input_focus_filter: var(--input_filter);
 	--input_focus_font_family: var(--input_font_family);
 	--input_focus_font_size: var(--input_font_size);
 	--input_focus_line_height: var(--input_line_height);
@@ -85,6 +91,7 @@ body {
 	--input_hover_border_width: var(--input_border_width);
 	--input_hover_box_shadow: var(--input_box_shadow);
 	--input_hover_color: var(--input_color);
+	--input_hover_filter: var(--input_filter);
 	--input_hover_font_family: var(--input_font_family);
 	--input_hover_font_size: var(--input_font_size);
 	--input_hover_line_height: var(--input_line_height);
@@ -93,11 +100,7 @@ body {
 	--input_hover_padding: var(--input_padding);
 	--input_hover_transition: var(--input_transition);
 
-	--suggest_background: var(--input_background);
-	--suggest_border: var(--input_border);
-	--suggest_color: var(--input_color);
-	--suggest_selected_background: var(--button_hover_background);
-	--suggest_selected_color: var(--button_hover_color);
+	--disabled_opacity: .45;
 }
 
 
@@ -149,7 +152,7 @@ body {
 
 /* Inputs */
 
-	html .selectus .select:hover,
+	html .selectus_control .select:hover,
 	html textarea:hover,
 	html select:hover,
 	html .input:hover,
@@ -159,6 +162,7 @@ body {
 		border-radius: var(--input_hover_border_radius);
 		box-shadow: var(--input_hover_box_shadow);
 		color: var(--input_hover_color);
+		filter: var(--input_hover_filter);
 		font-family: var(--input_hover_font_family);
 		font-size: var(--input_hover_font_size);
 		line-height: var(--input_hover_line_height);
@@ -168,16 +172,18 @@ body {
 		transition: var(--input_hover_transition);
 	}
 
-	html .selectus .select:focus,
+	html .selectus_control.focus .select,
 	html textarea:focus,
 	html select:focus,
 	html .input:focus,
+	html .focus input,
 	html input:focus {
 		background: var(--input_focus_background);
 		border: var(--input_focus_border);
 		border-radius: var(--input_focus_border_radius);
 		box-shadow: var(--input_focus_box_shadow);
 		color: var(--input_focus_color);
+		filter: var(--input_focus_filter);
 		font-family: var(--input_focus_font_family);
 		font-size: var(--input_focus_font_size);
 		line-height: var(--input_focus_line_height);
@@ -187,7 +193,7 @@ body {
 		transition: var(--input_focus_transition);
 	}
 
-	html .selectus .select, html .disabled .selectus .select, html .disabled.selectus .select,
+	html .selectus_control .select, html .disabled .selectus_control .select,
 	html textarea, html .disabled textarea, html textarea.disabled,
 	html select, html .disabled select, html select.disabled,
 	html .input, html .disabled .input, html .disabled.input,
@@ -199,6 +205,7 @@ body {
 		border-radius: var(--input_border_radius);
 		box-shadow: var(--input_box_shadow);
 		color: var(--input_color);
+		filter: var(--input_filter);
 		font-family: var(--input_font_family);
 		font-size: var(--input_font_size);
 		line-height: var(--input_line_height);
@@ -235,6 +242,7 @@ body {
 		border-radius: var(--button_hover_border_radius);
 		box-shadow: var(--button_hover_box_shadow);
 		color: var(--button_hover_color);
+		filter: var(--button_hover_filter);
 		font-family: var(--button_hover_font_family);
 		font-size: var(--button_hover_font_size);
 		line-height: var(--button_hover_line_height);
@@ -254,6 +262,7 @@ body {
 		border-radius: var(--button_focus_border_radius);
 		box-shadow: var(--button_focus_box_shadow);
 		color: var(--button_focus_color);
+		filter: var(--button_focus_filter);
 		font-family: var(--button_focus_font_family);
 		font-size: var(--button_focus_font_size);
 		line-height: var(--button_focus_line_height);
@@ -274,6 +283,7 @@ body {
 		border-radius: var(--button_border_radius);
 		box-shadow: var(--button_box_shadow);
 		color: var(--button_color);
+		filter: var(--button_filter);
 		font-family: var(--button_font_family);
 		font-size: var(--button_font_size);
 		line-height: var(--button_line_height);
@@ -351,11 +361,52 @@ body {
 	}
 
 
-/* Selectus */
-	.selectus {
-		position: relative;
+/* Suggests */
+	.with_suggest {
 		display: inline-block;
+		position: relative;
 	}
+	.with_suggest.focus {
+		z-index: 888;
+	}
+	.suggest {
+		background: var(--input_focus_background);
+		border: var(--input_focus_border);
+		border-radius: var(--input_focus_border_radius);
+		box-shadow: var(--input_focus_box_shadow);
+		color: var(--input_focus_color);
+		font-family: var(--input_focus_font_family);
+		font-size: var(--input_focus_font_size);
+		line-height: var(--input_focus_line_height);
+		margin: -1px 0 1px;
+		outline: var(--input_focus_outline);
+		padding: 1em;
+		transition: var(--input_focus_transition);
+		height: auto;
+		position: absolute;
+	}
+	.with_suggest:not(.focus) .suggest {
+		height: 0;
+		padding: 0;
+		border: none;
+		outline: none;
+		box-shadow: none;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+	.suggest .option:hover {
+		background: var(--button_hover_background);
+		color: var(--button_hover_color);
+		filter: var(--button_hover_filter);
+	}
+	.suggest .option.selected {
+		background: var(--button_hover_background);
+		color: var(--button_hover_color);
+		filter: var(--button_hover_filter);
+	}
+
+
+/* Selectus */
 	.selectus .field_control {
 		position: relative;
 	}
@@ -407,35 +458,17 @@ body {
 		top: -0.25em;
 		right: 0.25em;
 		cursor: pointer;
-		opacity: 0.4;
+		opacity: 0.6;
 		transition: var(--button_transition);
 	}
 	.selectus.checkbox .select .selected .unselect:hover:before {
 		opacity: 1;
 	}
-	.selectus .selectors.hidden {
-		display: block;
-		max-height: 0;
-		margin-left: -10000px;
-	}
-	.selectus .selectors:not(.hidden) {
-		height: auto;
-		max-height: 10em;
-		margin-left: 0;
-	}
 	.selectus .selectors {
-		background: var(--suggest_background);
-		border: var(--suggest_border);
-		color: var(--suggest_color);
-		top: 100%;
-		left: 0;
-		position: absolute;
-		margin-top: -2px;
-		padding: 0;
+		max-height: 10em;
 		overflow: auto;
 		overflow-y: scroll;
-		box-sizing: border-box;
-		z-index: 888;
+		padding: 0;
 	}
 	.selectus .selectors .option {
 		display: block;
@@ -448,48 +481,26 @@ body {
 	.selectus .selectors label {
 		display: block;
 		margin: 0;
-		padding: 4px;
+		padding: var(--input_padding_v) 1em;
 	}
 	.selectus .selectors .focus {
 		border: 1px solid var(--input_focus_border_color);
-	}
-	.selectus .selectors .selected {
-		background: var(--suggest_selected_background);
-		color: var(--suggest_selected_color);
 	}
 
 
 /* Date Picker */
 
-	.date_picker_control {
-		display: inline-block;
-		position: relative;
-	}
 	.date_picker_control input {
 		width: calc(var(--input_padding_h) * 2 + var(--input_border_width) * 2 + 8em);
 	}
-	.date_picker_control.focused {
-		z-index: 1000;
-	}
 	.date_picker_control .calendar {
-		background: var(--suggest_background);
-		padding: .5em;
-		border: var(--suggest_border);
-		color: var(--suggest_color);
 		position: absolute;
 	}
 	.date_picker_control .calendar .close {
 		cursor: pointer;
 		position: absolute;
 		right: 5px;
-	}
-	.date_picker_control .calendar .days .prev,
-	.date_picker_control .calendar .days .next {
-		opacity: 0.6;
-	}
-	.date_picker_control .selected {
-		background: var(--suggest_selected_background);
-		color: var(--suggest_selected_color);
+		top: 0;
 	}
 	.date_picker_control .calendar .days .d,
 	.date_picker_control .calendar .days .dn {
@@ -507,7 +518,7 @@ body {
 	.date_picker_control .calendar .days .invalid {
 		cursor: default;
 		background: #ccc;
-		opacity: 0.45;
+		opacity: var(--disabled_opacity);
 	}
 	.date_picker_control .calendar .control_button_now {
 		clear: both;
@@ -535,7 +546,7 @@ body {
 	}
 	.datemonth_picker .year .title.invalid,
 	.datemonth_picker .month .title.invalid {
-		opacity: 0.45;
+		opacity: var(--disabled_opacity);
 		cursor: default;
 	}
 
@@ -557,7 +568,7 @@ body {
 		margin-right: .4em;
 	}
 	input[type=file] ~ .selected .file .size {
-		opacity: .5;
+		opacity: .6;
 	}
 
 
@@ -582,7 +593,7 @@ body {
 		cursor: default ! important;
 	}
 	.disabled {
-		opacity: 0.45;
+		opacity: var(--disabled_opacity);
 	}
 	.disabled .disabled {
 		opacity: 1;
