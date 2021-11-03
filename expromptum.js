@@ -2138,6 +2138,10 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			this.options.append(xP($options));
+
+			if(!this.sub_type && this.options[0]){
+				this.sub_type = this.options[0].type;
+			}
 		},
 
 		count: function(){
@@ -2272,6 +2276,10 @@ window.expromptum = window.xP = (function(undefined){
 						that.find_option();
 					}
 				});
+				if(that.sub_type == 'radio'){
+					option.$element.on('mouseup', function(){that.close()});
+					option.$label.on('mouseup', function(){that.close()});
+				}
 			});
 
 			if(this.options.length){

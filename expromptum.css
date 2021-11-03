@@ -394,12 +394,13 @@ body {
 		box-sizing: border-box;
 		overflow: hidden;
 	}
-	.suggest .option:hover {
+	.suggest .option:hover,
+	.suggest > label:hover {
 		background: var(--button_hover_background);
 		color: var(--button_hover_color);
 		filter: var(--button_hover_filter);
 	}
-	.suggest .option.selected {
+	.suggest .selected {
 		background: var(--button_hover_background);
 		color: var(--button_hover_color);
 		filter: var(--button_hover_filter);
@@ -407,8 +408,8 @@ body {
 
 
 /* Selectus */
-	.selectus .field_control {
-		position: relative;
+	.selectus .selectus_control {
+		width1: 100%;
 	}
 	html .selectus .select {
 		display: inline-block;
@@ -466,6 +467,7 @@ body {
 	}
 	.selectus .selectors {
 		max-height: 10em;
+		min-width: 280px;
 		overflow: auto;
 		overflow-y: scroll;
 		padding: 0;
