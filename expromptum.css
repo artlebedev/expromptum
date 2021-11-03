@@ -408,9 +408,6 @@ body {
 
 
 /* Selectus */
-	.selectus .selectus_control {
-		width1: 100%;
-	}
 	html .selectus .select {
 		display: inline-block;
 		text-decoration: none;
