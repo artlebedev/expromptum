@@ -422,7 +422,7 @@ body {
 		content: '\25bc';
 		font-size: 9px;
 		position: absolute;
-		right: var(--input_padding_h);
+		right: calc(var(--input_padding_h) / 2);
 		bottom: 50%;
 		line-height: 1;
 		margin-bottom: -4px;
