@@ -536,6 +536,11 @@ body {
 		display: block;
 		margin: 4px 0 0;
 	}
+	.date_picker_control .calendar .month,
+	.date_picker_control .calendar .year,
+	.date_picker_control .calendar .time {
+		white-space: nowrap;
+	}
 	.date_picker_control .calendar .year .title {
 		margin-right: 4px;
 	}
@@ -544,9 +549,6 @@ body {
 		margin-right: 4px;
 		min-width: 5em;
 		text-align: center;
-	}
-	.date_picker_control .calendar .time {
-		white-space: nowrap;
 	}
 	.date_picker_control .calendar .hour:after {
 		content: ': ';
