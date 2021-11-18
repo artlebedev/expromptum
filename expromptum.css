@@ -541,13 +541,11 @@ body {
 	.date_picker_control .calendar .time {
 		white-space: nowrap;
 	}
-	.date_picker_control .calendar .year .title {
-		margin-right: 4px;
-	}
+	.date_picker_control .calendar .year .title,
 	.date_picker_control .calendar .month .title {
 		display: inline-block;
 		margin-right: 4px;
-		min-width: 5em;
+		min-width: 6em;
 		text-align: center;
 	}
 	.date_picker_control .calendar .hour:after {
