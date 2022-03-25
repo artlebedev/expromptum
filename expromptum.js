@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2021-12-22
+// Updated: 2022-03-25
 
 
 
@@ -2102,9 +2102,11 @@ window.expromptum = window.xP = (function(undefined){
 		selectors_class: 'selectors',
 
 		init: function(params){
-			xP.controls.options.base.init.apply(this, arguments);
+			this.options_by_value = {};
 
+			xP.controls.options.base.init.apply(this, arguments);
 			var that = this;
+
 			xP.after(function(){that.after_init()});
 		},
 
@@ -2132,11 +2134,17 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		options_init: function($options){
-			if(!(this.options instanceof xP.list)){
+			if(!(this.options instanceof Array) || !this.options.append){
 				this.options = new xP.list();
 			}
 
-			this.options.append(xP($options));
+			var that = this, options = xP($options);
+
+			options.each(function(){
+				that.options_by_value[this.$element.val()] = this;
+			});
+
+			this.options.append(options);
 
 			if(!this.sub_type && this.options[0]){
 				this.sub_type = this.options[0].type;
@@ -2173,7 +2181,27 @@ window.expromptum = window.xP = (function(undefined){
 		element_selector: '.selectus',
 
 		init: function(params){
+			var that = this;
+
 			this.find_text = '';
+
+			this.$input = $('<input name="xp_sub_' + params.$element.attr('name') + '"/>').on('keydown', function(ev){
+				if((ev.keyCode === 46 || ev.keyCode === 8) && that.find_text){
+					that.find_text = that.find_text.substr(0, that.find_text.length - 1);
+
+					that.find_option();
+				}else if(ev.keyCode == 40){
+					that.focus_selectors();
+				}else if(ev.keyCode > 31){
+					that.find_text += ev.key.toLowerCase();
+
+					that.find_option();
+				}
+			}).on('mouseup', function(){
+				return false;
+			}).insertAfter(params.$element);
+
+			this.sub = new xP.controls.string({'$element': this.$input, '$container': this.$input});
 
 			xP.controls.selectus.base.init.apply(this, arguments);
 		},
@@ -2188,10 +2216,13 @@ window.expromptum = window.xP = (function(undefined){
 				this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
 			}
 
+			this.$input.prependTo(this.$select);
+
 			this.select_html = new xP.controls.html({
 					$element: $('<ins/>').appendTo(this.$select),
 					type: 'html'
 				});
+
 
 			xP.controls.selectus.base.after_init.apply(this, arguments);
 
@@ -2281,25 +2312,31 @@ window.expromptum = window.xP = (function(undefined){
 				}
 			});
 
-			if(this.options.length){
+			if(this.options.length && options.length){
 				new xP.dependencies.computed(
 					{
 						from: options,
 						on: function(){
-							var html = '';
+							var html = ''
+								first_option = that.options.first();
 
-							that.options.first()._.group.siblings.each(function(){
-								if(this.selected && !this.disabled){
-									var id = this.$element.attr('id');
-									if(!id){
-										id = 'xP' + (Math.random() + '').substr(2, 8);
-										this.$element.attr('id', id);
+							if(first_option){
+								first_option._.group.siblings.each(function(){
+									if(this.selected && !this.disabled){
+										var id = this.$element.attr('id');
+										if(!id){
+											id = 'xP' + (Math.random() + '').substr(2, 8);
+											this.$element.attr('id', id);
+										}
+										html += '<ins class="selected">'
+											+ this.label_html;
+										if(that.sub_type == 'checkbox'){
+											html += '<label for="' + id + '" class="unselect"></label>';
+										}
+										html += '</ins>';
 									}
-									html += '<ins class="selected">'
-										+ this.label_html
-										+ '<label for="' + id + '" class="unselect"></label></ins>';
-								}
-							});
+								});
+							}
 							that.$container.toggleClass('unselected', html == '');
 
 							xP.after(function(){
@@ -2334,6 +2371,12 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.offset_by_viewport(this.$selectors, this.$element);
 
+			this.$input.focus();
+
+			return this;
+		},
+
+		focus_selectors: function(){
 			var first_option = this.options.first();
 
 			if(first_option){
@@ -2343,7 +2386,6 @@ window.expromptum = window.xP = (function(undefined){
 					first_option.$element.focus();
 				}
 			}
-			return this;
 		},
 
 		close: function(){
@@ -2392,6 +2434,8 @@ window.expromptum = window.xP = (function(undefined){
 					});
 
 					this.$label.focus();
+
+					that.$input.focus();
 
 					return false;
 				}
@@ -4488,7 +4532,7 @@ window.expromptum = window.xP = (function(undefined){
 							arguments[1] === '[this]'
 							|| arguments[1] === '[self]'
 						){
-							control = that.to;
+							control = that.to[0] && that.to[0].sub ? that.to[0].sub : that.to;
 						}else{
 							control = xP(arguments[1], root);
 

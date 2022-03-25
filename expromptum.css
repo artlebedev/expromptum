@@ -418,6 +418,19 @@ body {
 		position: relative;
 		cursor: pointer;
 	}
+	.selectus .select input {
+		display: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		line-height: 1;
+		height: auto;
+		min-height: 0;
+	}
+	.selectus .focus .select input {
+		display: inline-block;
+		vertical-align: baseline;
+	}
 	.selectus .select:after {
 		content: '\25bc';
 		font-size: 9px;
@@ -452,17 +465,18 @@ body {
 		border: var(--input_border);
 		margin: 0 1em calc(var(--input_padding_v) / 2) 0;
 	}
-	.selectus.checkbox .select .selected .unselect:before {
+	.selectus .select .selected .unselect:before {
 		content: '×';
+		color: #c00;
+		display: inline-block;
+		margin: -.5em .1em;
+		vertical-align: middle;
 		font-size: 145%;
-		position: absolute;
-		top: -0.25em;
-		right: 0.25em;
 		cursor: pointer;
 		opacity: 0.6;
 		transition: var(--button_transition);
 	}
-	.selectus.checkbox .select .selected .unselect:hover:before {
+	.selectus .select .selected .unselect:hover:before {
 		opacity: 1;
 	}
 	.selectus .selectors {
@@ -475,8 +489,8 @@ body {
 		overflow: hidden;
 	}
 	.selectus .focus .selectors {
-		max-height: 10em;
-		min-width: 280px;
+		max-height: 15em;
+		min-width: 15em;
 		overflow: auto;
 		overflow-y: scroll;
 		padding: 0;
