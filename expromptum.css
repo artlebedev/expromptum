@@ -421,8 +421,9 @@ body {
 	.selectus .select input {
 		display: none;
 		border: none;
+		outline: none;
 		padding: 0;
-		margin: 0;
+		margin: 0 1em 0 0;
 		line-height: 1;
 		height: auto;
 		min-height: 0;
@@ -469,7 +470,7 @@ body {
 		content: '×';
 		color: #c00;
 		display: inline-block;
-		margin: -.5em .1em;
+		margin: -.5em -.1em -.5em .1em;
 		vertical-align: middle;
 		font-size: 145%;
 		cursor: pointer;
