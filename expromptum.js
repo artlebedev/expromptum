@@ -4528,11 +4528,13 @@ window.expromptum = window.xP = (function(undefined){
 					function(){
 						var control;
 
-						if(
+						if(arguments[1] === '[sub]'){
+							control = that.to[0] && that.to[0].sub ? that.to[0].sub : that.to;
+						}else if(
 							arguments[1] === '[this]'
 							|| arguments[1] === '[self]'
 						){
-							control = that.to[0] && that.to[0].sub ? that.to[0].sub : that.to;
+							control = that.to;
 						}else{
 							control = xP(arguments[1], root);
 
