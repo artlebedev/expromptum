@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-03-28
+// Updated: 2022-03-29
 
 
 
@@ -4512,12 +4512,12 @@ window.expromptum = window.xP = (function(undefined){
 
 			if($.type(this.on) === 'string'){
 				this.on = this.on.replace(
-					/((?:\[(?:[^[\]]+=(?:[^[\]]|\[[^[\]]*])+|this|self)])+)(\.?)/g,
+					/((?:\[(?:[^[\]]+=(?:[^[\]]|\[[^[\]]*])+|this|self|sub)])+)(\.?)/g,
 					function(){
 						var control;
 
 						if(arguments[1] === '[sub]'){
-							control = that.to[0] && that.to[0].sub ? that.to[0].sub : that.to;
+							control = that.to[0] && that.to[0].sub ? new xP.list(that.to[0].sub) : that.to;
 						}else if(
 							arguments[1] === '[this]'
 							|| arguments[1] === '[self]'
