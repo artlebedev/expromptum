@@ -2186,17 +2186,13 @@ window.expromptum = window.xP = (function(undefined){
 			this.find_text = '';
 
 			this.$input = $('<input name="xp_sub_' + params.$element.attr('name') + '"/>').on('keydown', function(ev){
-				if((ev.keyCode === 46 || ev.keyCode === 8) && that.find_text){
-					that.find_text = that.find_text.substr(0, that.find_text.length - 1);
-
-					that.find_option();
-				}else if(ev.keyCode == 40){
+				if(ev.keyCode == 40){
 					that.focus_selectors();
-				}else if(ev.keyCode > 31){
-					that.find_text += ev.key.toLowerCase();
-
-					that.find_option();
 				}
+			}).on('keyup input change', function(ev){
+				that.find_text = that.$input.val();
+
+				that.find_option();
 			}).on('mouseup', function(){
 				return false;
 			}).insertAfter(params.$element);
@@ -2296,14 +2292,6 @@ window.expromptum = window.xP = (function(undefined){
 								.not('[type=checkbox]').click();
 						}
 						return false;
-					}else if((ev.keyCode === 46 || ev.keyCode === 8) && that.find_text){
-						that.find_text = that.find_text.substr(0, that.find_text.length - 1);
-
-						that.find_option();
-					}else if(ev.keyCode > 31){
-						that.find_text += ev.key.toLowerCase();
-
-						that.find_option();
 					}
 				});
 				if(that.sub_type == 'radio'){
