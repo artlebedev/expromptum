@@ -2190,7 +2190,7 @@ window.expromptum = window.xP = (function(undefined){
 					that.focus_selectors();
 				}
 			}).on('keyup input change', function(ev){
-				that.find_text = that.$input.val();
+				that.find_text = that.normalize_text(that.$input.val());
 
 				that.find_option();
 			}).on('mouseup', function(){
@@ -2275,7 +2275,7 @@ window.expromptum = window.xP = (function(undefined){
 			options.each(function(i){
 				var option = this;
 
-				this.label_text = this.$label.text().toLowerCase();
+				this.label_text = that.normalize_text(this.$label.text());
 
 				this.label_html = this.$label.html().replace(/<input[^>]*>/g, '');
 
@@ -2434,6 +2434,10 @@ window.expromptum = window.xP = (function(undefined){
 			if(this.found_option){
 				this.found_option.$label.find('u').contents().unwrap();
 			}
+		},
+
+		normalize_text: function(text){
+			return text.replace(/[^\p{L}\s]+/ug, '').replace(/\s+/g, ' ').replace(/(^\s|\s$)/g, '').toLowerCase();
 		}
 	}});
 
