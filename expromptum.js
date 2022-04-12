@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-03-30
+// Updated: 2022-04-12
 
 
 
@@ -2275,7 +2275,7 @@ window.expromptum = window.xP = (function(undefined){
 			options.each(function(i){
 				var option = this;
 
-				this.label_text = that.normalize_text(this.$label.text());
+				this.label_text = that.normalize_text(this.$label.html().replace(/<\/?[a-z][^>]*>/g, '').replace(/&(#\d+|\w+);/g, ' '));
 
 				this.label_html = this.$label.html().replace(/<input[^>]*>/g, '');
 
@@ -2437,7 +2437,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		normalize_text: function(text){
-			return text.replace(/[^\p{L}\s]+/ug, '').replace(/\s+/g, ' ').replace(/(^\s|\s$)/g, '').toLowerCase();
+			return text.replace(/[^\p{L}\s\d]+/ug, '').replace(/\s+/g, ' ').replace(/(^\s|\s$)/g, '').toLowerCase();
 		}
 	}});
 
