@@ -2146,6 +2146,10 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.options.append(options);
 
+			if(!this.sub_name && this.options[0]){
+				this.sub_name = this.options[0].name;
+			}
+
 			if(!this.sub_type && this.options[0]){
 				this.sub_type = this.options[0].type;
 			}
