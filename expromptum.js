@@ -2187,21 +2187,22 @@ window.expromptum = window.xP = (function(undefined){
 		init: function(params){
 			var that = this;
 
-			this.find_text = '';
+			this.search_text = '';
 
-			this.$input = $('<input/>').on('keydown', function(ev){
+			var $search = $('<input/>').on('keydown', function(ev){
 				if(ev.keyCode == 40){
 					that.focus_selectors();
 				}
 			}).on('keyup input change', function(ev){
-				that.find_text = that.normalize_text(that.$input.val());
+
+				that.search_text = that.normalize_text(ev.target.value);
 
 				that.find_option();
 			}).on('mouseup', function(){
 				return false;
 			}).insertAfter(params.$element);
 
-			this.sub = new xP.controls.string({'$element': this.$input, '$container': this.$input});
+			this.search = new xP.controls.string({'$element': $search, '$container': this.$input});
 
 			xP.controls.selectus.base.init.apply(this, arguments);
 		},
@@ -2216,7 +2217,7 @@ window.expromptum = window.xP = (function(undefined){
 				this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
 			}
 
-			this.$input.prependTo(this.$select);
+			this.search.$element.prependTo(this.$select);
 
 			this.select_html = new xP.controls.html({
 					$element: $('<ins/>').appendTo(this.$select),
@@ -2363,7 +2364,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.offset_by_viewport(this.$selectors, this.$element);
 
-			this.$input.focus();
+			this.search.$element.focus();
 
 			return this;
 		},
@@ -2393,14 +2394,14 @@ window.expromptum = window.xP = (function(undefined){
 		find_option: function(){
 			var that = this, found = false;
 
-			if(!that.find_text){
+			if(!that.search_text){
 				this.unhighlight_option();
 
 				return;
 			}
 
 			this.options.each(function(){
-				if(this.label_text.indexOf(that.find_text) > -1){
+				if(this.label_text.indexOf(that.search_text) > -1){
 					found = true;
 
 					that.unhighlight_option();
@@ -2416,22 +2417,18 @@ window.expromptum = window.xP = (function(undefined){
 							$(this).replaceWith($this);
 						}
 						$this.html($this.html().replace(
-							new RegExp('(' + that.find_text + ')', 'ig'),
+							new RegExp('(' + that.search_text + ')', 'ig'),
 							'<u>$1</u>'
 						));
 					});
 
 					this.$label.focus();
 
-					that.$input.focus();
+					that.search.$element.focus();
 
 					return false;
 				}
 			});
-
-			if(!found){
-				this.find_text = this.find_text.substr(0, this.find_text.length - 1);
-			}
 		},
 
 		unhighlight_option: function(){
@@ -4516,12 +4513,12 @@ window.expromptum = window.xP = (function(undefined){
 
 			if($.type(this.on) === 'string'){
 				this.on = this.on.replace(
-					/((?:\[(?:[^[\]]+=(?:[^[\]]|\[[^[\]]*])+|this|self|sub)])+)(\.?)/g,
+					/((?:\[(?:[^[\]]+=(?:[^[\]]|\[[^[\]]*])+|this|self|search)])+)(\.?)/g,
 					function(){
 						var control;
 
-						if(arguments[1] === '[sub]'){
-							control = that.to[0] && that.to[0].sub ? new xP.list(that.to[0].sub) : that.to;
+						if(arguments[1] === '[search]'){
+							control = that.to[0] && that.to[0].search ? new xP.list(that.to[0].search) : that.to;
 						}else if(
 							arguments[1] === '[this]'
 							|| arguments[1] === '[self]'
