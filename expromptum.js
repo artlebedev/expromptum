@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-04-12
+// Updated: 2022-04-14
 
 
 
@@ -2185,7 +2185,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.find_text = '';
 
-			this.$input = $('<input name="xp_sub_' + params.$element.attr('name') + '"/>').on('keydown', function(ev){
+			this.$input = $('<input/>').on('keydown', function(ev){
 				if(ev.keyCode == 40){
 					that.focus_selectors();
 				}
