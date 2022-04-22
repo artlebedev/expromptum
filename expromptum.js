@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-04-14
+// Updated: 2022-04-22
 
 
 
@@ -1106,6 +1106,10 @@ window.expromptum = window.xP = (function(undefined){
 
 		_get_html: function(){
 			return this.html;
+		},
+
+		reset: function(){
+			return this;
 		}
 	}});
 
@@ -1357,6 +1361,15 @@ window.expromptum = window.xP = (function(undefined){
 			});
 
 			return result.length ? result : null;
+		},
+
+		reset: function(){
+
+			this.children().each(function(){
+
+				this.reset();
+			});
+			return this;
 		}
 	}});
 
@@ -1810,6 +1823,11 @@ window.expromptum = window.xP = (function(undefined){
 
 				return this;
 			}
+		},
+
+		reset: function(){
+			this.val('');
+			return this;
 		}
 	}});
 
@@ -1870,7 +1888,7 @@ window.expromptum = window.xP = (function(undefined){
 
 
 	xP.controls.register({name: 'button', base: '_parent', prototype: {
-		element_selector: '[type=button], button, .button',
+		element_selector: '[type=button], [type=reset], button, .button',
 
 		init: function(params){
 			xP.controls.button.base.init.apply(this, arguments);
@@ -1907,6 +1925,10 @@ window.expromptum = window.xP = (function(undefined){
 				}
 			}
 
+			return this;
+		},
+
+		reset: function(){
 			return this;
 		}
 	}});
@@ -2093,6 +2115,11 @@ window.expromptum = window.xP = (function(undefined){
 			}
 
 			return xP.controls.select.base.change.apply(this, arguments);
+		},
+
+		reset: function(){
+			this.$element[0].selectedIndex = 0;
+			return this;
 		}
 	}});
 
@@ -2688,6 +2715,16 @@ window.expromptum = window.xP = (function(undefined){
 				xP.controls.radio.base.select.apply(this, arguments);
 			}
 
+			return this;
+		},
+
+		reset: function(){
+			if(this._.group.siblings){
+				var first = this._.group.siblings.first();
+				if(first){
+					first.select();
+				}
+			}
 			return this;
 		}
 	}});
