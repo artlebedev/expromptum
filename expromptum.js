@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-04-22
+// Updated: 2022-04-25
 
 
 
@@ -324,7 +324,7 @@ window.expromptum = window.xP = (function(undefined){
 		var result = {};
 
 		if(!value){
-			value = '';
+			return [];
 		}
 
 		value = value.replace(
@@ -3895,52 +3895,53 @@ window.expromptum = window.xP = (function(undefined){
 					? undefined
 					: this.$element.val();
 			}else{ // set value
-				var d = xP.parse_date(value, this.locale);
+				var d = xP.parse_date(value, this.locale),
+					result = '';
 
-				var result;
+				if(d.length){
+					if(this.sub_type != 'datemonth_picker'){
+						result = this.locale.date_format.replace('dd', xP.leading_zero(d[2]));
+					}else{
+						result = this.locale.date_format.replace('dd.', '');
+					}
 
-				if(this.sub_type != 'datemonth_picker'){
-					result = this.locale.date_format.replace('dd', xP.leading_zero(d[2]));
-				}else{
-					result = this.locale.date_format.replace('dd.', '');
-				}
+					result = result.replace('mm', xP.leading_zero(d[1]));
 
-				result = result.replace('mm', xP.leading_zero(d[1]));
+					result = result.replace('yy', d[0]);
 
-				result = result.replace('yy', d[0]);
+					if(this.sub_type == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
+						result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
+					}
 
-				if(this.sub_type == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
-					result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
-				}
+					if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
+						switch (this.sub_type){
+							case 'datetime_picker':
+								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
 
-				if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
-					switch (this.sub_type){
-						case 'datetime_picker':
-							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
+								secret_result = secret_result.replace('mm', d[1]);
 
-							secret_result = secret_result.replace('mm', d[1]);
+								secret_result = secret_result.replace('dd', d[2]);
 
-							secret_result = secret_result.replace('dd', d[2]);
+								if(!isNaN(d[3]) && !isNaN(d[4]) ){
+									secret_result = secret_result.replace('HH', d[3]);
+									secret_result = secret_result.replace('MM', d[4]);
+								}else{
+									secret_result = secret_result.replace('HH', '');
+									secret_result = secret_result.replace('MM', '');
+								}
 
-							if(!isNaN(d[3]) && !isNaN(d[4]) ){
-								secret_result = secret_result.replace('HH', d[3]);
-								secret_result = secret_result.replace('MM', d[4]);
-							}else{
-								secret_result = secret_result.replace('HH', '');
-								secret_result = secret_result.replace('MM', '');
-							}
+								this.$secret.val(secret_result);
 
-							this.$secret.val(secret_result);
+								break;
+							default:
+								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]);
 
-							break;
-						default:
-							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]);
+								secret_result = secret_result.replace('mm', d[1]);
 
-							secret_result = secret_result.replace('mm', d[1]);
+								secret_result = secret_result.replace('dd', d[2]);
 
-							secret_result = secret_result.replace('dd', d[2]);
-
-							this.$secret.val(secret_result);
+								this.$secret.val(secret_result);
+						}
 					}
 				}
 
