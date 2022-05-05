@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-04-25
+// Updated: 2022-05-05
 
 
 
@@ -2229,7 +2229,7 @@ window.expromptum = window.xP = (function(undefined){
 				return false;
 			}).insertAfter(params.$element);
 
-			this.search = new xP.controls.string({'$element': $search, '$container': this.$input});
+			this._.search = new xP.controls.string({'$element': $search, '$container': $search});
 
 			xP.controls.selectus.base.init.apply(this, arguments);
 		},
@@ -2244,7 +2244,7 @@ window.expromptum = window.xP = (function(undefined){
 				this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
 			}
 
-			this.search.$element.prependTo(this.$select);
+			this._.search.$element.prependTo(this.$select);
 
 			this.select_html = new xP.controls.html({
 					$element: $('<ins/>').appendTo(this.$select),
@@ -2391,7 +2391,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.offset_by_viewport(this.$selectors, this.$element);
 
-			this.search.$element.focus();
+			this._.search.$element.focus();
 
 			return this;
 		},
@@ -2451,7 +2451,7 @@ window.expromptum = window.xP = (function(undefined){
 
 					this.$label.focus();
 
-					that.search.$element.focus();
+					that._.search.$element.focus();
 
 					return false;
 				}
@@ -4556,7 +4556,7 @@ window.expromptum = window.xP = (function(undefined){
 						var control;
 
 						if(arguments[1] === '[search]'){
-							control = that.to[0] && that.to[0].search ? new xP.list(that.to[0].search) : that.to;
+							control = that.to[0] && that.to[0]._.search ? new xP.list(that.to[0]._.search) : that.to;
 						}else if(
 							arguments[1] === '[this]'
 							|| arguments[1] === '[self]'
