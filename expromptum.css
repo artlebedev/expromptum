@@ -480,29 +480,41 @@ body {
 	.selectus .select .selected .unselect:hover:before {
 		opacity: 1;
 	}
-	.selectus .selectors {
-		height: 0;
+	html .selectus .suggest {
 		padding: 0;
+	}
+	.selectus .suggest {
+		height: 0;
 		border: none;
 		outline: none;
 		box-shadow: none;
 		box-sizing: border-box;
 		overflow: hidden;
 	}
+	.selectus .focus .suggest {
+		overflow: visible;
+	}
+	.selectus .suggest input[type=search] {
+		width: 100%;
+		box-sizing: border-box;
+		border-radius: 0;
+		border: none;
+		border-bottom: var(--input_focus_border);
+	}
+	.selectus.no_search .suggest input[type=search] {
+		position: absolute;
+		opacity: 0;
+		right: 2000px;
+	}
 	.selectus .focus .selectors {
 		max-height: 15em;
 		min-width: 15em;
 		overflow: auto;
-		overflow-y: scroll;
 		padding: 0;
 	}
 	.selectus .selectors .option {
 		display: block;
 		border: 1px solid var(--input_background);
-	}
-	.selectus .selectors input {
-		position: absolute;
-		left: -100px;
 	}
 	.selectus .selectors label {
 		display: block;

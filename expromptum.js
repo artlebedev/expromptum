@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-05-05
+// Updated: 2022-06-07
 
 
 
@@ -2216,7 +2216,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.search_text = '';
 
-			var $search = $('<input/>').on('keydown', function(ev){
+			var $search = $(this.search_html).on('keydown', function(ev){
 				if(ev.keyCode == 40){
 					that.focus_selectors();
 				}
@@ -2244,21 +2244,30 @@ window.expromptum = window.xP = (function(undefined){
 				this.$select = $('<ins class="' + this.select_class + '" tabindex="0"></ins>');
 			}
 
-			this._.search.$element.prependTo(this.$select);
-
 			this.select_html = new xP.controls.html({
 					$element: $('<ins/>').appendTo(this.$select),
 					type: 'html'
 				});
 
+			this.$suggest = this.$container.find('.' + this.suggest_class);
+
+			if(!this.$suggest[0]){
+				this.$suggest = $('<ins class="' + this.suggest_class + '" tabindex="0"></ins>');
+			}
 
 			xP.controls.selectus.base.after_init.apply(this, arguments);
 
-			this.$wrapper = this.$selectors.addClass(this.selectors_wrap_class).wrap(this.element_wrap_html).parent();
-
-			this.close();
+			this.$wrapper = this.$selectors.wrap(this.element_wrap_html).parent();
 
 			this.$select.insertBefore(this.$selectors);
+
+			this.$suggest.insertBefore(this.$selectors);
+
+			this._.search.$element.appendTo(this.$suggest);
+
+			this.$selectors.appendTo(this.$suggest);
+
+			this.close();
 
 			this.$select.on('mouseup keypress', function(ev){
 				if(
@@ -2270,7 +2279,7 @@ window.expromptum = window.xP = (function(undefined){
 					)
 				){
 					if(
-						that.$selectors.hasClass('hidden')
+						that.$suggest.hasClass('hidden')
 						&& !(
 							ev.target
 							&& ev.target.className == 'unselect'
@@ -2283,7 +2292,7 @@ window.expromptum = window.xP = (function(undefined){
 				}
 			});
 
-			this.$selectors.on('keydown', function(ev){
+			this.$suggest.on('keydown', function(ev){
 				if(ev.keyCode === 13 || ev.keyCode === 27){
 					that.close();
 
@@ -2372,9 +2381,11 @@ window.expromptum = window.xP = (function(undefined){
 
 		select_class: 'select',
 
+		suggest_class: 'suggest',
+
 		element_wrap_html: '<ins class="selectus_control with_suggest"/>',
 
-		selectors_wrap_class: 'suggest',
+		search_html: '<input type="search"/>',
 
 		open: function(){
 			if(xP.controls.opened){
@@ -2387,9 +2398,9 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.$wrapper.addClass('focus');
 
-			this.$selectors.removeClass('hidden');
+			this.$suggest.removeClass('hidden');
 
-			xP.offset_by_viewport(this.$selectors, this.$element);
+			xP.offset_by_viewport(this.$suggest, this.$element);
 
 			this._.search.$element.focus();
 
@@ -2413,7 +2424,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.$wrapper.removeClass('focus');
 
-			this.$selectors.addClass('hidden');
+			this.$suggest.addClass('hidden');
 
 			return this;
 		},
@@ -2449,7 +2460,9 @@ window.expromptum = window.xP = (function(undefined){
 						));
 					});
 
-					this.$label.focus();
+					this.$label[0].focus();
+
+					that.$selectors.scrollTop(that.$selectors.scrollTop() + this.$label.offset().top - that.$selectors.offset().top);
 
 					that._.search.$element.focus();
 
