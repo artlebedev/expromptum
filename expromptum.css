@@ -491,9 +491,6 @@ body {
 		box-sizing: border-box;
 		overflow: hidden;
 	}
-	.selectus .focus .suggest {
-		overflow: visible;
-	}
 	.selectus .suggest input[type=search] {
 		width: 100%;
 		box-sizing: border-box;
