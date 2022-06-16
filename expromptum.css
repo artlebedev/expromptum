@@ -512,10 +512,6 @@ body {
 	.selectus .selectors .option {
 		display: block;
 		border: 1px solid var(--input_background);
-	}
-	.selectus .selectors label {
-		display: block;
-		margin: 0;
 		padding: var(--input_padding_v) 1em;
 	}
 	.selectus .selectors .focus {
