@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-06-07
+// Updated: 2022-06-17
 
 
 
@@ -2132,8 +2132,8 @@ window.expromptum = window.xP = (function(undefined){
 			this.options_by_value = {};
 
 			xP.controls.options.base.init.apply(this, arguments);
-			var that = this;
 
+			var that = this;
 			xP.after(function(){that.after_init()});
 		},
 
@@ -2173,12 +2173,9 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.options.append(options);
 
-			if(!this.sub_name && this.options[0]){
-				this.sub_name = this.options[0].name;
-			}
-
-			if(!this.sub_type && this.options[0]){
+			if(this.options[0]){
 				this.sub_type = this.options[0].type;
+				this.$container.attr('data-name', this.options[0].name);
 			}
 		},
 
@@ -5626,10 +5623,10 @@ window.expromptum = window.xP = (function(undefined){
 			var option_names = {},
 				root_options = control.root()._param('_option');
 
-			control.$container.find('[name]').addBack('[name]').each(function(){
+			control.$container.find('[name], [data-name]').addBack('[name]').each(function(){
 				var $e = $(this),
-					name = $e.attr('name'),
 					type = $e.attr('type'),
+					name = $e.attr('name') ? $e.attr('name') : $e.data('name'),
 					parts = name.replace(/_xp_repeat_temp$/, '').split(repeat.name_suffix_splitter),
 					new_name = parts[0] + control._.repeat_suffix;
 
@@ -5638,7 +5635,12 @@ window.expromptum = window.xP = (function(undefined){
 				}
 
 				if(name !== new_name){
-					$e.attr('name', new_name);
+
+					if($e.attr('name')){
+						$e.attr('name', new_name);
+					}else{
+						$e.attr('data-name', new_name);
+					}
 
 					if(type === 'checkbox' || type === 'radio'){
 						option_names[name] = new_name;
