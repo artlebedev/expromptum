@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-06-17
+// Updated: 2022-06-21
 
 
 
@@ -2129,7 +2129,7 @@ window.expromptum = window.xP = (function(undefined){
 		selectors_class: 'selectors',
 
 		init: function(params){
-			this.options_by_value = {};
+			this._.options_by_value = {};
 
 			xP.controls.options.base.init.apply(this, arguments);
 
@@ -2168,7 +2168,7 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this, options = xP($options);
 
 			options.each(function(){
-				that.options_by_value[this.$element.val()] = this;
+				that._.options_by_value[this.$element.val()] = this;
 			});
 
 			this.options.append(options);
