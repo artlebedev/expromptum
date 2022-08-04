@@ -508,6 +508,7 @@ body {
 		min-width: 15em;
 		overflow: auto;
 		padding: 0;
+		position: relative;
 	}
 	.selectus .selectors .option {
 		display: block;
