@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-06-21
+// Updated: 2022-08-16
 
 
 
@@ -2174,7 +2174,7 @@ window.expromptum = window.xP = (function(undefined){
 			this.options.append(options);
 
 			if(this.options[0]){
-				this.sub_type = this.options[0].type;
+				this.subtype = this.options[0].type;
 				this.$container.attr('data-name', this.options[0].name);
 			}
 		},
@@ -2332,7 +2332,7 @@ window.expromptum = window.xP = (function(undefined){
 						return false;
 					}
 				});
-				if(that.sub_type == 'radio'){
+				if(that.subtype == 'radio'){
 					option.$element.on('mouseup', function(){that.close()});
 					option.$label.on('mouseup', function(){that.close()});
 				}
@@ -2356,7 +2356,7 @@ window.expromptum = window.xP = (function(undefined){
 										}
 										html += '<ins class="selected">'
 											+ this.label_html;
-										if(that.sub_type == 'checkbox'){
+										if(that.subtype == 'checkbox'){
 											html += '<label for="' + id + '" class="unselect"></label>';
 										}
 										html += '</ins>';
@@ -3255,11 +3255,11 @@ window.expromptum = window.xP = (function(undefined){
 			this.init_locale(params);
 
 			if(this.$element.is('.date, .date input')){
-				this.sub_type = 'date_picker';
+				this.subtype = 'date_picker';
 			}else if(this.$element.is('.datetime, .datetime input')){
-				this.sub_type = 'datetime_picker';
+				this.subtype = 'datetime_picker';
 			}else{
-				this.sub_type = 'datemonth_picker';
+				this.subtype = 'datemonth_picker';
 			}
 
 			if(that.val().length != 0){
@@ -3268,7 +3268,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			
 			this.$wrapper = this.$element
-				.wrap(this.element_wrap_html).parent().addClass(this.sub_type);
+				.wrap(this.element_wrap_html).parent().addClass(this.subtype);
 
 			this._draft_state = [];
 
@@ -3289,7 +3289,7 @@ window.expromptum = window.xP = (function(undefined){
 
 				if(
 					!isNaN(d[0]) && !isNaN(d[1])
-					&& (!isNaN(d[2]) && this.sub_type == 'date_picker' || this.sub_type == 'datemonth_picker')
+					&& (!isNaN(d[2]) && this.subtype == 'date_picker' || this.subtype == 'datemonth_picker')
 				){
 					that._current_day = d[2];
 
@@ -3299,7 +3299,7 @@ window.expromptum = window.xP = (function(undefined){
 
 					that.build(d, false);
 				} else if (
-							this.sub_type == 'datetime_picker'
+							this.subtype == 'datetime_picker'
 							&& !isNaN(d[0])
 							&& !isNaN(d[1])
 							&& !isNaN(d[2])
@@ -3338,7 +3338,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.$control_calendar_now = $(this.control_calendar_now_html);
 
-			switch (this.sub_type){
+			switch (this.subtype){
 				case 'datetime_picker':
 					this.$control_calendar_now.html(this.locale.now);
 					break;
@@ -3539,13 +3539,13 @@ window.expromptum = window.xP = (function(undefined){
 					.append(this.$calendar_hour)
 					.append(this.$calendar_minute);
 
-			if(this.sub_type != 'datetime_picker'){
+			if(this.subtype != 'datetime_picker'){
 				this.$calendar_close = null;
 
 				this.$calendar_time = null;
 			}
 
-			if(this.sub_type != 'datetime_picker' && this.sub_type != 'date_picker'){
+			if(this.subtype != 'datetime_picker' && this.subtype != 'date_picker'){
 				this.$calendar_days_title = null;
 
 				this.$calendar_days = null;
@@ -3598,7 +3598,7 @@ window.expromptum = window.xP = (function(undefined){
 					new_day,
 					that._draft_state[3],
 					that._draft_state[4]],
-					(that.sub_type != 'datetime_picker') );
+					(that.subtype != 'datetime_picker') );
 			});
 
 			this.$control_calendar.on('click', 'td.prev', function(e){
@@ -3609,7 +3609,7 @@ window.expromptum = window.xP = (function(undefined){
 				var new_day = $(this).html() * 1,
 					new_month = that.$calendar_month_title.data('val') - 1,
 					new_year = that.$calendar_year_title.data('val'),
-					is_close = !(that.sub_type == 'datetime_picker');
+					is_close = !(that.subtype == 'datetime_picker');
 
 				if(new_month < 1){
 					new_month = 12;
@@ -3631,7 +3631,7 @@ window.expromptum = window.xP = (function(undefined){
 				var new_day = $(this).html() * 1,
 					new_month = that.$calendar_month_title.data('val') + 1,
 					new_year = that.$calendar_year_title.data('val'),
-					is_close = !(that.sub_type == 'datetime_picker');
+					is_close = !(that.subtype == 'datetime_picker');
 
 				if(new_month > 12){
 					new_month = 1;
@@ -3645,7 +3645,7 @@ window.expromptum = window.xP = (function(undefined){
 					that._draft_state[4]], is_close);
 			});
 
-			if(this.sub_type == 'datemonth_picker'){
+			if(this.subtype == 'datemonth_picker'){
 				this.$control_calendar.on('click', '.month .title, .year .title', function(e){
 					e.stopPropagation();
 					if($(this).hasClass('invalid')){
@@ -3656,7 +3656,7 @@ window.expromptum = window.xP = (function(undefined){
 
 					that._draft_state[1] = parseInt(that.$control_calendar.find('.month .title').data('val'), 10);
 
-					if(that.sub_type == 'datemonth_picker'){
+					if(that.subtype == 'datemonth_picker'){
 						that._draft_state[2] = 1;
 					}
 
@@ -3756,7 +3756,7 @@ window.expromptum = window.xP = (function(undefined){
 				valid = false;
 			}
 
-			if( this.sub_type == 'datemonth_picker'){
+			if( this.subtype == 'datemonth_picker'){
 				d[2] = 1;
 			}
 
@@ -3842,7 +3842,7 @@ window.expromptum = window.xP = (function(undefined){
 				var date_tmp = d[0] + '-' + d[1] + '-' + d[2];
 			}
 
-			switch (this.sub_type){
+			switch (this.subtype){
 				case 'datetime_picker':
 					if(date_tmp && !isNaN(d[3]) && !isNaN(d[4])){
 						this.$secret.val(date_tmp + ' ' + d[3] + ':' + d[4]);
@@ -3909,7 +3909,7 @@ window.expromptum = window.xP = (function(undefined){
 					result = '';
 
 				if(d.length){
-					if(this.sub_type != 'datemonth_picker'){
+					if(this.subtype != 'datemonth_picker'){
 						result = this.locale.date_format.replace('dd', xP.leading_zero(d[2]));
 					}else{
 						result = this.locale.date_format.replace('dd.', '');
@@ -3919,12 +3919,12 @@ window.expromptum = window.xP = (function(undefined){
 
 					result = result.replace('yy', d[0]);
 
-					if(this.sub_type == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
+					if(this.subtype == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
 						result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
 					}
 
 					if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
-						switch (this.sub_type){
+						switch (this.subtype){
 							case 'datetime_picker':
 								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
 
@@ -4044,7 +4044,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.$calendar_year_title.data('val', d[0]);
 
-			if(this.sub_type == 'datemonth_picker'){
+			if(this.subtype == 'datemonth_picker'){
 				var tmp_date = new Date(d[0], d[1] - 1, 1);
 				if((_min && _min > tmp_date) || (_max && tmp_date > _max)){
 					this.$calendar_year_title.addClass('invalid');
