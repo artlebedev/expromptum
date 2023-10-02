@@ -1,6 +1,5 @@
 body {
 	--button_background: #ddd;
-	--button_border: var(--button_border_width) solid var(--button_border_color);
 	--button_border_color: var(--button_background);
 	--button_border_radius: var(--input_border_radius);
 	--button_border_width: var(--input_border_width);
@@ -13,12 +12,11 @@ body {
 	--button_margin: 0 4px 2px 0;
 	--button_outline: var(--input_outline);
 	--button_padding: var(--button_padding_v) var(--button_padding_h);
-	--button_padding_h: 1em;
+	--button_padding_h: 10px;
 	--button_padding_v: var(--input_padding_v);
 	--button_transition: var(--input_transition);
 
 	--button_focus_background: #f96;
-	--button_focus_border: var(--button_focus_border_width) solid var(--button_focus_border_color);
 	--button_focus_border_color: var(--button_focus_background);
 	--button_focus_border_radius: var(--button_border_radius);
 	--button_focus_border_width: var(--button_border_width);
@@ -34,7 +32,6 @@ body {
 	--button_focus_transition: var(--button_transition);
 
 	--button_hover_background: #fda;
-	--button_hover_border: var(--button_hover_border_width) solid var(--button_hover_border_color);
 	--button_hover_border_color: var(--button_hover_background);
 	--button_hover_border_radius: var(--button_border_radius);
 	--button_hover_border_width: var(--button_border_width);
@@ -51,7 +48,6 @@ body {
 
 
 	--input_background: #fff;
-	--input_border: var(--input_border_width) solid var(--input_border_color);
 	--input_border_color: #999;
 	--input_border_radius: 0;
 	--input_border_width: 1.02px;
@@ -69,7 +65,6 @@ body {
 	--input_transition: 0.2s ease;
 
 	--input_focus_background: var(--input_background);
-	--input_focus_border: var(--input_focus_border_width) solid var(--input_focus_border_color);
 	--input_focus_border_color: #f96;
 	--input_focus_border_radius: var(--input_border_radius);
 	--input_focus_border_width: var(--input_border_width);
@@ -85,7 +80,6 @@ body {
 	--input_focus_transition: var(--input_transition);
 
 	--input_hover_background: var(--input_background);
-	--input_hover_border: var(--input_hover_border_width) solid var(--input_hover_border_color);
 	--input_hover_border_color: #000;
 	--input_hover_border_radius: var(--input_border_radius);
 	--input_hover_border_width: var(--input_border_width);
@@ -106,26 +100,26 @@ body {
 
 /* Common */
 
-	html .button,
-	html .control_button,
-	html input[type=submit],
-	html input[type=button],
-	html button,
-	html .selectus .select,
-	html textarea,
-	html select,
-	html .input,
-	html input {
+	.button,
+	.control_button,
+	input[type=submit],
+	input[type=button],
+	button,
+	.selectus .select,
+	textarea,
+	select,
+	.input,
+	input {
 		box-sizing: border-box;
 		display: inline-block;
 		vertical-align: middle;
 	}
 
-	html .button,
-	html .control_button,
-	html input[type=submit],
-	html input[type=button],
-	html button {
+	.button,
+	.control_button,
+	input[type=submit],
+	input[type=button],
+	button {
 		box-sizing: border-box;
 		display: inline-block;
 		min-height: calc(
@@ -135,11 +129,11 @@ body {
 		vertical-align: middle;
 	}
 
-	html .selectus .select,
-	html textarea,
-	html select,
-	html .input,
-	html input {
+	.selectus .select,
+	textarea,
+	select,
+	.input,
+	input {
 		box-sizing: border-box;
 		display: inline-block;
 		min-height: calc(
@@ -152,13 +146,13 @@ body {
 
 /* Inputs */
 
-	html .selectus_control .select:hover,
-	html textarea:hover,
-	html select:hover,
-	html .input:hover,
-	html input:hover {
+	.selectus:not(.readonly) .select:hover,
+	textarea:not([readonly]):hover,
+	select:not([readonly]):not(.readonly):hover,
+	.input:not(.readonly):hover,
+	input:not([readonly]):hover {
 		background: var(--input_hover_background);
-		border: var(--input_hover_border);
+		border: var(--input_hover_border_width) solid var(--input_hover_border_color);
 		border-radius: var(--input_hover_border_radius);
 		box-shadow: var(--input_hover_box_shadow);
 		color: var(--input_hover_color);
@@ -172,14 +166,14 @@ body {
 		transition: var(--input_hover_transition);
 	}
 
-	html .selectus_control.focus .select,
-	html textarea:focus,
-	html select:focus,
-	html .input:focus,
-	html .focus input,
-	html input:focus {
+	.selectus:not(.readonly) .focus .select,
+	textarea:not([readonly]):focus,
+	select:not([readonly]):not(.readonly):focus,
+	.input:not(.readonly):focus,
+	.focus input:not(.readonly),
+	input:not([readonly]):focus {
 		background: var(--input_focus_background);
-		border: var(--input_focus_border);
+		border: var(--input_focus_border_width) solid  var(--input_focus_border_color);
 		border-radius: var(--input_focus_border_radius);
 		box-shadow: var(--input_focus_box_shadow);
 		color: var(--input_focus_color);
@@ -193,15 +187,14 @@ body {
 		transition: var(--input_focus_transition);
 	}
 
-	html .selectus_control .select, html .disabled .selectus_control .select,
-	html textarea, html .disabled textarea, html textarea.disabled,
-	html select, html .disabled select, html select.disabled,
-	html .input, html .disabled .input, html .disabled.input,
-	html .disabled input, html input.disabled,
-	html input {
+	.selectus_control .select,
+	textarea,
+	select,
+	.input,
+	input {
 		background: var(--input_background);
 		border: 1px solid;
-		border: var(--input_border);
+		border: var(--input_border_width) solid  var(--input_border_color);
 		border-radius: var(--input_border_radius);
 		box-shadow: var(--input_box_shadow);
 		color: var(--input_color);
@@ -228,17 +221,23 @@ body {
 	select {
 		max-width: 100%;
 	}
+	select.readonly,
+	.readonly select {
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		appearance: none;
+	}
 
 
 /* Buttons */
 
-	html input[type=submit]:hover,
-	html input[type=button]:hover,
-	html .control_button:hover,
-	html .button:hover,
-	html button:hover {
+	input[type=submit]:hover,
+	input[type=button]:hover,
+	.control_button:hover, .control_button:link:hover, .control_button:visited:hover,
+	.button:hover, .button:link:hover, .button:visited:hover,
+	button:hover {
 		background: var(--button_hover_background);
-		border: var(--button_hover_border);
+		border: var(--button_hover_border_width) solid var(--button_hover_border_color);
 		border-radius: var(--button_hover_border_radius);
 		box-shadow: var(--button_hover_box_shadow);
 		color: var(--button_hover_color);
@@ -252,13 +251,13 @@ body {
 		transition: var(--button_hover_transition);
 	}
 
-	html input[type=submit]:focus,
-	html input[type=button]:focus,
-	html .control_button:focus,
-	html .button:focus,
-	html button:focus {
+	input[type=submit]:focus,
+	input[type=button]:focus,
+	.control_button:focus, .control_button:visited:focus,
+	.button:focus, .button:visited:focus,
+	button:focus {
 		background: var(--button_focus_background);
-		border: var(--button_focus_border);
+		border: var(--button_focus_border_width) solid var(--button_focus_border_color);
 		border-radius: var(--button_focus_border_radius);
 		box-shadow: var(--button_focus_box_shadow);
 		color: var(--button_focus_color);
@@ -272,14 +271,13 @@ body {
 		transition: var(--button_focus_transition);
 	}
 
-	html input[type=submit], html .disabled input[type=submit], html input[type=submit].disabled,
-	html input[type=button], html .disabled input[type=button], html input[type=button].disabled,
-	html .control_button, html .disabled .control_button, html .control_button.disabled,
-	html .button, html .disabled .button, html .button.disabled,
-	html .disabled button, html button.disabled,
-	html button {
+	input[type=submit],
+	input[type=button],
+	.control_button, .control_button:link, .control_button:visited,
+	.button, .button:link, .button:visited,
+	button {
 		background: var(--button_background);
-		border: var(--button_border);
+		border: var(--button_border_width) solid var(--button_border_color);
 		border-radius: var(--button_border_radius);
 		box-shadow: var(--button_box_shadow);
 		color: var(--button_color);
@@ -297,35 +295,29 @@ body {
 		text-align: center;
 		transition: var(--button_transition);
 		cursor: pointer;
+		white-space: nowrap;
 	}
 
 
 /* Control buttons */
 
-	html .disabled .control_button, html .control_button.disabled,
-	html .control_button:focus,
-	html .control_button:hover,
-	html .control_button {
-		padding-left: calc(var(--button_padding_h) / 2);
-		padding-right: calc(var(--button_padding_h) / 2);
-	}
-	html .control_button_dropdown:before {
+	.control_button_dropdown:before {
 		content: '\25bc';
 	}
-	html .control_button_inc:before {
+	.control_button_inc:before {
 		content: '+';
 	}
-	html .control_button_dec:before {
+	.control_button_dec:before {
 		content: '\2212';
 	}
 
 
 /* Password */
 
-	html .control_button_password:before {
+	.control_button_password:before {
 		content: '\a9';
 	}
-	html .control_button_password_view:before {
+	.control_button_password_view:before {
 		opacity: 0.5;
 	}
 
@@ -371,9 +363,9 @@ body {
 	.with_suggest.focus {
 		z-index: 888;
 	}
-	html .with_suggest .suggest {
+	.with_suggest .suggest {
 		background: var(--input_focus_background);
-		border: var(--input_focus_border);
+		border: var(--input_focus_border_width) solid var(--input_focus_border_color);
 		border-radius: var(--input_focus_border_radius);
 		box-shadow: var(--input_focus_box_shadow);
 		color: var(--input_focus_color);
@@ -411,12 +403,20 @@ body {
 
 /* Selectus */
 
-	html .selectus .select {
+	.selectus .select {
 		display: inline-block;
 		text-decoration: none;
 		min-width: 8em;
+		min-width: min-content;
 		position: relative;
 		cursor: pointer;
+		--input_padding: var(--input_padding_v) 2em var(--input_padding_v) var(--input_padding_h);
+		--input_hover_padding: var(--input_padding);
+		--input_focus_padding: var(--input_padding);
+	}
+	.selectus .select > ins {
+		display: inline-block;
+		min-width: 2em;
 	}
 	.selectus .select input {
 		display: none;
@@ -441,7 +441,10 @@ body {
 		line-height: 1;
 		margin-bottom: -4px;
 	}
-	.selectus .select:before {
+	.selectus.readonly .select:after {
+		content: none;
+	}
+	.selectus .select > ins:before {
 		content: '';
 		height: 1px;
 		width: 1px;
@@ -457,14 +460,20 @@ body {
 		padding: 0;
 		position: relative;
 	}
-	html .selectus.checkbox .select {
+	.selectus .select .placeholder {
+		opacity: var(--disabled_opacity);
+	}
+	.selectus.checkbox .select {
 		padding: calc(var(--input_padding_v) / 2) calc(var(--input_padding_h) / 2) 0;
 	}
 	.selectus.checkbox .select .selected {
 		padding: calc(var(--input_padding_v) / 2 - var(--input_border_width)) 1em;
 		padding-right: 2em;
-		border: var(--input_border);
+		border: var(--input_border_width) solid var(--input_border_color);
 		margin: 0 1em calc(var(--input_padding_v) / 2) 0;
+	}
+	.selectus .select .selected .unselect {
+		position: absolute;
 	}
 	.selectus .select .selected .unselect:before {
 		content: '×';
@@ -480,23 +489,15 @@ body {
 	.selectus .select .selected .unselect:hover:before {
 		opacity: 1;
 	}
-	html .selectus .suggest {
-		padding: 0;
-	}
 	.selectus .suggest {
-		height: 0;
-		border: none;
-		outline: none;
-		box-shadow: none;
-		box-sizing: border-box;
-		overflow: hidden;
+		padding: 0;
 	}
 	.selectus .suggest input[type=search] {
 		width: 100%;
 		box-sizing: border-box;
 		border-radius: 0;
 		border: none;
-		border-bottom: var(--input_focus_border);
+		border-bottom: var(--input_focus_border_width) solid var(--input_focus_border_color);
 	}
 	.selectus.no_search .suggest input[type=search] {
 		position: absolute;
@@ -516,7 +517,7 @@ body {
 		padding: var(--input_padding_v) 1em;
 	}
 	.selectus .selectors .focus {
-		border: 1px solid var(--input_focus_border_color);
+		border: var(--input_focus_border_width) solid var(--input_focus_border_color);
 	}
 
 
@@ -629,4 +630,27 @@ body {
 	}
 	.disabled .disabled {
 		opacity: 1;
+	}
+
+
+/* Disabled */
+
+	.disabled label, label.disabled,
+	.disabled input, input.disabled,
+	.disabled textarea, textarea.disabled,
+	.disabled select, select.disabled,
+	.disabled .selectus .select, .selectus .select.disabled,
+	.disabled .option, .option.disabled,
+	.disabled button, button.disabled,
+	.disabled .button, .button.disabled,
+	.disabled .control_button, .control_button.disabled {
+		pointer-events: none;
+	}
+
+/* Readonly */
+	[readonly],
+	.readonly *:not(.some),
+	.readonly {
+		cursor: inherit;
+		--input_border_color: #ccc;
 	}

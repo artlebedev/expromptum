@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2022-08-16
+// Updated: 2023-09-08
 
 
 
@@ -289,7 +289,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		$element.removeClass('atop').css({'top': '100%', 'left': 0, 'bottom': 'auto', 'right': 'auto'});
 
-		var offset = $element.offset();
+		var offset = $relative.offset();
 
 		if(
 			$(window).scrollTop() + $(window).height() < offset.top + $element.outerHeight()
@@ -1968,6 +1968,14 @@ window.expromptum = window.xP = (function(undefined){
 				this._.all_options.append(this._.options[i]);
 				this._.enabled_options.append(this._.options[i]);
 			}
+
+			var that = this;
+
+			this.$element.on('mousedown keydown', function(e){
+				if(that.readonly && e.key != 'Tab'){
+					return false;
+				}
+			});
 		},
 
 		append: function(params){
@@ -2111,7 +2119,11 @@ window.expromptum = window.xP = (function(undefined){
 
 		change: function(handler, remove){
 			if(!arguments.length){
-				this.$selected = $(this._.options[this._.element.selectedIndex]);
+				if(this.readonly && this.$selected){
+					this.$selected[0].selected = true;
+				}else{
+					this.$selected = $(this._.options[this._.element.selectedIndex]);
+				}
 			}
 
 			return xP.controls.select.base.change.apply(this, arguments);
@@ -2174,7 +2186,7 @@ window.expromptum = window.xP = (function(undefined){
 			this.options.append(options);
 
 			if(this.options[0]){
-				this.subtype = this.options[0].type;
+				this.subtype = this.options[0] instanceof xP.controls.radio ? 'radio' : 'checkbox';
 				this.$container.attr('data-name', this.options[0].name);
 			}
 		},
@@ -2213,20 +2225,23 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.search_text = '';
 
-			var $search = $(this.search_html).on('keydown', function(ev){
-				if(ev.keyCode == 40){
-					that.focus_selectors();
-				}
-			}).on('keyup input change', function(ev){
+			if(params.search !== false){
 
-				that.search_text = that.normalize_text(ev.target.value);
+				var $search = $(this.search_html).on('keydown', function(ev){
+					if(ev.keyCode == 40){
+						that.focus_selectors();
+					}
+				}).on('input', function(ev){
 
-				that.find_option();
-			}).on('mouseup', function(){
-				return false;
-			}).insertAfter(params.$element);
+					that.search_text = that.normalize_text(ev.target.value);
 
-			this._.search = new xP.controls.string({'$element': $search, '$container': $search});
+					that.find_option();
+				}).on('mouseup', function(){
+					return false;
+				}).insertAfter(params.$element);
+
+				this._.search = new xP.controls.string({'$element': $search, '$container': $search});
+			}
 
 			xP.controls.selectus.base.init.apply(this, arguments);
 		},
@@ -2246,23 +2261,28 @@ window.expromptum = window.xP = (function(undefined){
 					type: 'html'
 				});
 
+			xP.controls.selectus.base.after_init.apply(this, arguments);
+
 			this.$suggest = this.$container.find('.' + this.suggest_class);
 
 			if(!this.$suggest[0]){
+
 				this.$suggest = $('<ins class="' + this.suggest_class + '" tabindex="0"></ins>');
+
+				this.$suggest.insertBefore(this.$selectors);
+
+				this.$selectors.appendTo(this.$suggest);
 			}
 
-			xP.controls.selectus.base.after_init.apply(this, arguments);
+			this.$wrapper = $(this.element_wrap_html).insertBefore(this.$suggest);
 
-			this.$wrapper = this.$selectors.wrap(this.element_wrap_html).parent();
+			this.$select.appendTo(this.$wrapper);
 
-			this.$select.insertBefore(this.$selectors);
+			this.$suggest.appendTo(this.$wrapper);
 
-			this.$suggest.insertBefore(this.$selectors);
-
-			this._.search.$element.appendTo(this.$suggest);
-
-			this.$selectors.appendTo(this.$suggest);
+			if(this._.search){
+				this._.search.$element.insertBefore(this.$selectors);
+			}
 
 			this.close();
 
@@ -2344,7 +2364,9 @@ window.expromptum = window.xP = (function(undefined){
 						from: options,
 						on: function(){
 							var html = ''
-								first_option = that.options.first();
+								first_option = that.options.first(),
+								selected_count = 0,
+								selected_with_value = 0;
 
 							if(first_option && first_option._.group){
 								first_option._.group.siblings.each(function(){
@@ -2360,14 +2382,24 @@ window.expromptum = window.xP = (function(undefined){
 											html += '<label for="' + id + '" class="unselect"></label>';
 										}
 										html += '</ins>';
+										selected_count++;
+										if(this.val()){
+											selected_with_value++;
+										}
 									}
 								});
+								if(first_option._.group.selected_count != selected_count){
+									first_option._.group.selected_count = selected_count;
+
+									xP.after(function(){
+										xP.offset_by_viewport(that.$suggest, that.$element);
+									});
+								}
 							}
 							that.$container.toggleClass('unselected', html == '');
-
-							xP.after(function(){
-								xP.offset_by_viewport(that.$selectors, that.$element);
-							});
+							if((html == '' || !selected_with_value) && that.placeholder){
+								html = '<ins class="placeholder">' + that.placeholder + '</ins>';
+							}
 							return html;
 						}
 					},
@@ -2388,6 +2420,9 @@ window.expromptum = window.xP = (function(undefined){
 			if(xP.controls.opened){
 				xP.controls.opened.close();
 			}
+			if(this.readonly){
+				return this;
+			}
 
 			xP.controls.opened = this;
 
@@ -2399,7 +2434,9 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.offset_by_viewport(this.$suggest, this.$element);
 
-			this._.search.$element.focus();
+			if(this._.search){
+				this._.search.$element.focus();
+			}
 
 			return this;
 		},
@@ -2426,7 +2463,24 @@ window.expromptum = window.xP = (function(undefined){
 			return this;
 		},
 
+
 		find_option: function(){
+			var that = this, found = false;
+
+			this.options.each(function(){
+
+				if(!that.search_text || this.label_text.indexOf(that.search_text) > -1){
+
+					this.$container.show();
+				}else{
+
+					this.$container.hide();
+				}
+			});
+		},
+
+
+		find_option1: function(){
 			var that = this, found = false;
 
 			if(!that.search_text){
@@ -2461,7 +2515,9 @@ window.expromptum = window.xP = (function(undefined){
 
 					that.$selectors.scrollTop(that.$selectors.scrollTop() + this.$label.offset().top - that.$selectors.offset().top);
 
-					that._.search.$element.focus();
+					if(that._.search){
+						that._.search.$element.focus();
+					}
 
 					return false;
 				}
@@ -2554,6 +2610,16 @@ window.expromptum = window.xP = (function(undefined){
 		change_events: 'change',
 
 		change: function(handler, remove){
+
+			if(!arguments.length && this.parent() && this.parent().readonly){
+				if(
+					(this.$element[0].checked === true && this.selected === false && this._.value === '')
+					|| (this.$element[0].checked === false && this._.value !== '')
+				){
+					this.$element[0].checked = !this.$element[0].checked;
+				}
+			}
+
 			this.select(this.$element.is(':checked'), true);
 
 			xP.controls._option.base.change.apply(this, arguments);
@@ -3839,13 +3905,13 @@ window.expromptum = window.xP = (function(undefined){
 			var that = this;
 
 			if(d[0] && d[1] && d[2]){
-				var date_tmp = d[0] + '-' + d[1] + '-' + d[2];
+				var date_tmp = d[0] + '-' + ('0' + d[1]).slice(-2) + '-' + ('0' + d[2]).slice(-2);
 			}
 
 			switch (this.subtype){
 				case 'datetime_picker':
 					if(date_tmp && !isNaN(d[3]) && !isNaN(d[4])){
-						this.$secret.val(date_tmp + ' ' + d[3] + ':' + d[4]);
+						this.$secret.val(date_tmp + ' ' + ('0' + d[3]).slice(-2) + ':' + ('0' + d[4]).slice(-2));
 					}else{
 						this.$secret.val(date_tmp);
 					}
@@ -3857,7 +3923,7 @@ window.expromptum = window.xP = (function(undefined){
 					break;
 				default:
 					if(d[0] && d[1]){
-						this.$secret.val(d[0] + '-' + d[1] + '-' + '01');
+						this.$secret.val(d[0] + '-' + ('0' + d[1]).slice(-2) + '-' + '01');
 					}
 			}
 
@@ -3928,13 +3994,13 @@ window.expromptum = window.xP = (function(undefined){
 							case 'datetime_picker':
 								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
 
-								secret_result = secret_result.replace('mm', d[1]);
+								secret_result = secret_result.replace('mm', ('0' + d[1]).slice(-2));
 
-								secret_result = secret_result.replace('dd', d[2]);
+								secret_result = secret_result.replace('dd', ('0' + d[2]).slice(-2));
 
 								if(!isNaN(d[3]) && !isNaN(d[4]) ){
-									secret_result = secret_result.replace('HH', d[3]);
-									secret_result = secret_result.replace('MM', d[4]);
+									secret_result = secret_result.replace('HH', ('0' + d[3]).slice(-2));
+									secret_result = secret_result.replace('MM', ('0' + d[4]).slice(-2));
 								}else{
 									secret_result = secret_result.replace('HH', '');
 									secret_result = secret_result.replace('MM', '');
@@ -3946,9 +4012,9 @@ window.expromptum = window.xP = (function(undefined){
 							default:
 								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]);
 
-								secret_result = secret_result.replace('mm', d[1]);
+								secret_result = secret_result.replace('mm', ('0' + d[1]).slice(-2));
 
-								secret_result = secret_result.replace('dd', d[2]);
+								secret_result = secret_result.replace('dd', ('0' + d[2]).slice(-2));
 
 								this.$secret.val(secret_result);
 						}
