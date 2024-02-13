@@ -2351,11 +2351,11 @@ window.expromptum = window.xP = (function(undefined){
 			var options = xP($options);
 
 			options.each(function(i){
-				var option = this;
+				var option = this, label_html = this.$label.html() || '';
 
-				this.label_text = that.normalize_text(this.$label.html().replace(/<\/?[a-z][^>]*>/g, '').replace(/&(#\d+|\w+);/g, ' '));
+				this.label_text = that.normalize_text(label_html.replace(/<\/?[a-z][^>]*>/g, '').replace(/&(#\d+|\w+);/g, ' '));
 
-				this.label_html = this.$label.html().replace(/<input[^>]*>/g, '');
+				this.label_html = label_html.replace(/<input[^>]*>/g, '');
 
 				option.$element.on('focus', function(){
 					option.$container.addClass('focus');
