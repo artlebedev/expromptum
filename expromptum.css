@@ -64,6 +64,8 @@ body {
 	--input_padding_v: 3px;
 	--input_transition: 0.2s ease;
 
+	--input_readonly_border_color: #ddd;
+
 	--input_focus_background: var(--input_background);
 	--input_focus_border_color: #f96;
 	--input_focus_border_radius: var(--input_border_radius);
@@ -286,15 +288,17 @@ body {
 		font-size: var(--button_font_size);
 		line-height: var(--button_line_height);
 		margin: var(--button_margin);
+		padding: var(--button_padding);
+		outline: var(--button_outline);
+		transition: var(--button_transition);
+
+		cursor: pointer;
 		min-width: calc(
 			var(--button_line_height) * 1em
 			+ 2 * (var(--button_border_width) + var(--button_padding_v))
 		);
-		padding: var(--button_padding);
-		outline: var(--button_outline);
 		text-align: center;
-		transition: var(--button_transition);
-		cursor: pointer;
+		text-decoration: none;
 		white-space: nowrap;
 	}
 
@@ -375,7 +379,6 @@ body {
 		margin: -1px 0 1px;
 		outline: var(--input_focus_outline);
 		padding: 1em;
-		transition: var(--input_focus_transition);
 		height: auto;
 		position: absolute;
 	}
@@ -463,7 +466,7 @@ body {
 	.selectus .select .placeholder {
 		opacity: var(--disabled_opacity);
 	}
-	.selectus.checkbox .select {
+	.selectus.checkbox:not(.some) .select {
 		padding: calc(var(--input_padding_v) / 2) calc(var(--input_padding_h) / 2) 0;
 	}
 	.selectus.checkbox .select .selected {
@@ -491,11 +494,13 @@ body {
 	}
 	.selectus .suggest {
 		padding: 0;
+		min-width: max-content;
 	}
 	.selectus .suggest input[type=search] {
 		width: 100%;
+		margin: 0;
 		box-sizing: border-box;
-		border-radius: 0;
+		border-radius: var(--input_focus_border_radius) var(--input_focus_border_radius) 0 0;
 		border: none;
 		border-bottom: var(--input_focus_border_width) solid var(--input_focus_border_color);
 	}
@@ -505,15 +510,18 @@ body {
 		right: 2000px;
 	}
 	.selectus .focus .selectors {
+		display: block;
 		max-height: 15em;
 		min-width: 15em;
 		overflow: auto;
 		padding: 0;
 		position: relative;
+		max-width: calc(100vw - 20px - var(--input_focus_border_width) * 2);
+		border-radius: 0 0 var(--input_focus_border_radius) var(--input_focus_border_radius);
 	}
 	.selectus .selectors .option {
 		display: block;
-		border: 1px solid var(--input_background);
+		border: 1px solid transparent;
 		padding: var(--input_padding_v) 1em;
 	}
 	.selectus .selectors .focus {
@@ -532,8 +540,8 @@ body {
 	.date_picker_control .calendar .close {
 		cursor: pointer;
 		position: absolute;
-		right: 5px;
-		top: 0;
+		right: 7px;
+		top: 5px;
 	}
 	.date_picker_control .calendar .days .d,
 	.date_picker_control .calendar .days .dn {
@@ -652,5 +660,8 @@ body {
 	.readonly *:not(.some),
 	.readonly {
 		cursor: inherit;
-		--input_border_color: #ccc;
+		--input_border_color: var(--input_readonly_border_color);
+	}
+	.readonly .control_button {
+		display: none;
 	}

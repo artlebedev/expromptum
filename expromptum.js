@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2023-09-08
+// Updated: 2024-02-12
 
 
 
@@ -1195,10 +1195,13 @@ window.expromptum = window.xP = (function(undefined){
 			return this;
 		},
 
-		val: function(value, _suffix){
+		val: function(value, params){
 			if(!arguments.length){
 				return this._.children_values;
 			}else{
+				if(!params){
+					params = {suffix: ''};
+				}
 				if(this.repeat){
 					var that = this;
 					xP.after(function(){
@@ -1221,29 +1224,46 @@ window.expromptum = window.xP = (function(undefined){
 							}
 							sibling._set_vals(
 								value[i],
-								_suffix + that.repeat.name_suffix_before
-									+ i + that.repeat.name_suffix_after
+								{
+									suffix: params.suffix + that.repeat.name_suffix_before
+										+ i + that.repeat.name_suffix_after,
+									unchanged: params.unchanged,
+									unchange: params.unchange
+								}
 							);
 						}
 					}, 4);
 					// TODO: Ох уж эти мне таймауты. Нужно с ними разбираться.
 				}else{
-					this._set_vals(value, '');
+					this._set_vals(value, params);
 				}
 
 				return this;
 			}
 		},
 
-		_set_vals: function(value, suffix){
+		_set_vals: function(value, params){
+			if(!params){
+				params = {suffix: ''};
+			}
 			var that = this;
+
 			$.each(value, function(name, value){
-				var controls = that._find_by_name(name)
-						|| that._find_by_name(name + suffix);
+				var controls = that._find_by_name(name + params.suffix)
+						|| that._find_by_name(name);
 
 				if(controls){
 					for(var i = 0, l = controls.length; i < l; i++){
-						controls[i].val(value, suffix);
+						if(!params.unchanged || !controls[i].changed[0] || !controls[i].changed[0].result){
+							if(params.unchange){
+								controls[i]._.initial_value = Array.isArray(value) ? value[i] : value;
+							}
+							controls[i].val(value, params);
+
+							if(params.unchange){
+								controls[i]._.initial_value = controls[i].val();
+							}
+						}
 					}
 				}
 			});
@@ -3057,9 +3077,12 @@ window.expromptum = window.xP = (function(undefined){
 				value = this._unformat(value);
 				this.$secret.val(value);
 
+				if(!this.$element.is(':focus')){
+					value = this._format(value);
+				}
 				return xP.controls.number.base.val.apply(
 					this,
-					[this._format(value)]
+					[value]
 				);
 			}
 		},
@@ -3320,6 +3343,7 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.init_locale(params);
 
+
 			if(this.$element.is('.date, .date input')){
 				this.subtype = 'date_picker';
 			}else if(this.$element.is('.datetime, .datetime input')){
@@ -3328,8 +3352,9 @@ window.expromptum = window.xP = (function(undefined){
 				this.subtype = 'datemonth_picker';
 			}
 
-			if(that.val().length != 0){
-				that._set_value(xP.parse_date(that.val(), this.locale));
+			if(this.val().length != 0){
+				this._set_value(xP.parse_date(this.val(), this.locale));
+				this.$element.val(this._format(this.val()));
 			}
 
 			
@@ -3340,8 +3365,6 @@ window.expromptum = window.xP = (function(undefined){
 
 			this.last_build = [0,0,0];
 
-			
-			
 			this.change(function(){
 				var value = that.val();
 
@@ -3765,14 +3788,15 @@ window.expromptum = window.xP = (function(undefined){
 			if(xP.controls.opened){
 				xP.controls.opened.close();
 			}
-			xP.controls.opened = this;
+			if(!this.readonly){
+				xP.controls.opened = this;
 
-			that.$wrapper.addClass('focus');
+				that.$wrapper.addClass('focus');
 
-			that.$control_calendar.removeClass('hidden');
+				that.$control_calendar.removeClass('hidden');
 
-			xP.offset_by_viewport(that.$control_calendar, that.$element);
-
+				xP.offset_by_viewport(that.$control_calendar, that.$element);
+			}
 			return this;
 		},
 
@@ -3966,66 +3990,69 @@ window.expromptum = window.xP = (function(undefined){
 		val: function(value){
 			var that = this;
 
-			if(!arguments.length){  // asking value
+			if(!arguments.length){
 				return this.disabled
 					? undefined
 					: this.$element.val();
-			}else{ // set value
-				var d = xP.parse_date(value, this.locale),
-					result = '';
-
-				if(d.length){
-					if(this.subtype != 'datemonth_picker'){
-						result = this.locale.date_format.replace('dd', xP.leading_zero(d[2]));
-					}else{
-						result = this.locale.date_format.replace('dd.', '');
-					}
-
-					result = result.replace('mm', xP.leading_zero(d[1]));
-
-					result = result.replace('yy', d[0]);
-
-					if(this.subtype == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
-						result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
-					}
-
-					if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
-						switch (this.subtype){
-							case 'datetime_picker':
-								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
-
-								secret_result = secret_result.replace('mm', ('0' + d[1]).slice(-2));
-
-								secret_result = secret_result.replace('dd', ('0' + d[2]).slice(-2));
-
-								if(!isNaN(d[3]) && !isNaN(d[4]) ){
-									secret_result = secret_result.replace('HH', ('0' + d[3]).slice(-2));
-									secret_result = secret_result.replace('MM', ('0' + d[4]).slice(-2));
-								}else{
-									secret_result = secret_result.replace('HH', '');
-									secret_result = secret_result.replace('MM', '');
-								}
-
-								this.$secret.val(secret_result);
-
-								break;
-							default:
-								var secret_result = this.locale.date_value_format.replace('yyyy', d[0]);
-
-								secret_result = secret_result.replace('mm', ('0' + d[1]).slice(-2));
-
-								secret_result = secret_result.replace('dd', ('0' + d[2]).slice(-2));
-
-								this.$secret.val(secret_result);
-						}
-					}
-				}
-
+			}else{
 				return xP.controls.date_picker.base.val.apply(
 					this,
-					[result]
+					[this._format(value)]
 				);
 			}
+		},
+
+		_format: function(value){
+			var d = xP.parse_date(value, this.locale),
+				result = '';
+
+			if(d.length){
+				if(this.subtype != 'datemonth_picker'){
+					result = this.locale.date_format.replace('dd', xP.leading_zero(d[2]));
+				}else{
+					result = this.locale.date_format.replace('dd.', '');
+				}
+
+				result = result.replace('mm', xP.leading_zero(d[1]));
+
+				result = result.replace('yy', d[0]);
+
+				if(this.subtype == 'datetime_picker' && !isNaN(d[3]) && !isNaN(d[4])){
+					result += ' ' + xP.leading_zero(d[3]) + ':' + xP.leading_zero(d[4]);
+				}
+
+				if(!isNaN(d[0]) && !isNaN(d[1]) && !isNaN(d[2])){
+					switch (this.subtype){
+						case 'datetime_picker':
+							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]) + ' HH:MM';
+
+							secret_result = secret_result.replace('mm', ('0' + d[1]).slice(-2));
+
+							secret_result = secret_result.replace('dd', ('0' + d[2]).slice(-2));
+
+							if(!isNaN(d[3]) && !isNaN(d[4]) ){
+								secret_result = secret_result.replace('HH', ('0' + d[3]).slice(-2));
+								secret_result = secret_result.replace('MM', ('0' + d[4]).slice(-2));
+							}else{
+								secret_result = secret_result.replace('HH', '');
+								secret_result = secret_result.replace('MM', '');
+							}
+
+							this.$secret.val(secret_result);
+
+							break;
+						default:
+							var secret_result = this.locale.date_value_format.replace('yyyy', d[0]);
+
+							secret_result = secret_result.replace('mm', ('0' + d[1]).slice(-2));
+
+							secret_result = secret_result.replace('dd', ('0' + d[2]).slice(-2));
+
+							this.$secret.val(secret_result);
+					}
+				}
+			}
+			return result;
 		},
 
 		get_now_array: function(){
@@ -5687,7 +5714,7 @@ window.expromptum = window.xP = (function(undefined){
 			);
 
 			var option_names = {},
-				root_options = control.root()._param('_option');
+				root_options = control.root()._param('_option'), e;
 
 			control.$container.find('[name], [data-name]').addBack('[name]').each(function(){
 				var $e = $(this),
@@ -5704,6 +5731,10 @@ window.expromptum = window.xP = (function(undefined){
 
 					if($e.attr('name')){
 						$e.attr('name', new_name);
+						e = xP.controls.link($e)
+						if(e){
+							e.name = new_name;
+						}
 					}else{
 						$e.attr('data-name', new_name);
 					}
