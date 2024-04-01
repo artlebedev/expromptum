@@ -56,11 +56,11 @@ body {
 	--input_filter: none;
 	--input_font_family: sans-serif;
 	--input_font_size: 1rem;
-	--input_line_height: 1.7;
+	--input_line_height: 1.5;
 	--input_margin: 0 4px 2px 0;
 	--input_outline: none;
 	--input_padding: var(--input_padding_v) var(--input_padding_h);
-	--input_padding_h: 3px;
+	--input_padding_h: 6px;
 	--input_padding_v: 3px;
 	--input_transition: 0.2s ease;
 
