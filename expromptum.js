@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2024-03-29
+// Updated: 2024-04-23
 
 
 
@@ -1821,7 +1821,7 @@ window.expromptum = window.xP = (function(undefined){
 		val: function(value){
 			if(!arguments.length){
 				return this.disabled ? undefined : this.$element.val();
-			}else if(!this.$element.attr('readonly')){
+			}else{
 				var el = this.$element[0];
 
 				if(this.$element.is(':focus')){
