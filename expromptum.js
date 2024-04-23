@@ -2165,6 +2165,10 @@ window.expromptum = window.xP = (function(undefined){
 
 			xP.controls.options.base.init.apply(this, arguments);
 
+			if(this.readonly){
+				this.$container.addClass('readonly')
+			}
+
 			var that = this;
 			xP.after(function(){that.after_init()});
 		},

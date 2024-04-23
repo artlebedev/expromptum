@@ -492,6 +492,9 @@ body {
 	.selectus .select .selected .unselect:hover:before {
 		opacity: 1;
 	}
+	.selectus.readonly .select .selected .unselect {
+		display: none;
+	}
 	.selectus .suggest {
 		padding: 0;
 		min-width: max-content;
