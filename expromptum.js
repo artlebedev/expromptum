@@ -5144,8 +5144,14 @@ window.expromptum = window.xP = (function(undefined){
 				}else{
 					parent.reset();
 				}
-			});
-		}
+			}).classed = {
+				on: function(){console.log(111);return repeat.val() <= repeat.min},
+				from: repeat,
+				do: this.reset_class
+			};
+		},
+
+		reset_class: 'repeat_reset_button'
 	}});
 
 
