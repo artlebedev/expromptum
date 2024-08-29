@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2024-05-22
+// Updated: 2024-08-29
 
 
 
@@ -1847,7 +1847,7 @@ window.expromptum = window.xP = (function(undefined){
 
 		reset: function(){
 			this.val('');
-			return this;
+			return xP.controls._field.base.reset.apply(this, arguments);
 		}
 	}});
 
