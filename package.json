@@ -1,0 +1,21 @@
+{
+  "name": "expromptum",
+  "version": "1.0.0",
+  "description": "Expromptum js library",
+  "main": "expromptum.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artlebedev/expromptum.git"
+  },
+  "author": "Vladimir Tokmakov <vlalek@design.ru>",
+  "bugs": {
+    "url": "https://github.com/artlebedev/expromptum/issues"
+  },
+  "homepage": "https://github.com/artlebedev/expromptum"
+}
