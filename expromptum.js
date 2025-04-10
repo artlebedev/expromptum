@@ -552,14 +552,14 @@ window.expromptum = window.xP = (function(undefined){
 			if(this.items[lang]){
 				this.load_locale(this.items[lang]);
 			}else{
-				this.load_locale(this.items[that['default']]);
+				this.load_locale(this.items[this['default']]);
 			}
 		},
 
 		get: function(lang){
 			var that = this;
 			if(!lang){
-				lang = that['default'];
+				lang = this['default'];
 			}
 			lang = this.normalize_id(lang);
 
@@ -568,7 +568,7 @@ window.expromptum = window.xP = (function(undefined){
 			if(this.items[lang]){
 				return_locale =  this.items[lang];
 			}else{
-				return_locale =  this.items[that['default']];
+				return_locale =  this.items[this['default']];
 			}
 
 			var t = return_locale.number;
