@@ -52,7 +52,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 
 ### [Локализация](#locale)
 
-*По умолчанию на русском языке. Используется в контролах: `number`, `datemonth`, `date`, `datetime`, `date.picker`, `datemonth.picker`, `datetime.picker`. Также считывается `xml:lang` у `<html>`, либо у любого элемента формы. В библиотеке кроме русского есть `en-GB`. Можно добавить свою. Если локализация не задана у контрола, будет проверяться вверх по дереву, вплоть до `html`.*
+*По умолчанию на русском языке. Используется в контролах: `number`, `datemonth`, `date`, `datetime`, `datemonth_picker`, `date_picker`, `datetime_picker`. Также считывается `xml:lang` у `<html>`, либо у любого элемента формы. В библиотеке кроме русского есть `en-GB`. Можно добавить свою. Если локализация не задана у контрола, будет проверяться вверх по дереву, вплоть до `html`.*
 
 
 ```html
@@ -241,7 +241,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 <div><a href="#controls.datemonth_picker">Поле для года и месяца с календарем</a></div>
 
 ```html
-<input class="datemonth picker" data-xp="type: 'date_picker'"/>
+<input class="datemonth picker" data-xp="type: 'datemonth_picker'"/>
 ```
 
 <div><a href="#controls.date_picker">Поле для даты с календарем</a></div>
@@ -253,7 +253,7 @@ Expromptum — библиотека JavaScript, предназначенная �
 <div><a href="#controls.datetime_picker">Поле для даты и времени с календарем</a></div>
 
 ```html
-<input class="datetime picker" data-xp="type: 'date_picker'"/>
+<input class="datetime picker" data-xp="type: 'datetime_picker'"/>
 ```
 
 
@@ -1100,9 +1100,20 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 
 ### <a href="#controls.datemonth_picker" name="controls.datemonth_picker">Поле для года и месяца с календарем</a>
 
-- Тип `date_picker`
-- Базовый тип [`date`](#controls.date)
+- Тип `datemonth_picker`
+- Базовый тип [`_secret`](#controls._secret)
 - Селектор элемента `input.datemonth.picker, .datemonth.picker input`
+
+#### Свойства
+
+`.until = '[name=date_to]'`
+- Контрол, с которым надо организовать совместный выбор двух дат.
+
+#### Методы
+
+`.date()`
+- Возвращает дату.
+
 
 [Демо](http://www.artlebedev.ru/tools/expromptum/controls/#picker_datemonth)
 
@@ -1111,7 +1122,7 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ### <a href="#controls.date_picker" name="controls.date_picker">Поле для даты с календарем</a>
 
 - Тип `date_picker`
-- Базовый тип [`date`](#controls.date)
+- Базовый тип [`datemonth_picker`](#controls.datemonth_picker)
 - Селектор элемента `input.date.picker, .date.picker input`
 
 [Демо](http://www.artlebedev.ru/tools/expromptum/controls/#picker_date)
@@ -1121,8 +1132,13 @@ xP.controls.register({name: 'wysiwyg', base: 'string', prototype: {
 ### <a href="#controls.datetime_picker" name="controls.datetime_picker">Поле для даты и времени с календарем</a>
 
 - Тип `date_picker`
-- Базовый тип [`date`](#controls.date)
+- Базовый тип [`date_picker`](#controls.date_picker)
 - Селектор элемента `input.datetime.picker, .datetime.picker input`
+
+#### Свойства
+
+`.minute_round = 5`
+- Значение шага в минутах для соответствующего подконтрола.
 
 [Демо](http://www.artlebedev.ru/tools/expromptum/controls/#datetime_picker)
 

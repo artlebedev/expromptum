@@ -539,6 +539,8 @@ body {
 	}
 	.date_picker_control .calendar {
 		position: absolute;
+		display: flex;
+		gap: 1em;
 	}
 	.date_picker_control .calendar .close {
 		cursor: pointer;
@@ -573,6 +575,7 @@ body {
 	.date_picker_control .calendar .year,
 	.date_picker_control .calendar .time {
 		white-space: nowrap;
+		text-align: center;
 	}
 	.date_picker_control .calendar .year .title,
 	.date_picker_control .calendar .month .title {
