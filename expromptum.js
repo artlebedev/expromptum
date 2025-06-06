@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2025-06-01
+// Updated: 2025-06-04
 
 
 
@@ -303,8 +303,12 @@ window.expromptum = window.xP = (function(undefined){
 		var val_parts = [];
 		if(value.indexOf('-') > -1){
 			val_parts = value.match(/\d+/g);
-			if(!val_parts[2]){
-				val_parts[2] = 1;
+			if(val_parts){
+				if(!val_parts[2]){
+					val_parts[2] = 1;
+				}
+			}else{
+				return '';
 			}
 		}else{
 			value = value.replace(/(\d+):(\d+)(:\S+)?/, function(str, s1, s2){val_parts[3] = s1; val_parts[4] = s2; return '';});
@@ -3439,7 +3443,7 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		_refresh_calendar: function(){
-			if(this._.$year){
+			if(this._.$year && this._.date){
 				this._.$year.html(this._.date.getFullYear());
 
 				this._.$month.html(this.locale.month[this._.date.getMonth()].name);
@@ -3489,6 +3493,7 @@ window.expromptum = window.xP = (function(undefined){
 					: this._unformat(this.$element.val());
 			}else{
 				//value = this._unformat(value);
+				this._.date = value ? new Date(value) : '';
 
 				this.$secret.val(value);
 
