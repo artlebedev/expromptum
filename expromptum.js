@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2025-06-04
+// Updated: 2025-06-24
 
 
 
@@ -3443,6 +3443,9 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		_refresh_calendar: function(){
+			if(!this._.date){
+				this._.date = new Date();
+			}
 			if(this._.$year && this._.date){
 				this._.$year.html(this._.date.getFullYear());
 
