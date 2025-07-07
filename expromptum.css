@@ -210,6 +210,9 @@ body {
 		outline: var(--input_outline);
 		transition: var(--input_transition);
 	}
+	textarea {
+		resize: vertical;
+	}
 
 
 /* Selectors */
@@ -662,6 +665,7 @@ body {
 	}
 
 /* Readonly */
+
 	[readonly],
 	.readonly *:not(.some),
 	.readonly {
