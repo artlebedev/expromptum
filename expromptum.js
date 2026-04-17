@@ -2,7 +2,7 @@
 // Copyright Art. Lebedev | http://www.artlebedev.ru/
 // License: BSD | http://opensource.org/licenses/BSD-3-Clause
 // Author: Vladimir Tokmakov | vlalek
-// Updated: 2025-06-24
+// Updated: 2026-04-17
 
 
 
@@ -3303,17 +3303,7 @@ window.expromptum = window.xP = (function(undefined){
 			}else{
 				this._.date = new Date();
 			}
-			this.change(function(){
-				xP.after(function(){
-					that._refresh_calendar();
-
-					if(that.until){
-						that.until._refresh_calendar();
-					}else if(that.from){
-						that.from._refresh_calendar();
-					}
-				})
-			});
+			this._.cdate = new Date(this._.date);
 
 			this.after_init();
 		},
@@ -3396,27 +3386,33 @@ window.expromptum = window.xP = (function(undefined){
 		},
 
 		_change_year: function(d){
-			this._.date.setYear(this._.date.getFullYear() + d);
+			this._.cdate.setYear(this._.cdate.getFullYear() + d);
 
 			this._check_date();
 
-			this.val(this._date_sql_string(this._.date));
+			this._val_cdate();
+
+			this.refresh_calendar();
 		},
 
 		_change_month: function(d){
-			this._.date.setMonth(this._.date.getMonth() + d);
+			this._.cdate.setMonth(this._.cdate.getMonth() + d);
 
 			this._check_date();
 
-			this.val(this._date_sql_string(this._.date));
+			this._val_cdate();
+
+			this.refresh_calendar();
 		},
 
 		_set_now: function(){
-			this._.date = new Date();
+			this._.cdate = new Date();
 
 			this._check_date();
 
-			this.val(this._date_sql_string(this._.date));
+			this._val_cdate();
+
+			this.refresh_calendar();
 
 			if(this._check_date() && !this.until){
 				this.close();
@@ -3426,37 +3422,53 @@ window.expromptum = window.xP = (function(undefined){
 		_check_date: function(){
 			var r = true, min = new Date(this.min), max = new Date(this.max);
 
-			if(this._.date < min){
-				this._.date = min;
+			if(this._.cdate < min){
+				this._.cdate = min;
 
 				r = false;
 			}
-			if(this._.date > max){
-				this._.date = max;
+			if(this._.cdate > max){
+				this._.cdate = max;
 
 				r = false;
 			}
-			if(!r){
-				this.val(this._date_sql_string(this._.date));
-			}
+
 			return r;
 		},
 
-		_refresh_calendar: function(){
-			if(!this._.date){
-				this._.date = new Date();
-			}
-			if(this._.$year && this._.date){
-				this._.$year.html(this._.date.getFullYear());
+		_val_cdate: function(){
+			this.val(this._date_sql_string(this._.cdate));
+		},
 
-				this._.$month.html(this.locale.month[this._.date.getMonth()].name);
+		refresh_calendar: function(){
+			var that = this;
+
+			xP.after(function(){
+				that._refresh_calendar();
+
+				if(that.until){
+					that.until._refresh_calendar();
+				}else if(that.from){
+					that.from._refresh_calendar();
+				}
+			});
+		},
+
+		_refresh_calendar: function(){
+			if(this._.$year && this._.cdate){
+				this._.$year.html(this._.cdate.getFullYear());
+
+				this._.$month.html(this.locale.month[this._.cdate.getMonth()].name);
 			}
 		},
 
 		open: function(){
+			this.refresh_calendar();
+
 			if(!this.from){
 				if(!this.val()){
 					this._.date = new Date();
+					this._.cdate = new Date(this._.date);
 				}
 				if(xP.controls.opened){
 					xP.controls.opened.close();
@@ -3497,6 +3509,7 @@ window.expromptum = window.xP = (function(undefined){
 			}else{
 				//value = this._unformat(value);
 				this._.date = value ? new Date(value) : '';
+				this._.cdate = new Date(this._.date);
 
 				this.$secret.val(value);
 
@@ -3544,6 +3557,7 @@ window.expromptum = window.xP = (function(undefined){
 					+ (val_parts[3] >= 0 ? ' ' + xP.leading_zero(val_parts[3]) + ':' + xP.leading_zero(val_parts[4]) : '');
 				try{
 					this._.date = new Date(r);
+					this._.cdate = new Date(this._.date);
 					return r;
 				}catch(e){
 					return '';
@@ -3613,9 +3627,14 @@ window.expromptum = window.xP = (function(undefined){
 
 		_change_day: function($td){
 			if(!$td.is('.disabled')){
-				this._.date.setDate($td.text());
+				this._.cdate.setDate($td.text());
+				this._.date = new Date(this._.cdate);
 
-				this.val(this._date_sql_string(this._.date));
+				this._check_date();
+
+				this.val(this._date_sql_string(this._.cdate));
+
+				this.refresh_calendar();
 
 				if(!this._.$hour && !this.until){
 					this.close();
@@ -3628,33 +3647,45 @@ window.expromptum = window.xP = (function(undefined){
 
 			if(this._.$days){
 				var date = new Date(this._.date),
+					cdate = new Date(this._.cdate),
 					today_sql_string = this._date_sql_string(new Date()),
 					selected_sql_string = this.$secret.val() != '' ? this._date_sql_string(date) : '',
-					cur_month = date.getMonth(),
+					cur_month = cdate.getMonth(),
 					min = new Date(this.min),
 					max = new Date(this.max),
 					date_month,
 					date_sql_string,
 					i;
 
-				date.setDate(1);
-				date.setDate(date.getDate() - (date.getDay() + 6) % 7);
+				cdate.setDate(1);
+				cdate.setDate(cdate.getDate() - (cdate.getDay() + 6) % 7);
 
 				for(var i = 0; i < 42; i++){
-					date_month = date.getMonth();
-					date_sql_string = this._date_sql_string(date);
+					date_month = cdate.getMonth();
+					date_sql_string = this._date_sql_string(cdate);
 
-					this._.$days.eq(i).html(date.getDate())
-						.toggleClass('disabled', date_month != cur_month || date < min || date > max)
-						.toggleClass('invalid', date < min || date > max)
+					this._.$days.eq(i).html(cdate.getDate())
+						.toggleClass('disabled', date_month != cur_month || cdate < min || cdate > max)
+						.toggleClass('invalid', cdate < min || cdate > max)
 						.toggleClass('selected', date_sql_string == selected_sql_string)
 						.toggleClass('prev', (date_month + 1) % 12 == cur_month)
 						.toggleClass('next', (cur_month + 1) % 12 == date_month)
 						.toggleClass('today', date_sql_string == today_sql_string);
 
-					date.setDate(date.getDate() + 1);
+					cdate.setDate(cdate.getDate() + 1);
 				}
 			}
+		},
+
+		_set_now: function(){
+			xP.controls.date_picker.base._set_now.apply(this, arguments);
+
+			this.val(this._date_sql_string(this._.cdate));
+
+			this.refresh_calendar();
+		},
+
+		_val_cdate: function(){
 		},
 
 		_unformat: function(value){
